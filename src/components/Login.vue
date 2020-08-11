@@ -1,0 +1,101 @@
+<template>
+  <div class="login_container">
+    <el-container>
+      <el-header style="height: auto;">
+        <el-row class="header_left_right">
+          <el-col :span="12" class="header_left_slogn">
+            <img src="../assets/logo01.png" alt="" />
+            <span>千里寻他</span>
+          </el-col>
+          <el-col :span="12" class="header_right_item">
+            <img src="../assets/dibiao01.svg" alt="" />
+            <el-dropdown @command="handleCommand">
+              <span class="el-dropdown-link">
+                武汉<i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="a">北京</el-dropdown-item>
+                <el-dropdown-item command="b">上海</el-dropdown-item>
+                <el-dropdown-item command="c">拉萨</el-dropdown-item>
+                <el-dropdown-item command="d" disabled>成都</el-dropdown-item>
+                <el-dropdown-item command="e" divided>重庆</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+            <el-button size="small" round class="login">登录</el-button>
+            <el-button size="small" round class="signin">注册</el-button>
+          </el-col>
+        </el-row>
+        <el-menu
+          class="el-menu-demo"
+          mode="horizontal"
+          text-color="#fff"
+          active-text-color="#fff">
+          <el-menu-item index="1">首页</el-menu-item>
+          <el-menu-item index="2">加入会员</el-menu-item>
+          <el-menu-item index="3">寻找TA</el-menu-item>
+          <el-menu-item index="4">约吧走起</el-menu-item>
+          <el-menu-item index="5"><a href="javascript:;">我要发布</a></el-menu-item>
+          <el-menu-item index="6"><a href="javascript:;">来消息啦</a></el-menu-item>
+          <el-menu-item index="7"><a href="javascript:;">红娘一对一</a></el-menu-item>
+          <el-menu-item index="8"><a href="javascript:;">我的</a></el-menu-item>
+        </el-menu>
+      </el-header>
+      <el-main>
+        <div class="login_box">
+          <div class="user_title">会员登陆</div>
+        </div>
+        <el-form ref="form" label-width="80px">
+          <el-form-item label="账号">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="密码">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary">登录</el-button>
+          </el-form-item>
+        </el-form>
+        <div class="other_login">
+          <span>其他登录方式</span>
+          <img src="../assets/qq01.svg" alt="" />
+          <img src="../assets/weixin01.svg" alt="" />
+          <img src="../assets/weibo01.svg" alt="" />
+        </div>
+      </el-main>
+      <el-footer>Footer</el-footer>
+    </el-container>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      msg: '登陆页面'
+    }
+  },
+  methods: {
+    handleCommand(command) {
+      this.$message('click on item ' + command);
+    }
+  }
+}
+</script>
+
+<style scoped>
+  .login_container {
+    height: 100%;
+    background: url(../assets/beijing02.png) 0 0 / cover;
+    box-shadow: 0px 3px 60px 0px rgba(255, 58, 58, .33);
+  }
+  .el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
+  .header_left_right {
+    padding: 0 120px;
+  }
+</style>

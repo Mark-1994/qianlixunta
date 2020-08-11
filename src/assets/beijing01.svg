@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2010" height="3105.033" viewBox="0 0 2010 3105.033">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff4f0"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff2f2"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <filter id="路径_28" x="0" y="0" width="1506.807" height="3105.033" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="30" result="blur"/>
+      <feFlood flood-color="#ff3a3a" flood-opacity="0.329"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="组_215" data-name="组 215" transform="translate(90 87)">
+    <rect id="矩形_17" data-name="矩形 17" width="1918" height="2676" transform="translate(2)" fill="url(#linear-gradient)"/>
+    <g transform="matrix(1, 0, 0, 1, -90, -87)" filter="url(#路径_28)">
+      <path id="路径_28-2" data-name="路径 28" d="M2063,0S3079.479,120.5,3199.763,846.062,2515.7,1482.082,2526.6,2128.926s860.855,796.107,860.855,796.107H2060.649Z" transform="translate(-1970.65 87)" fill="url(#linear-gradient-2)"/>
+    </g>
+  </g>
+</svg>
