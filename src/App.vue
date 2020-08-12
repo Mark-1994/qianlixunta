@@ -4,9 +4,14 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'App'
+}
+</script>
+
 <style>
   #app, body, html {
-    height: 100%;
     margin: 0;
     padding: 0;
     min-width: 1366px;
@@ -66,5 +71,29 @@
   }
   .el-menu.el-menu--horizontal li {
     /* font-size: 24px; */
+  }
+  footer {
+    background-color: #fff;
+  }
+  .el-menu.el-menu--horizontal.el-menu-demo01 {
+    background: #fff;
+    border: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .zhongwenshiming {
+    width: 80%;
+    margin: 0 auto;
+  }
+  .footer_num {
+    width: 80%;
+    margin: 0 auto
+  }
+  .footer_num img {
+    width: 100%;
+  }
+  .zhongwenshiming span {
+    margin-right: 60px;
   }
 </style>

@@ -43,26 +43,54 @@
       <el-main>
         <div class="login_box">
           <div class="user_title">会员登陆</div>
-        </div>
-        <el-form ref="form" label-width="80px">
-          <el-form-item label="账号">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="密码">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary">登录</el-button>
-          </el-form-item>
-        </el-form>
-        <div class="other_login">
-          <span>其他登录方式</span>
-          <img src="../assets/qq01.svg" alt="" />
-          <img src="../assets/weixin01.svg" alt="" />
-          <img src="../assets/weibo01.svg" alt="" />
+          <el-form ref="form" label-width="auto" :model="form">
+            <el-form-item label="账号">
+              <el-input v-model="form.name"></el-input>
+            </el-form-item>
+            <el-form-item label="密码">
+              <el-input type="password" v-model="form.pass"></el-input>
+            </el-form-item>
+            <el-form-item label="">
+              <el-checkbox-group v-model="form.type" class="juzhumima_zhucezhanghao">
+                <el-checkbox label="记住密码" name="type"></el-checkbox>
+                <el-link :underline="false" href="javascript:;" class="zhucezhanghao">注册账号</el-link>
+              </el-checkbox-group>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary">登录</el-button>
+            </el-form-item>
+          </el-form>
+          <div class="other_login">
+            <span>其他登录方式</span>
+            <img src="../assets/qq01.svg" alt="" />
+            <img src="../assets/weixin01.svg" alt="" />
+            <img src="../assets/weibo01.svg" alt="" />
+          </div>
         </div>
       </el-main>
-      <el-footer>Footer</el-footer>
+      <el-footer height="auto">
+        <el-menu mode="horizontal" class="el-menu-demo01">
+          <el-menu-item index="1">处理中心</el-menu-item>
+          <el-menu-item index="2">处理中心</el-menu-item>
+          <el-menu-item index="3">消息中心</el-menu-item>
+          <el-menu-item index="4">订单管理</el-menu-item>
+        </el-menu>
+        <div class="zhongwenshiming">
+          <p>
+            <span>中文实名：xxx</span>
+            <span>营业执照ICP证书：鄂B2-20100074</span>
+            <span>增值电信业务经营许可证：鄂B2-20070313</span>
+          </p>
+          <p>免责声明：用户之间相互联系、见面等行为与本站无关，用户之间发生违法、犯罪、侵权等事件与本站无关。本站不承担任何责任。</p>
+          <p>
+            <span>公司名称：xxxxx</span>
+            <span>公司地址：xxxxx</span>
+          </p>
+        </div>
+        <p class="footer_num">
+          <img src="../assets/footer_num.png" alt="">
+        </p>
+      </el-footer>
     </el-container>
   </div>
 </template>
@@ -71,7 +99,10 @@
 export default {
   data() {
     return {
-      msg: '登陆页面'
+      msg: '登陆页面',
+      form: {
+        type: []
+      }
     }
   },
   methods: {
@@ -84,7 +115,6 @@ export default {
 
 <style scoped>
   .login_container {
-    height: 100%;
     background: url(../assets/beijing02.png) 0 0 / cover;
     box-shadow: 0px 3px 60px 0px rgba(255, 58, 58, .33);
   }
@@ -97,5 +127,41 @@ export default {
   }
   .header_left_right {
     padding: 0 120px;
+  }
+  .login_box {
+    width: 566px;
+    height: 432px;
+    background-color: #fff;
+    margin: 103px auto 115px;
+    border-radius: 30px;
+    text-align: center;
+  }
+  .user_title {
+    font-size: 30px;
+    border-bottom: 2px solid rgba(112, 112, 112, .56);
+    padding: 13px 0 7px;
+  }
+  .el-form {
+    margin: 54px auto 39px;
+    padding: 0 103px 0 74px;
+  }
+  .el-form .el-button {
+    width: 100%;
+    border-radius: 10px;
+    font-size: 24px;
+    background: linear-gradient(180deg, #fc2c89, #ff97c6);
+    border: 1px solid #e64980;
+  }
+  .other_login img {
+    margin-left: 32px;
+  }
+  .juzhumima_zhucezhanghao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    line-height: normal;
+  }
+  .zhucezhanghao {
+    text-decoration: underline;
   }
 </style>
