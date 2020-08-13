@@ -30,6 +30,13 @@ export default {
   a {
     text-decoration: none;
   }
+  .header_left_right {
+    padding: 0 120px;
+  }
+  .login_container {
+    background: url(./assets/beijing02.png) 0 0 / cover;
+    box-shadow: 0px 3px 60px 0px rgba(255, 58, 58, .33);
+  }
   .el-menu.el-menu--horizontal {
     background: linear-gradient(154deg, #ff2a86, #927ffe 65%, #917fff 83%, #9effff 181%);
     border-radius: 20px 20px 0px 0px;
@@ -95,5 +102,10 @@ export default {
   }
   .zhongwenshiming span {
     margin-right: 60px;
+  }
+  .select_city_list {
+    width: 500px;
+    display: flex;
+    flex-wrap: wrap;
   }
 </style>

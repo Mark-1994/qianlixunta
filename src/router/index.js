@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../components/Home.vue'
 import Login from '../components/Login.vue'
+import Register from '../components/Register.vue'
+import Index from '../components/Index.vue'
 
 Vue.use(VueRouter)
 
@@ -17,6 +19,14 @@ Vue.use(VueRouter)
     {
       path: '/',
       redirect: '/home'
+    },
+    {
+      path: '/register',
+      component: Register
+    },
+    {
+      path: '/index',
+      component: Index
     }
 ]
 

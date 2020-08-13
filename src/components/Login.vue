@@ -13,12 +13,9 @@
               <span class="el-dropdown-link">
                 武汉<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="a">北京</el-dropdown-item>
-                <el-dropdown-item command="b">上海</el-dropdown-item>
-                <el-dropdown-item command="c">拉萨</el-dropdown-item>
-                <el-dropdown-item command="d" disabled>成都</el-dropdown-item>
-                <el-dropdown-item command="e" divided>重庆</el-dropdown-item>
+              <el-dropdown-menu slot="dropdown" class="select_city_list">
+                <el-dropdown-item>热门：</el-dropdown-item>
+                <el-dropdown-item v-for="item in cityInfo" :key="item.id" :command="item.name">{{item.name}}</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
             <el-button size="small" round class="login">登录</el-button>
@@ -43,11 +40,11 @@
       <el-main>
         <div class="login_box">
           <div class="user_title">会员登陆</div>
-          <el-form ref="form" label-width="auto" :model="form">
-            <el-form-item label="账号">
+          <el-form ref="form" label-width="auto" :model="form" :rules="loginRules" hide-required-asterisk>
+            <el-form-item label="账号" prop="name">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="密码">
+            <el-form-item label="密码" prop="pass">
               <el-input type="password" v-model="form.pass"></el-input>
             </el-form-item>
             <el-form-item label="">
@@ -57,7 +54,7 @@
               </el-checkbox-group>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary">登录</el-button>
+              <el-button type="primary" @click="submitForm('form')">登录</el-button>
             </el-form-item>
           </el-form>
           <div class="other_login">
@@ -70,10 +67,12 @@
       </el-main>
       <el-footer height="auto">
         <el-menu mode="horizontal" class="el-menu-demo01">
-          <el-menu-item index="1">处理中心</el-menu-item>
-          <el-menu-item index="2">处理中心</el-menu-item>
-          <el-menu-item index="3">消息中心</el-menu-item>
-          <el-menu-item index="4">订单管理</el-menu-item>
+          <el-menu-item index="1">联系客服</el-menu-item>
+          <el-menu-item index="2">关于我们</el-menu-item>
+          <el-menu-item index="3">防骗必看</el-menu-item>
+          <el-menu-item index="4">帮助中心</el-menu-item>
+          <el-menu-item index="5">安全中心</el-menu-item>
+          <el-menu-item index="6">意见反馈</el-menu-item>
         </el-menu>
         <div class="zhongwenshiming">
           <p>
@@ -99,15 +98,43 @@
 export default {
   data() {
     return {
-      msg: '登陆页面',
+      cityInfo: [
+        { id: 1, name: '北京' },
+        { id: 2, name: '上海' },
+        { id: 3, name: '广州' },
+        { id: 4, name: '武汉' },
+        { id: 5, name: '成都' },
+        { id: 6, name: '天津' },
+        { id: 7, name: '重庆' }
+      ],
       form: {
         type: []
+      },
+      loginRules: {
+        name: [
+          { required: true, message: '请输入账号', trigger: 'blur' },
+          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+        ],
+        pass: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
+        ]
       }
     }
   },
   methods: {
     handleCommand(command) {
       this.$message('click on item ' + command);
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert('submit!');
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
     }
   }
 }
@@ -124,9 +151,6 @@ export default {
   }
   .el-icon-arrow-down {
     font-size: 12px;
-  }
-  .header_left_right {
-    padding: 0 120px;
   }
   .login_box {
     width: 566px;
