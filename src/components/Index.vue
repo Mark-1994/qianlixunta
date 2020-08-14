@@ -53,16 +53,27 @@
                   <el-select v-model="form.year" placeholder="年" class="register_form_birthday">
                     <el-option label="1991" value="1991"></el-option>
                     <el-option label="1992" value="1992"></el-option>
+                    <el-option label="1993" value="1992"></el-option>
+                    <el-option label="1994" value="1992"></el-option>
                   </el-select>
                   年
                   <el-select v-model="form.month" placeholder="月" class="register_form_birthday">
                     <el-option label="01" value="01"></el-option>
                     <el-option label="02" value="02"></el-option>
+                    <el-option label="03" value="03"></el-option>
+                    <el-option label="04" value="04"></el-option>
+                    <el-option label="05" value="05"></el-option>
+                    <el-option label="06" value="06"></el-option>
+                    <el-option label="07" value="07"></el-option>
+                    <el-option label="08" value="08"></el-option>
+                    <el-option label="09" value="09"></el-option>
+                    <el-option label="10" value="10"></el-option>
+                    <el-option label="11" value="11"></el-option>
+                    <el-option label="12" value="12"></el-option>
                   </el-select>
                   月
                   <el-select v-model="form.day" placeholder="日" class="register_form_birthday">
-                    <el-option label="01" value="01"></el-option>
-                    <el-option label="02" value="02"></el-option>
+                    <el-option v-for="item in afterage_options" :key="item.id" :label="item.label" :value="item.value"></el-option>
                   </el-select>
                   日
                 </el-form-item>
@@ -83,8 +94,9 @@
           </div>
           <div class="main_center_bottom_two">
             <el-row>
-              <el-col :span="16">
+              <el-col :span="18">
                 <div class="grid-content bg-purple main_center_bottom_left">
+                  <!-- 推荐会员start -->
                   <div class="tuijianhuiyuan">
                     <div class="tuijianhuiyuan_title">
                       <h3>推荐会员</h3>
@@ -100,19 +112,19 @@
                       </el-form-item>
                       <el-row class="flex_oneline">
                         <el-form-item label="年龄">
-                          <el-select v-model="search_form.year" placeholder="">
+                          <el-select v-model="search_form.year" placeholder="请选择">
                             <el-option label="20-30岁" value="20"></el-option>
                             <el-option label="30-40岁" value="30"></el-option>
                           </el-select>
                         </el-form-item>
                         <el-form-item label="性别">
-                          <el-select v-model="search_form.sex" placeholder="">
+                          <el-select v-model="search_form.sex" placeholder="请选择">
                             <el-option label="男" value="男"></el-option>
                             <el-option label="女" value="女"></el-option>
                           </el-select>
                         </el-form-item>
                         <el-form-item label="城市">
-                          <el-select v-model="search_form.city" placeholder="">
+                          <el-select v-model="search_form.city" placeholder="请选择">
                             <el-option label="武汉" value="武汉"></el-option>
                             <el-option label="上海" value="上海"></el-option>
                           </el-select>
@@ -122,19 +134,19 @@
                         </el-form-item>
                       </el-row>
                     </el-form>
-                    <el-row :gutter="20">
+                    <el-row :gutter="20" class="top_bottom_margin_25">
                       <el-col :span="8">
                         <div class="grid-content bg-purple">
                           <img src="../assets/user_img01.png" alt="">
                           <div class="user_info">
-                            <h3>林俊杰</h3>
-                            <div>
+                            <h3>罗永浩</h3>
+                            <div class="user_privacy_info">
                               <span>18岁</span>
                               <span>177cm</span>
                               <span>本科</span>
                               <span>月薪5000K</span>
                             </div>
-                            <p>我是一个多变的女孩，动如脱兔，静如处子，可谓动静皆宜。生活中的我，不仅喜欢旅游、聚会，也喜欢独自读《红楼梦》、看韩剧美剧，当然家务能力也是不错的。期待自己的另一半是一个可以理解自己，有生活情趣和共同语言的男士，我是世纪佳缘手机版用户，我在这里等着你哦！</p>
+                            <p>我是一个多变的女孩，动如脱兔，静如处子，可谓动静皆宜...</p>
                             <el-row>
                               <el-col>
                                 <el-link type="primary">
@@ -155,19 +167,316 @@
                           </div>
                         </div>
                       </el-col>
-                      <el-col :span="8"><div class="grid-content bg-purple">2</div></el-col>
-                      <el-col :span="8"><div class="grid-content bg-purple">3</div></el-col>
+                      <el-col :span="8">
+                        <div class="grid-content bg-purple">
+                          <img src="../assets/user_img01.png" alt="">
+                          <div class="user_info">
+                            <h3>罗永浩</h3>
+                            <div class="user_privacy_info">
+                              <span>18岁</span>
+                              <span>177cm</span>
+                              <span>本科</span>
+                              <span>月薪5000K</span>
+                            </div>
+                            <p>我是一个多变的女孩，动如脱兔，静如处子，可谓动静皆宜...</p>
+                            <el-row>
+                              <el-col>
+                                <el-link type="primary">
+                                  <img src="../assets/dazhaohu01.png" alt="">
+                                </el-link>
+                              </el-col>
+                              <el-col>
+                                <el-link type="primary">
+                                  <img src="../assets/dazhaohu01.png" alt="">
+                                </el-link>
+                              </el-col>
+                              <el-col>
+                                <el-link type="primary">
+                                  <img src="../assets/dazhaohu01.png" alt="">
+                                </el-link>
+                              </el-col>
+                            </el-row>
+                          </div>
+                        </div>
+                      </el-col>
+                      <el-col :span="8">
+                        <div class="grid-content bg-purple">
+                          <img src="../assets/user_img01.png" alt="">
+                          <div class="user_info">
+                            <h3>罗永浩</h3>
+                            <div class="user_privacy_info">
+                              <span>18岁</span>
+                              <span>177cm</span>
+                              <span>本科</span>
+                              <span>月薪5000K</span>
+                            </div>
+                            <p>我是一个多变的女孩，动如脱兔，静如处子，可谓动静皆宜...</p>
+                            <el-row>
+                              <el-col>
+                                <el-link type="primary">
+                                  <img src="../assets/dazhaohu01.png" alt="">
+                                </el-link>
+                              </el-col>
+                              <el-col>
+                                <el-link type="primary">
+                                  <img src="../assets/dazhaohu01.png" alt="">
+                                </el-link>
+                              </el-col>
+                              <el-col>
+                                <el-link type="primary">
+                                  <img src="../assets/dazhaohu01.png" alt="">
+                                </el-link>
+                              </el-col>
+                            </el-row>
+                          </div>
+                        </div>
+                      </el-col>
                     </el-row>
                     <el-row :gutter="20">
-                      <el-col :span="8"><div class="grid-content bg-purple">4</div></el-col>
-                      <el-col :span="8"><div class="grid-content bg-purple">5</div></el-col>
-                      <el-col :span="8"><div class="grid-content bg-purple">6</div></el-col>
+                      <el-col :span="8">
+                        <div class="grid-content bg-purple">
+                          <img src="../assets/user_img01.png" alt="">
+                          <div class="user_info">
+                            <h3>罗永浩</h3>
+                            <div class="user_privacy_info">
+                              <span>18岁</span>
+                              <span>177cm</span>
+                              <span>本科</span>
+                              <span>月薪5000K</span>
+                            </div>
+                            <p>我是一个多变的女孩，动如脱兔，静如处子，可谓动静皆宜...</p>
+                            <el-row>
+                              <el-col>
+                                <el-link type="primary">
+                                  <img src="../assets/dazhaohu01.png" alt="">
+                                </el-link>
+                              </el-col>
+                              <el-col>
+                                <el-link type="primary">
+                                  <img src="../assets/dazhaohu01.png" alt="">
+                                </el-link>
+                              </el-col>
+                              <el-col>
+                                <el-link type="primary">
+                                  <img src="../assets/dazhaohu01.png" alt="">
+                                </el-link>
+                              </el-col>
+                            </el-row>
+                          </div>
+                        </div>
+                      </el-col>
+                      <el-col :span="8">
+                        <div class="grid-content bg-purple">
+                          <img src="../assets/user_img01.png" alt="">
+                          <div class="user_info">
+                            <h3>罗永浩</h3>
+                            <div class="user_privacy_info">
+                              <span>18岁</span>
+                              <span>177cm</span>
+                              <span>本科</span>
+                              <span>月薪5000K</span>
+                            </div>
+                            <p>我是一个多变的女孩，动如脱兔，静如处子，可谓动静皆宜...</p>
+                            <el-row>
+                              <el-col>
+                                <el-link type="primary">
+                                  <img src="../assets/dazhaohu01.png" alt="">
+                                </el-link>
+                              </el-col>
+                              <el-col>
+                                <el-link type="primary">
+                                  <img src="../assets/dazhaohu01.png" alt="">
+                                </el-link>
+                              </el-col>
+                              <el-col>
+                                <el-link type="primary">
+                                  <img src="../assets/dazhaohu01.png" alt="">
+                                </el-link>
+                              </el-col>
+                            </el-row>
+                          </div>
+                        </div>
+                      </el-col>
+                      <el-col :span="8">
+                        <div class="grid-content bg-purple">
+                          <img src="../assets/user_img01.png" alt="">
+                          <div class="user_info">
+                            <h3>罗永浩</h3>
+                            <div class="user_privacy_info">
+                              <span>18岁</span>
+                              <span>177cm</span>
+                              <span>本科</span>
+                              <span>月薪5000K</span>
+                            </div>
+                            <p>我是一个多变的女孩，动如脱兔，静如处子，可谓动静皆宜...</p>
+                            <el-row>
+                              <el-col>
+                                <el-link type="primary">
+                                  <img src="../assets/dazhaohu01.png" alt="">
+                                </el-link>
+                              </el-col>
+                              <el-col>
+                                <el-link type="primary">
+                                  <img src="../assets/dazhaohu01.png" alt="">
+                                </el-link>
+                              </el-col>
+                              <el-col>
+                                <el-link type="primary">
+                                  <img src="../assets/dazhaohu01.png" alt="">
+                                </el-link>
+                              </el-col>
+                            </el-row>
+                          </div>
+                        </div>
+                      </el-col>
                     </el-row>
                   </div>
+                  <!-- 推荐会员end -->
+                  <!-- 约吧走起start -->
+                  <div class="yuebazouqi">
+                    <h3>约吧走起</h3>
+                    <div class="yuebazouqi_content">
+                      <div class="yuebazouqi_content_title">
+                        <h4>七月之约</h4>
+                        <a href="javascript:;">查看更多活动&gt;</a>
+                      </div>
+                      <div class="yuebazouqi_content_main">
+                        <div class="event_left">
+                          <img src="../assets/huodong01.png" alt="">
+                          <p>
+                            <span>武汉</span>
+                            <span>活动时间：7月-9月</span>
+                            <span>已报名：68</span>
+                          </p>
+                        </div>
+                        <div class="event_right">
+                          <img src="../assets/huodong02.png" alt="">
+                          <img src="../assets/huodong03.png" alt="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 约吧走起end -->
+                  <!-- 情感交流start -->
+                  <div class="qingganjiaoliu">
+                    <h3>情感交流</h3>
+                    <div class="qingganjiaoliu_content">
+                      <div class="qingganjiaoliu_title_list">
+                        <ul>
+                          <li><a href="javascript:;">热文推荐</a></li>
+                          <li><a href="javascript:;">情感驿站</a></li>
+                          <li><a href="javascript:;">私密空间</a></li>
+                          <li><a href="javascript:;">倾诉树洞</a></li>
+                          <li><a href="javascript:;">微调查</a></li>
+                        </ul>
+                        <a href="javascript:;">查看更多&gt;</a>
+                      </div>
+                      <div class="qingganjiaoliu_news_list">
+                        <div class="qingganjiaoliu_news_item">
+                          <div class="qingganjiaoliu_news_item_img">
+                            <img src="../assets/news_eg01.png" alt="">
+                            <p>男女之间的交流技巧</p>
+                          </div>
+                          <ul>
+                            <li>
+                              <a href="javascript:;">男女之间的交流技巧</a>
+                            </li>
+                            <li>
+                              <a href="javascript:;">男女之间的交流技巧</a>
+                            </li>
+                            <li>
+                              <a href="javascript:;">男女之间的交流技巧</a>
+                            </li>
+                            <li>
+                              <a href="javascript:;">男女之间的交流技巧</a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="qingganjiaoliu_news_item">
+                          <div class="qingganjiaoliu_news_item_img">
+                            <img src="../assets/news_eg01.png" alt="">
+                            <p>男女之间的交流技巧</p>
+                          </div>
+                          <ul>
+                            <li>
+                              <a href="javascript:;">男女之间的交流技巧</a>
+                            </li>
+                            <li>
+                              <a href="javascript:;">男女之间的交流技巧</a>
+                            </li>
+                            <li>
+                              <a href="javascript:;">男女之间的交流技巧</a>
+                            </li>
+                            <li>
+                              <a href="javascript:;">男女之间的交流技巧</a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="qingganjiaoliu_news_item">
+                          <div class="qingganjiaoliu_news_item_img">
+                            <img src="../assets/news_eg01.png" alt="">
+                            <p>男女之间的交流技巧</p>
+                          </div>
+                          <ul>
+                            <li>
+                              <a href="javascript:;">男女之间的交流技巧</a>
+                            </li>
+                            <li>
+                              <a href="javascript:;">男女之间的交流技巧</a>
+                            </li>
+                            <li>
+                              <a href="javascript:;">男女之间的交流技巧</a>
+                            </li>
+                            <li>
+                              <a href="javascript:;">男女之间的交流技巧</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 情感交流end -->
                 </div>
               </el-col>
-              <el-col :span="8">
-                <div class="grid-content bg-purple-light main_center_bottom_right">2</div>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light main_center_bottom_right">
+                  <div class="xuntazhuanxian">
+                    <h4>寻TA专线</h4>
+                    <div class="one_line_double"></div>
+                    <div class="one_line"></div>
+                    <ul>
+                      <li>
+                        <img src="../assets/xunzhao01.png" alt="">
+                        <span>寻找TA</span>
+                      </li>
+                      <li>
+                        <img src="../assets/xunzhao01.png" alt="">
+                        <span>寻找TA</span>
+                      </li>
+                      <li>
+                        <img src="../assets/xunzhao01.png" alt="">
+                        <span>寻找TA</span>
+                      </li>
+                    </ul>
+                    <a href="javascript:;">加入会员</a>
+                    <p>一年只交168元更快找到TA，无任何额外费用</p>
+                  </div>
+                  <div class="zuijiapipei">
+                    <h4>最佳匹配</h4>
+                    <div class="zuijiapipei_info">
+                      <img src="../assets/user_img01.png" alt="">
+                      <div>
+                        <h4>JJ Lin</h4>
+                        <p>容貌一般，不吓人，性格温和，bai脾气好，人品善良，真诚，du正直，吸烟，滴酒不沾...</p>
+                        <el-row>
+                          <el-tag size="mini">90后</el-tag>
+                          <el-tag size="mini" type="success">开朗</el-tag>
+                          <el-tag size="mini" type="info">外企</el-tag>
+                        </el-row>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </el-col>
             </el-row>
           </div>
@@ -231,7 +540,23 @@ export default {
           }
         ]
       }],
-      form: {},
+      form: {
+        day: ''
+      },
+      afterage_options: [
+        // { id: 1, label: 1, value: '01' },
+        // { id: 2, label: 2, value: '02' },
+        // { id: 3, label: 3, value: '03' },
+        // { id: 4, label: 4, value: '04' },
+        // { id: 5, label: 5, value: '05' },
+        // { id: 6, label: 6, value: '06' },
+        // { id: 7, label: 7, value: '07' },
+        // { id: 8, label: 8, value: '08' },
+        // { id: 9, label: 9, value: '09' },
+        // { id: 10, label: 10, value: '10' },
+        // { id: 11, label: 11, value: '11' },
+        // { id: 12, label: 12, value: '12' }
+      ],
       search_form: {}
     }
   },
@@ -339,5 +664,265 @@ export default {
   }
   .tuijianhuiyuan .el-row .el-col {
     background-color: #fff;
+  }
+  .tuijianhuiyuan .el-row .el-col .grid-content {
+    display: flex;
+  }
+  .tuijianhuiyuan .el-row .el-col .grid-content>img {
+    width: 121px;
+  }
+  .tuijianhuiyuan .el-row .el-col .grid-content .user_info h3,
+  .tuijianhuiyuan .el-row .el-col .grid-content .user_info p {
+    margin: 0;
+  }
+  .tuijianhuiyuan .el-row .el-col .grid-content .user_info .el-row {
+    display: flex;
+  }
+  .tuijianhuiyuan .el-row .el-col .grid-content .user_info .el-row .el-col {
+    text-align: center;
+  }
+  .top_bottom_margin_25 {
+    margin: 25px 0;
+  }
+  .tuijianhuiyuan .el-row .el-col:nth-child(2) {
+    /* margin: 0 24px; */
+  }
+  .tuijianhuiyuan .el-row .el-col .grid-content .user_info p {
+    font-size: 10px;
+    color: rgba(152, 152, 152, 1);
+    margin-bottom: 5px;
+  }
+  .tuijianhuiyuan .el-row .el-col .grid-content .user_info h3 {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+  .user_privacy_info {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  .user_privacy_info span {
+    margin-right: 10px;
+    font-weight: 400;
+  }
+  .user_info {
+    padding: 26px 19px 13px 13px;
+  }
+  .yuebazouqi_content {
+    background-color: #fff;
+  }
+  .yuebazouqi h3 {
+    font-size: 33px;
+    color: rgba(0, 30, 82, 1);
+    font-weight: 700;
+    text-shadow: 0px 3px 6px rgba(42,42,42,0.3);
+    margin: 18px 0 23px;
+  }
+  .yuebazouqi_content {
+    border-radius: 30px;
+    padding: 26px;
+    box-shadow: 1px 2px 2px 0px rgba(141,141,141,0.3);
+  }
+  .yuebazouqi_content .yuebazouqi_content_title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 9px;
+  }
+  .yuebazouqi_content .yuebazouqi_content_title h4 {
+    margin: 0;
+    font-size: 24px;
+  }
+  .yuebazouqi_content .yuebazouqi_content_title a {
+    color: #000;
+    font-size: 16px;
+  }
+  .yuebazouqi_content_main {
+    display: flex;
+    justify-content: space-between;
+  }
+  .yuebazouqi_content_main img {
+    width: 100%;
+  }
+  .yuebazouqi_content_main .event_left {
+    flex: 2;
+    position: relative;
+    height: 100%;
+  }
+  .yuebazouqi_content_main .event_right {
+    flex: 1;
+  }
+  .yuebazouqi_content_main .event_left p {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-radius: 0px 0px 6px 6px;
+    /* filter: blur(30px); */
+    background-color: rgba(255,255,255,.5);
+    color: #000;
+    width: 100%;
+    margin: 0;
+    line-height: 49px;
+  }
+  .qingganjiaoliu_content {
+    background-color: #fff;
+    box-shadow: 1px 2px 2px 0px rgba(141,141,141,0.3);
+    border-radius: 20px;
+    padding: 25px 43px 44px;
+  }
+  .qingganjiaoliu h3 {
+    margin: 47px 0 22px;
+    font-size: 33px;
+    font-weight: 700;
+    text-shadow: 0px 3px 6px rgba(42,42,42,0.3);
+  }
+  .qingganjiaoliu_title_list {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+  }
+  .qingganjiaoliu_title_list a {
+    color: #000
+  }
+  .qingganjiaoliu_title_list>a {
+    font-size: 16px;
+  }
+  .qingganjiaoliu_title_list ul {
+    display: flex;
+    font-size: 18px;
+  }
+  .qingganjiaoliu_title_list ul li {
+    margin-right: 39px;
+  }
+  .qingganjiaoliu_news_list {
+    display: flex;
+  }
+  .qingganjiaoliu_news_list img {
+    width: 100%;
+  }
+  .qingganjiaoliu {
+    margin-bottom: 48px;
+  }
+  .qingganjiaoliu_news_item_img {
+    position: relative;
+  }
+  .qingganjiaoliu_news_item_img p {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.45);
+    border-radius: 0px 0px 10px 10px;
+    line-height: 36px;
+    text-align: center;
+    margin: 0;
+    width: 100%;
+    color: #fff;
+    font-size: 16px;
+  }
+  .qingganjiaoliu_news_item ul {
+    font-size: 18px;
+    list-style: disc;
+    padding-left: 20px;
+    line-height: 34px;
+    margin-top: 9px;
+  }
+  .qingganjiaoliu_news_item ul li a {
+    color: #000;
+  }
+  .main_center_bottom_right {
+    padding-top: 108px;
+  }
+  .xuntazhuanxian,
+  .zuijiapipei {
+    background-color: #fff;
+    margin-left: 47px;
+  }
+  .xuntazhuanxian h4 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    text-shadow: 0px 3px 6px rgba(0,0,0,0.29);
+    text-align: center;
+  }
+  .xuntazhuanxian {
+    padding: 15px 0 25px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 1px 2px 2px 0px rgba(141,141,141,0.3);
+  }
+  .one_line_double {
+    width: 100%;
+    height: 9px;
+    background: linear-gradient(135deg,#ff2a86, #917fff 35%, #927ffe 71%, #9effff);
+    margin-top: 15px;
+  }
+  .one_line {
+    width: 100%;
+    height: 3px;
+    margin-top: 4px;
+    margin-bottom: 15px;
+    background: linear-gradient(135deg,#ff2a86, #917fff 35%, #927ffe 71%, #9effff);
+  }
+  .xuntazhuanxian ul {
+    display: flex;
+    justify-content: space-around;
+  }
+  .xuntazhuanxian ul li {
+    text-align: center;
+  }
+  .xuntazhuanxian>a {
+    background: linear-gradient(125deg,#ff2a86 9%, #917fff 51%, #9effff 91%);
+    border-radius: 24px;
+    box-shadow: 8px 9px 18px 0px rgba(0,247,255,0.16);
+    line-height: 60px;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+    padding: 0 30px;
+    margin: 49px auto 25px;
+    display: inline-block;
+  }
+  .xuntazhuanxian>p {
+    padding: 0 35px;
+    margin: 0;
+    color: #000;
+    font-size: 16px;
+    text-shadow: 0px 3px 6px rgba(0,0,0,0.29);
+  }
+  .zuijiapipei {
+    padding: 18px 10px 18px 24px;
+    box-shadow: 1px 2px 2px 0px rgba(141,141,141,0.3);
+    border-radius: 20px;
+    margin-top: 24px;
+  }
+  .zuijiapipei h4 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    text-shadow: 0px 3px 6px rgba(0,0,0,0.29);
+  }
+  .zuijiapipei_info {
+    display: flex;
+    margin-top: 17px;
+  }
+  .zuijiapipei_info img {
+    width: 110px;
+    height: 180px;
+    margin-right: 15px;
+  }
+  .zuijiapipei_info h4 {
+    text-align: left;
+    text-shadow: unset;
+    font-weight: normal;
+    font-size: 24px;
+    margin: 10px 0 10px;
+  }
+  .zuijiapipei_info p {
+    margin: 0;
+    font-size: 12px;
+    margin-bottom: 9px;
+  }
+  .zuijiapipei_info .el-row span {
+    margin: 3px;
   }
 </style>

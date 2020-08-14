@@ -9,6 +9,14 @@ Vue.use(VueRouter)
 
   const routes = [
     {
+      path: '/',
+      redirect: '/index'
+    },
+    {
+      path: '/index',
+      component: Index
+    },
+    {
       path: '/home',
       component: Home
     },
@@ -17,16 +25,12 @@ Vue.use(VueRouter)
       component: Login
     },
     {
-      path: '/',
-      redirect: '/home'
-    },
-    {
       path: '/register',
       component: Register
     },
     {
-      path: '/index',
-      component: Index
+      path: '/basicinformation',
+      component: () => import('@/components/Basicinformation')
     }
 ]
 

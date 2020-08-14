@@ -30,6 +30,11 @@ export default {
   a {
     text-decoration: none;
   }
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
   .header_left_right {
     padding: 0 120px;
   }
@@ -62,6 +67,8 @@ export default {
     width: 94px;
     height: 31px;
     margin-left: 0;
+    box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.16);
+    border: 0;
   }
   .header_right_item .el-dropdown {
     line-height: normal;
