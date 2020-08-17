@@ -31,6 +31,10 @@ Vue.use(VueRouter)
     {
       path: '/basicinformation',
       component: () => import('@/components/Basicinformation')
+    },
+    {
+      path: '/hongliang',
+      component: () => import('@/components/Hongliang')
     }
 ]
 

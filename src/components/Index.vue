@@ -45,19 +45,19 @@
               <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item label="性别">
                   <el-radio-group v-model="form.sex">
-                    <el-radio label="男生"></el-radio>
-                    <el-radio label="女生"></el-radio>
+                    <el-radio label="男"></el-radio>
+                    <el-radio label="女"></el-radio>
                   </el-radio-group>
                 </el-form-item>
                 <el-form-item label="生日">
-                  <el-select v-model="form.year" placeholder="年" class="register_form_birthday">
+                  <el-select v-model="form.year" placeholder="请选择" class="register_form_birthday">
                     <el-option label="1991" value="1991"></el-option>
                     <el-option label="1992" value="1992"></el-option>
                     <el-option label="1993" value="1992"></el-option>
                     <el-option label="1994" value="1992"></el-option>
                   </el-select>
                   年
-                  <el-select v-model="form.month" placeholder="月" class="register_form_birthday">
+                  <el-select v-model="form.month" placeholder="请选择" class="register_form_birthday">
                     <el-option label="01" value="01"></el-option>
                     <el-option label="02" value="02"></el-option>
                     <el-option label="03" value="03"></el-option>
@@ -72,7 +72,7 @@
                     <el-option label="12" value="12"></el-option>
                   </el-select>
                   月
-                  <el-select v-model="form.day" placeholder="日" class="register_form_birthday">
+                  <el-select v-model="form.day" placeholder="请选择" class="register_form_birthday">
                     <el-option v-for="item in afterage_options" :key="item.id" :label="item.label" :value="item.value"></el-option>
                   </el-select>
                   日
@@ -344,9 +344,11 @@
                         <div class="event_left">
                           <img src="../assets/huodong01.png" alt="">
                           <p>
-                            <span>武汉</span>
-                            <span>活动时间：7月-9月</span>
-                            <span>已报名：68</span>
+                            <section>
+                              <span class="active_adress">武汉</span>
+                              <span class="active_time">活动时间：7月-9月</span>
+                            </section>
+                            <span class="active_join">已报名：<i>68</i></span>
                           </p>
                         </div>
                         <div class="event_right">
@@ -601,7 +603,7 @@ export default {
     margin: 20px auto;
   }
   .register_form_birthday {
-    width: 80px;
+    width: 90px;
   }
   .phone_number {
     width: 250px;
@@ -762,6 +764,11 @@ export default {
     width: 100%;
     margin: 0;
     line-height: 49px;
+    padding: 0 13px 0 23px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   .qingganjiaoliu_content {
     background-color: #fff;
@@ -798,6 +805,9 @@ export default {
   }
   .qingganjiaoliu_news_list img {
     width: 100%;
+  }
+  .qingganjiaoliu_news_list .qingganjiaoliu_news_item:nth-child(2) {
+    margin: 0 15px;
   }
   .qingganjiaoliu {
     margin-bottom: 48px;
@@ -924,5 +934,18 @@ export default {
   }
   .zuijiapipei_info .el-row span {
     margin: 3px;
+  }
+  .active_adress {
+    background-color: rgba(240, 62, 62, 1);
+    color: #fff;
+    border-radius: 14px;
+    padding: 3px 17px;
+  }
+  .active_join i {
+    font-style: unset;
+    font-weight: bold;
+  }
+  .active_time {
+    margin-left: 19px;
   }
 </style>
