@@ -35,6 +35,14 @@ Vue.use(VueRouter)
     {
       path: '/hongniang',
       component: () => import('@/components/Hongliang')
+    },
+    {
+      path: '/hongniang_pay',
+      component: () => import('@/components/Hongniang_pay')
+    },
+    {
+      path: '/weixin_pay',
+      component: () => import('@/components/Weixin_pay')
     }
 ]
 
