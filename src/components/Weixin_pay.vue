@@ -67,7 +67,6 @@
 </template>
 
 <script>
-import func from '../../vue-temp/vue-editor-bridge'
 export default {
   data() {
     return {
@@ -77,8 +76,9 @@ export default {
     }
   },
   created: function() {
-    axios.post('https://ssapi.seoxy.cn/api/statistics', {
-      
+      this.$axios.post('/api/statistics', {
+        abc: 'a',
+        def: 'b'
     })
     .then(function(response) {
       console.log(response);
