@@ -25,15 +25,9 @@
         class="el-menu-demo"
         mode="horizontal"
         text-color="#fff"
-        active-text-color="#fff">
-        <el-menu-item index="1">首页</el-menu-item>
-        <el-menu-item index="2">加入会员</el-menu-item>
-        <el-menu-item index="3">寻找TA</el-menu-item>
-        <el-menu-item index="4">约吧走起</el-menu-item>
-        <el-menu-item index="5"><a href="javascript:;">我要发布</a></el-menu-item>
-        <el-menu-item index="6"><a href="javascript:;">来消息啦</a></el-menu-item>
-        <el-menu-item index="7"><a href="javascript:;">红娘一对一</a></el-menu-item>
-        <el-menu-item index="8"><a href="javascript:;">我的</a></el-menu-item>
+        active-text-color="#fff"
+        router>
+        <el-menu-item v-for="item in navMenu" :key="item.id" :index="item.index">{{item.navName}}</el-menu-item>
       </el-menu>
     </el-header>
   </div>
@@ -44,11 +38,32 @@ export default {
   name: 'app-header',
   data() {
     return {
-      msg: '头部'
+      msg: '头部',
+      cityInfo: [
+        { id: 1, name: '北京' },
+        { id: 2, name: '上海' },
+        { id: 3, name: '广州' },
+        { id: 4, name: '武汉' },
+        { id: 5, name: '成都' },
+        { id: 6, name: '天津' },
+        { id: 7, name: '重庆' }
+      ],
+      navMenu: [
+        { id: 1, navName: '首页', index: '/index' },
+        { id: 2, navName: '加入会员', index: '/join_member' },
+        { id: 3, navName: '寻找TA', index: '/search' },
+        { id: 4, navName: '约吧走起', index: '/yueba' },
+        { id: 5, navName: '我要发布', index: '/release_information' },
+        { id: 6, navName: '来消息啦', index: '/message_list' },
+        { id: 7, navName: '红娘一对一', index: '/hongniang' },
+        { id: 8, navName: '我的', index: '/basicinformation' }
+      ]
     }
   },
   methods: {
-
+    handleCommand(abc) {
+      this.$message(abc);
+    }
   },
   created() {
 

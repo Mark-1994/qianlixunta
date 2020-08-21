@@ -59,6 +59,10 @@ export default {
     padding: 0;
     list-style: none;
   }
+  .x-wrap {
+    width: 1180px;
+    margin: 0 auto;
+  }
   .header_left_right {
     padding: 0 120px;
   }
