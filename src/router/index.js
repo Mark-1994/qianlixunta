@@ -55,6 +55,10 @@ Vue.use(VueRouter)
     {
       path: '/release_information',
       component: () => import('@/components/Release_information')
+    },
+    {
+      path: '/yueba',
+      component: () => import('@/components/Yueba')
     }
 ]
 

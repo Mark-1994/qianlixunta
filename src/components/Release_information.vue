@@ -108,9 +108,13 @@
           <div class="mine_message_list">
             <el-row>
               <el-col :span="17">
-                <el-card class="box-card" style="border-radius: 30px;">
-                  <div slot="header" class="clearfix">
-                    
+                <el-card class="box-card" style="border-radius: 30px;margin-bottom: 23px;">
+                  <div slot="header" class="clearfix header_title_info_show">
+                    <el-avatar :size="60" src="http://localhost:8080/img/username01.ea4e23dc.png"></el-avatar>
+                    <div class="item_name_time">
+                      <span class="item_name_info">林俊杰</span>
+                      <span class="month_day_item">3月10日</span>
+                    </div>
                   </div>
                   <div class="text item item_fabuneirong">
                     <p>今天天气真好，想恋爱了😃😃</p>
@@ -178,6 +182,9 @@ export default {
       ],
       activeName: 'first'
     }
+  },
+  created: function() {
+    this.$emit('header', true);
   },
   methods: {
     handleCommand(command) {
@@ -290,5 +297,21 @@ export default {
   }
   .item_fabuneirong img {
     width: 100%;
+  }
+  .header_title_info_show {
+    display: flex;
+  }
+  .item_name_time {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin-left: 15px;
+  }
+  .month_day_item {
+    color: rgba(152,152,152,1);
+  }
+  .item_name_info {
+    font-size: 18px;
   }
 </style>
