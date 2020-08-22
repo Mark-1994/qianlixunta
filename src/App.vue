@@ -38,7 +38,7 @@ export default {
   #app, body, html {
     margin: 0;
     padding: 0;
-    min-width: 1366px;
+    /* max-width: 1366px; */
   }
   header,
   main,
@@ -64,6 +64,8 @@ export default {
     margin: 0 auto;
   }
   .header_left_right {
+    max-width: 1366px;
+    margin: 0 auto;
     padding: 0 120px;
   }
   .login_container {
@@ -71,9 +73,12 @@ export default {
     box-shadow: 0px 3px 60px 0px rgba(255, 58, 58, .33);
   }
   .el-menu.el-menu--horizontal {
+    border-bottom: 0 !important;
+    padding: 0 60px;
+  }
+  .nav_bg_color {
     background: linear-gradient(154deg, #ff2a86, #927ffe 65%, #917fff 83%, #9effff 181%);
     border-radius: 20px 20px 0px 0px;
-    padding: 0 160px;
   }
   .header_left_slogn span {
     color: rgba(108, 108, 108, 1);

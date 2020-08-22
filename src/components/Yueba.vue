@@ -34,7 +34,41 @@
             </el-col>
             <el-col :span="7">
               <div class="activity_prediction_recent">
-                def
+                <div class="activity_prediction_time">
+                  <div class="activity_prediction_time_title">
+                    <h4>活动预告</h4>
+                  </div>
+                  <div class="activity_prediction_time_img">
+                    <img src="../assets/huodong_yugao01.png" alt="">
+                  </div>
+                  <div class="activity_prediction_time_now">
+                    <div class="right_now_click">
+                      <a href="javascript:;">立即预约</a>
+                    </div>
+                    <div class="item_apply_time">
+                      报名时间：7月8日-9日
+                    </div>
+                  </div>
+                </div>
+                <div class="activity_recent_time">
+                  <div class="activity_recent_time_title">
+                    <h4>近期活动</h4>
+                  </div>
+                  <div class="activity_recent_time_img">
+                    <img src="../assets/huodong_yugao01.png" alt="">
+                  </div>
+                  <ul class="activity_recent_time_bottom">
+                    <li>
+                      <div class="activity_recent_time_calendar">
+                        <h5>7.20</h5>
+                      </div>
+                      <div class="activity_recent_time_des">
+                        <p>单身福利！大型线下联谊活动</p>
+                        <p>秋意渐浓，你还没有找到你的另一半吗？</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </el-col>
           </el-row>
@@ -131,5 +165,95 @@ export default {
     box-shadow: 8px 9px 18px 0px rgba(0,247,255,0.16);
     color: #fff;
     padding: 7px 20px;
+  }
+  .activity_prediction_time {
+    background-color: #fff;
+    padding: 23px 17px;
+    margin-bottom: 25px;
+  }
+  .activity_prediction_time_img img {
+    width: 100%;
+  }
+  .activity_prediction_recent {
+    margin-left: 20px;
+  }
+  .activity_prediction_time_title {
+    margin-bottom: 22px;
+  }
+  .activity_prediction_time_title h4 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .activity_prediction_time_title h4::before {
+    content: '';
+    display: inline-block;
+    width: 37px;
+    height: 37px;
+    background: url(../assets/yugao01.png) no-repeat 0 0 / contain;
+    vertical-align: middle;
+    margin-right: 7px;
+  }
+  .activity_prediction_time_img {
+    margin-bottom: 21px;
+  }
+  .activity_prediction_time_now {
+    display: flex;
+    justify-content: space-between;
+  }
+  .right_now_click a {
+    background-color: rgba(255,42,134,1);
+    color: #fff;
+    border-radius: 18px;
+    padding: 7px 22px;
+    box-shadow: 8px 9px 18px 0px rgba(0,247,255,0.16);
+  }
+  .activity_recent_time {
+    background-color: #fff;
+    padding: 23px 17px;
+  }
+  .activity_recent_time_title h4 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .activity_recent_time_title h4::before {
+    content: '';
+    display: inline-block;
+    width: 37px;
+    height: 37px;
+    background: url(../assets/paiduishi01.png) no-repeat 0 0 / contain;
+    vertical-align: middle;
+    margin-right: 7px;
+  }
+  .activity_recent_time_img img {
+    width: 100%;
+    margin-bottom: 21px;
+  }
+  .activity_recent_time_bottom li {
+    line-height: 30px;
+  }
+  .activity_recent_time_bottom li h5,
+  .activity_recent_time_bottom li p {
+    margin: 0;
+  }
+  .activity_recent_time_bottom li h5 {
+    color: rgba(240,62,62,1);
+    font-size: 18px;
+  }
+  .activity_recent_time_bottom li h5::before {
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background: url(../assets/riqi01.png) no-repeat 0 0 / contain;
+    vertical-align: middle;
+    margin-right: 7px;
+  }
+  .activity_recent_time_title {
+    margin-bottom: 22px;
+  }
+  .activity_recent_time_bottom li p {
+    font-weight: 500;
   }
 </style>

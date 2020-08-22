@@ -59,6 +59,14 @@ Vue.use(VueRouter)
     {
       path: '/yueba',
       component: () => import('@/components/Yueba')
+    },
+    {
+      path: '/search',
+      component: () => import('@/components/Search')
+    },
+    {
+      path: '/join_member',
+      component: () => import('@/components/Join_member')
     }
 ]
 

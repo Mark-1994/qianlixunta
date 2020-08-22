@@ -21,14 +21,19 @@
           <el-button size="small" round class="signin">注册</el-button>
         </el-col>
       </el-row>
-      <el-menu
-        class="el-menu-demo"
-        mode="horizontal"
-        text-color="#fff"
-        active-text-color="#fff"
-        router>
-        <el-menu-item v-for="item in navMenu" :key="item.id" :index="item.index">{{item.navName}}</el-menu-item>
-      </el-menu>
+      <div class="nav_bg_color">
+        <div class="x-wrap">
+          <el-menu
+            class="el-menu-demo"
+            mode="horizontal"
+            text-color="#fff"
+            active-text-color="#fff"
+            router
+            background-color="rgba(0,0,0,0)">
+            <el-menu-item v-for="item in navMenu" :key="item.id" :index="item.index">{{item.navName}}</el-menu-item>
+          </el-menu>
+        </div>
+      </div>
     </el-header>
   </div>
 </template>
