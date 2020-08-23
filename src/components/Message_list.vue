@@ -1,5 +1,5 @@
 <template>
-  <div class="login_container">
+  <div class="login_container login_container01">
     <el-container>
       
       <el-main>
@@ -354,5 +354,8 @@ export default {
   .user_img {
     width: 108px;
     height: 108px;
+  }
+  .user_img img {
+    width: 100%;
   }
 </style>

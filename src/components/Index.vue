@@ -1,5 +1,5 @@
 <template>
-  <div class="login_container">
+  <div class="login_container login_container01">
     <el-container>
       
       <el-main>
@@ -7,7 +7,7 @@
           <div class="home_banner">
             <div class="home_banner_signup_form">
               <h3>一分钟注册</h3>
-              <el-form ref="form" :model="form" label-width="80px">
+              <el-form ref="form" :model="form" label-width="70px">
                 <el-form-item label="性别">
                   <el-radio-group v-model="form.sex">
                     <el-radio label="男"></el-radio>
@@ -59,7 +59,7 @@
           </div>
           <div class="main_center_bottom_two">
             <el-row>
-              <el-col :span="18">
+              <el-col :span="17">
                 <div class="grid-content bg-purple main_center_bottom_left">
                   <!-- 推荐会员start -->
                   <div class="tuijianhuiyuan">
@@ -95,7 +95,7 @@
                           </el-select>
                         </el-form-item>
                         <el-form-item>
-                          <el-button type="primary" @click="search_onSubmit">搜索</el-button>
+                          <el-button type="primary" @click="search_onSubmit">搜索<i class="el-icon-search el-icon--right"></i></el-button>
                         </el-form-item>
                       </el-row>
                     </el-form>
@@ -114,50 +114,18 @@
                             <p>我是一个多变的女孩，动如脱兔，静如处子，可谓动静皆宜...</p>
                             <el-row>
                               <el-col>
-                                <el-link type="primary">
+                                <el-link :underline="false">
                                   <img src="../assets/dazhaohu01.png" alt="">
                                 </el-link>
                               </el-col>
                               <el-col>
-                                <el-link type="primary">
-                                  <img src="../assets/dazhaohu01.png" alt="">
+                                <el-link :underline="false">
+                                  <img src="../assets/youxiang01.png" alt="">
                                 </el-link>
                               </el-col>
                               <el-col>
-                                <el-link type="primary">
-                                  <img src="../assets/dazhaohu01.png" alt="">
-                                </el-link>
-                              </el-col>
-                            </el-row>
-                          </div>
-                        </div>
-                      </el-col>
-                      <el-col :span="8">
-                        <div class="grid-content bg-purple">
-                          <img src="../assets/user_img01.png" alt="">
-                          <div class="user_info">
-                            <h3>罗永浩</h3>
-                            <div class="user_privacy_info">
-                              <span>18岁</span>
-                              <span>177cm</span>
-                              <span>本科</span>
-                              <span>月薪5000K</span>
-                            </div>
-                            <p>我是一个多变的女孩，动如脱兔，静如处子，可谓动静皆宜...</p>
-                            <el-row>
-                              <el-col>
-                                <el-link type="primary">
-                                  <img src="../assets/dazhaohu01.png" alt="">
-                                </el-link>
-                              </el-col>
-                              <el-col>
-                                <el-link type="primary">
-                                  <img src="../assets/dazhaohu01.png" alt="">
-                                </el-link>
-                              </el-col>
-                              <el-col>
-                                <el-link type="primary">
-                                  <img src="../assets/dazhaohu01.png" alt="">
+                                <el-link :underline="false">
+                                  <img src="../assets/aixin01.png" alt="">
                                 </el-link>
                               </el-col>
                             </el-row>
@@ -178,18 +146,50 @@
                             <p>我是一个多变的女孩，动如脱兔，静如处子，可谓动静皆宜...</p>
                             <el-row>
                               <el-col>
-                                <el-link type="primary">
+                                <el-link :underline="false">
                                   <img src="../assets/dazhaohu01.png" alt="">
                                 </el-link>
                               </el-col>
                               <el-col>
-                                <el-link type="primary">
+                                <el-link :underline="false">
+                                  <img src="../assets/youxiang01.png" alt="">
+                                </el-link>
+                              </el-col>
+                              <el-col>
+                                <el-link :underline="false">
+                                  <img src="../assets/aixin01.png" alt="">
+                                </el-link>
+                              </el-col>
+                            </el-row>
+                          </div>
+                        </div>
+                      </el-col>
+                      <el-col :span="8">
+                        <div class="grid-content bg-purple">
+                          <img src="../assets/user_img01.png" alt="">
+                          <div class="user_info">
+                            <h3>罗永浩</h3>
+                            <div class="user_privacy_info">
+                              <span>18岁</span>
+                              <span>177cm</span>
+                              <span>本科</span>
+                              <span>月薪5000K</span>
+                            </div>
+                            <p>我是一个多变的女孩，动如脱兔，静如处子，可谓动静皆宜...</p>
+                            <el-row>
+                              <el-col>
+                                <el-link :underline="false">
                                   <img src="../assets/dazhaohu01.png" alt="">
                                 </el-link>
                               </el-col>
                               <el-col>
-                                <el-link type="primary">
-                                  <img src="../assets/dazhaohu01.png" alt="">
+                                <el-link :underline="false">
+                                  <img src="../assets/youxiang01.png" alt="">
+                                </el-link>
+                              </el-col>
+                              <el-col>
+                                <el-link :underline="false">
+                                  <img src="../assets/aixin01.png" alt="">
                                 </el-link>
                               </el-col>
                             </el-row>
@@ -197,7 +197,7 @@
                         </div>
                       </el-col>
                     </el-row>
-                    <el-row :gutter="20">
+                    <el-row :gutter="20" class="top_bottom_margin_24">
                       <el-col :span="8">
                         <div class="grid-content bg-purple">
                           <img src="../assets/user_img01.png" alt="">
@@ -212,18 +212,18 @@
                             <p>我是一个多变的女孩，动如脱兔，静如处子，可谓动静皆宜...</p>
                             <el-row>
                               <el-col>
-                                <el-link type="primary">
+                                <el-link :underline="false">
                                   <img src="../assets/dazhaohu01.png" alt="">
                                 </el-link>
                               </el-col>
                               <el-col>
-                                <el-link type="primary">
-                                  <img src="../assets/dazhaohu01.png" alt="">
+                                <el-link :underline="false">
+                                  <img src="../assets/youxiang01.png" alt="">
                                 </el-link>
                               </el-col>
                               <el-col>
-                                <el-link type="primary">
-                                  <img src="../assets/dazhaohu01.png" alt="">
+                                <el-link :underline="false">
+                                  <img src="../assets/aixin01.png" alt="">
                                 </el-link>
                               </el-col>
                             </el-row>
@@ -244,18 +244,18 @@
                             <p>我是一个多变的女孩，动如脱兔，静如处子，可谓动静皆宜...</p>
                             <el-row>
                               <el-col>
-                                <el-link type="primary">
+                                <el-link :underline="false">
                                   <img src="../assets/dazhaohu01.png" alt="">
                                 </el-link>
                               </el-col>
                               <el-col>
-                                <el-link type="primary">
-                                  <img src="../assets/dazhaohu01.png" alt="">
+                                <el-link :underline="false">
+                                  <img src="../assets/youxiang01.png" alt="">
                                 </el-link>
                               </el-col>
                               <el-col>
-                                <el-link type="primary">
-                                  <img src="../assets/dazhaohu01.png" alt="">
+                                <el-link :underline="false">
+                                  <img src="../assets/aixin01.png" alt="">
                                 </el-link>
                               </el-col>
                             </el-row>
@@ -276,18 +276,18 @@
                             <p>我是一个多变的女孩，动如脱兔，静如处子，可谓动静皆宜...</p>
                             <el-row>
                               <el-col>
-                                <el-link type="primary">
+                                <el-link :underline="false">
                                   <img src="../assets/dazhaohu01.png" alt="">
                                 </el-link>
                               </el-col>
                               <el-col>
-                                <el-link type="primary">
-                                  <img src="../assets/dazhaohu01.png" alt="">
+                                <el-link :underline="false">
+                                  <img src="../assets/youxiang01.png" alt="">
                                 </el-link>
                               </el-col>
                               <el-col>
-                                <el-link type="primary">
-                                  <img src="../assets/dazhaohu01.png" alt="">
+                                <el-link :underline="false">
+                                  <img src="../assets/aixin01.png" alt="">
                                 </el-link>
                               </el-col>
                             </el-row>
@@ -405,7 +405,7 @@
                   <!-- 情感交流end -->
                 </div>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="7">
                 <div class="grid-content bg-purple-light main_center_bottom_right">
                   <div class="xuntazhuanxian">
                     <h4>寻TA专线</h4>
@@ -417,12 +417,12 @@
                         <span>寻找TA</span>
                       </li>
                       <li>
-                        <img src="../assets/xunzhao01.png" alt="">
-                        <span>寻找TA</span>
+                        <img src="../assets/yuehui01.png" alt="">
+                        <span>约吧</span>
                       </li>
                       <li>
-                        <img src="../assets/xunzhao01.png" alt="">
-                        <span>寻找TA</span>
+                        <img src="../assets/yiduiyi02.png" alt="">
+                        <span>红娘一对一</span>
                       </li>
                     </ul>
                     <a href="javascript:;">加入会员</a>
@@ -520,10 +520,11 @@ export default {
   .home_banner_signup_form {
     background-color: #fff;
     position: absolute;
-    top: 50px;
+    top: 50%;
+    transform: translateY(-50%);
     right: 50px;
     border-radius: 20px;
-    padding: 0 32px 30px;
+    padding: 0 25px 20px;
   }
   .home_banner_signup_form h3 {
     margin: 0;
@@ -594,10 +595,12 @@ export default {
     width: 100px;
   }
   .tuijianhuiyuan .el-row .el-col {
-    background-color: #fff;
+    /* background-color: #fff; */
   }
   .tuijianhuiyuan .el-row .el-col .grid-content {
     display: flex;
+    background-color: #fff;
+    margin: 0 7px;
   }
   .tuijianhuiyuan .el-row .el-col .grid-content>img {
     width: 121px;
@@ -612,8 +615,17 @@ export default {
   .tuijianhuiyuan .el-row .el-col .grid-content .user_info .el-row .el-col {
     text-align: center;
   }
-  .top_bottom_margin_25 {
-    margin: 25px 0;
+  .top_bottom_margin_25.el-row {
+    margin: 25px 0 !important;
+  }
+  .top_bottom_margin_25.el-row .el-col {
+    padding: 0 !important;
+  }
+  .top_bottom_margin_24.el-row {
+    margin: 0 !important;
+  }
+  .top_bottom_margin_24.el-row .el-col {
+    padding: 0 !important;
   }
   .tuijianhuiyuan .el-row .el-col:nth-child(2) {
     /* margin: 0 24px; */
@@ -621,7 +633,7 @@ export default {
   .tuijianhuiyuan .el-row .el-col .grid-content .user_info p {
     font-size: 10px;
     color: rgba(152, 152, 152, 1);
-    margin-bottom: 5px;
+    margin-bottom: 8px;
   }
   .tuijianhuiyuan .el-row .el-col .grid-content .user_info h3 {
     font-size: 24px;
@@ -629,14 +641,15 @@ export default {
   }
   .user_privacy_info {
     font-size: 14px;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
   }
   .user_privacy_info span {
     margin-right: 10px;
     font-weight: 400;
   }
   .user_info {
-    padding: 26px 19px 13px 13px;
+    padding: 18px 13px 13px;
+    box-shadow: 1px 2px 2px 0px rgba(0,0,0,0.16);
   }
   .yuebazouqi_content {
     background-color: #fff;
@@ -646,7 +659,7 @@ export default {
     color: rgba(0, 30, 82, 1);
     font-weight: 700;
     text-shadow: 0px 3px 6px rgba(42,42,42,0.3);
-    margin: 18px 0 23px;
+    margin: 47px 0 22px;
   }
   .yuebazouqi_content {
     border-radius: 30px;
@@ -787,6 +800,13 @@ export default {
     border-radius: 20px;
     text-align: center;
     box-shadow: 1px 2px 2px 0px rgba(141,141,141,0.3);
+  }
+  .xuntazhuanxian ul li img {
+    width: 70px;
+    height: 65px;
+  }
+  .xuntazhuanxian ul li span {
+    display: inline-block;
   }
   .one_line_double {
     width: 100%;

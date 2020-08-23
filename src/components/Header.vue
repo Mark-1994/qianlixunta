@@ -13,7 +13,7 @@
               武汉<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown" class="select_city_list">
-              <el-dropdown-item>热门：</el-dropdown-item>
+              <li class="el-dropdown-menu__item">热门：</li>
               <el-dropdown-item v-for="item in cityInfo" :key="item.id" :command="item.name">{{item.name}}</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>

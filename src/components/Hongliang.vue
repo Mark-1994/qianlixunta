@@ -269,7 +269,7 @@ export default {
     font-size: 20px;
   }
   .more_than_customer {
-    margin-bottom: 173px;
+    padding-bottom: 173px;
   }
   .more_than_list_customer {
     display: flex;

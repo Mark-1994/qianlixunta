@@ -1,10 +1,10 @@
 <template>
-  <div class="login_container">
+  <div class="login_container login_container01">
     <el-container>
       <el-main>
         <div class="banner_top_img">
           <el-image
-            src="/img/huiyuan_banner01.2859d1b5.png"
+            :src="require('@/assets/huiyuan_banner01.png')"
             fit="contain"></el-image>
         </div>
         <div class="x-wrap">

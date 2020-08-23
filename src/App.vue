@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import Header from './components/Header'
-import Footer from './components/Footer'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 export default {
   name: 'App',
   data() {
@@ -64,13 +64,17 @@ export default {
     margin: 0 auto;
   }
   .header_left_right {
+    width: 1180px;
     max-width: 1366px;
     margin: 0 auto;
-    padding: 0 120px;
+    /* padding: 0 120px; */
   }
   .login_container {
     background: url(./assets/beijing02.png) 0 0 / cover;
     box-shadow: 0px 3px 60px 0px rgba(255, 58, 58, .33);
+  }
+  .login_container01 {
+    background: url(./assets/beijing02.png) 0 -150px / cover;
   }
   .el-menu.el-menu--horizontal {
     border-bottom: 0 !important;
@@ -130,12 +134,16 @@ export default {
     align-items: center;
   }
   .zhongwenshiming {
-    width: 80%;
+    width: 1180px;
     margin: 0 auto;
+    padding: 0 60px;
+    box-sizing: border-box;
   }
   .footer_num {
-    width: 80%;
-    margin: 0 auto
+    width: 1180px;
+    margin: 0 auto;
+    padding: 0 60px;
+    box-sizing: border-box;
   }
   .footer_num img {
     width: 100%;
