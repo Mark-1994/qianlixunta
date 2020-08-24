@@ -43,15 +43,31 @@ export default {
   name: 'app-header',
   data() {
     return {
-      msg: '头部',
       cityInfo: [
         { id: 1, name: '北京' },
-        { id: 2, name: '上海' },
-        { id: 3, name: '广州' },
-        { id: 4, name: '武汉' },
-        { id: 5, name: '成都' },
-        { id: 6, name: '天津' },
-        { id: 7, name: '重庆' }
+        { id: 2, name: '天津' },
+        { id: 3, name: '河北省' },
+        { id: 4, name: '山西省' },
+        { id: 5, name: '内蒙古自治区' },
+        { id: 6, name: '辽宁省' },
+        { id: 7, name: '吉林省' },
+        { id: 8, name: '吉林省' },
+        { id: 9, name: '吉林省' },
+        { id: 10, name: '吉林省' },
+        { id: 11, name: '吉林省' },
+        { id: 12, name: '吉林省' },
+        { id: 13, name: '吉林省' },
+        { id: 14, name: '吉林省' },
+        { id: 15, name: '吉林省' },
+        // { id: 16, name: '吉林省' },
+        // { id: 17, name: '吉林省' },
+        // { id: 18, name: '吉林省' },
+        // { id: 19, name: '吉林省' },
+        // { id: 20, name: '吉林省' },
+        // { id: 21, name: '吉林省' },
+        // { id: 22, name: '吉林省' },
+        // { id: 23, name: '吉林省' },
+        // { id: 24, name: '吉林省' }
       ],
       navMenu: [
         { id: 1, navName: '首页', index: '/index' },

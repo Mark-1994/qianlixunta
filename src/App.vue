@@ -38,6 +38,7 @@ export default {
   #app, body, html {
     margin: 0;
     padding: 0;
+    min-width: 1180px;
     /* max-width: 1366px; */
   }
   header,

@@ -67,6 +67,10 @@ Vue.use(VueRouter)
     {
       path: '/join_member',
       component: () => import('@/components/Join_member')
+    },
+    {
+      path: '/article_article',
+      component: () => import('@/views/Article_article')
     }
 ]
 
