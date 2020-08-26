@@ -75,7 +75,7 @@ export default {
     box-shadow: 0px 3px 60px 0px rgba(255, 58, 58, .33);
   }
   .login_container01 {
-    background: url(./assets/beijing02.png) 0 -150px / cover;
+    background: url(./assets/beijing02.png) 0 -150px / cover !important;
   }
   .el-menu.el-menu--horizontal {
     border-bottom: 0 !important;

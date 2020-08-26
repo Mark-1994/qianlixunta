@@ -6,11 +6,11 @@ import axios from 'axios'
 import 'element-ui/lib/theme-chalk/index.css'
 
 // 配置全局axios默认值
-axios.defaults.baseURL = 'https://ssapi.seoxy.cn'
+axios.defaults.baseURL = 'http://admin.qianlixunta.com'
 
 // 请求拦截器
 axios.interceptors.request.use(function(config) {
-  console.log(config.headers.mytoken = 'abc');  // 配置请求头
+  // console.log(config.headers.mytoken = 'abc');  // 配置请求头
   return config;
 }, function(error) {
   return error;

@@ -5,21 +5,23 @@
       <el-main>
         <div class="login_box">
           <div class="user_title">会员登陆</div>
-          <el-form ref="form" label-width="auto" :model="form" :rules="loginRules" hide-required-asterisk>
-            <el-form-item label="账号" prop="name">
-              <el-input v-model="form.name"></el-input>
+          <el-form ref="login_form" label-width="auto" :model="login_form" :rules="loginRules" hide-required-asterisk>
+            <el-form-item label="账号" prop="phone">
+              <el-input v-model="login_form.phone"></el-input>
             </el-form-item>
-            <el-form-item label="密码" prop="pass">
-              <el-input type="password" v-model="form.pass"></el-input>
+            <el-form-item label="密码" prop="password">
+              <el-input type="password" v-model="login_form.password"></el-input>
             </el-form-item>
             <el-form-item label="">
-              <el-checkbox-group v-model="form.type" class="juzhumima_zhucezhanghao">
-                <el-checkbox label="记住密码" name="type"></el-checkbox>
-                <el-link :underline="false" href="javascript:;" class="zhucezhanghao">注册账号</el-link>
-              </el-checkbox-group>
+
+              <div class="juzhumima_zhucezhanghao">
+                <el-checkbox v-model="checked">记住密码</el-checkbox>
+                <el-link :underline="false" href="/#/register" class="zhucezhanghao">注册账号</el-link>
+              </div>
+
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="submitForm('form')">登录</el-button>
+              <el-button type="primary" @click="submitForm('login_form')">登录</el-button>
             </el-form-item>
           </el-form>
           <div class="other_login">
@@ -48,19 +50,22 @@ export default {
         { id: 6, name: '天津' },
         { id: 7, name: '重庆' }
       ],
-      form: {
-        type: []
+      login_form: {
+        phone: '',
+        password: ''
       },
       loginRules: {
-        name: [
+        phone: [
           { required: true, message: '请输入账号', trigger: 'blur' },
           { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
         ],
-        pass: [
+        password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
         ]
-      }
+      },
+      // 是否记住密码
+      checked: false
     }
   },
   methods: {
@@ -70,7 +75,18 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          console.log(this.login_form);
+          this.$axios.post('/wpapi/register/login', this.login_form)
+          .then((result) => {
+            console.log(result);
+            if (result.status !== '200') return this.$message.error(result.msg);
+            this.$message.success('登陆成功');
+            window.sessionStorage.setItem('token', result.data.token);
+            this.$router.push('/index');
+          })
+          .catch((error) => {
+            console.log(error);
+          });
         } else {
           console.log('error submit!!');
           return false;

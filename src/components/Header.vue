@@ -3,7 +3,9 @@
     <el-header style="height: auto;">
       <el-row class="header_left_right">
         <el-col :span="12" class="header_left_slogn">
-          <img src="../assets/logo01.png" alt="" />
+          <router-link to="/index">
+            <img src="../assets/logo01.png" alt="" />
+          </router-link>
           <span>千里寻他</span>
         </el-col>
         <el-col :span="12" class="header_right_item">
@@ -17,8 +19,12 @@
               <el-dropdown-item v-for="item in cityInfo" :key="item.id" :command="item.name">{{item.name}}</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <el-button size="small" round class="login">登录</el-button>
-          <el-button size="small" round class="signin">注册</el-button>
+          <router-link to="/login">
+            <el-button size="small" round class="login">登录</el-button>
+          </router-link>
+          <router-link to="/register">
+            <el-button size="small" round class="signin">注册</el-button>
+          </router-link>
         </el-col>
       </el-row>
       <div class="nav_bg_color">
@@ -51,14 +57,14 @@ export default {
         { id: 5, name: '内蒙古自治区' },
         { id: 6, name: '辽宁省' },
         { id: 7, name: '吉林省' },
-        { id: 8, name: '吉林省' },
-        { id: 9, name: '吉林省' },
-        { id: 10, name: '吉林省' },
-        { id: 11, name: '吉林省' },
-        { id: 12, name: '吉林省' },
-        { id: 13, name: '吉林省' },
-        { id: 14, name: '吉林省' },
-        { id: 15, name: '吉林省' },
+        // { id: 8, name: '吉林省' },
+        // { id: 9, name: '吉林省' },
+        // { id: 10, name: '吉林省' },
+        // { id: 11, name: '吉林省' },
+        // { id: 12, name: '吉林省' },
+        // { id: 13, name: '吉林省' },
+        // { id: 14, name: '吉林省' },
+        // { id: 15, name: '吉林省' },
         // { id: 16, name: '吉林省' },
         // { id: 17, name: '吉林省' },
         // { id: 18, name: '吉林省' },

@@ -1,28 +1,28 @@
 <template>
   <div class="login_container login_container01">
     <el-container>
-      
+
       <el-main>
         <div class="main_center_module">
           <div class="home_banner">
             <div class="home_banner_signup_form">
               <h3>一分钟注册</h3>
-              <el-form ref="form" :model="form" label-width="70px">
+              <el-form ref="minute_form" :model="minute_form" label-width="82px">
                 <el-form-item label="性别">
-                  <el-radio-group v-model="form.sex">
+                  <el-radio-group v-model="minute_form.sex">
                     <el-radio label="男"></el-radio>
                     <el-radio label="女"></el-radio>
                   </el-radio-group>
                 </el-form-item>
                 <el-form-item label="生日">
-                  <el-select v-model="form.year" placeholder="请选择" class="register_form_birthday">
+                  <el-select v-model="birthday_year" placeholder="请选择" class="register_form_birthday">
                     <el-option label="1991" value="1991"></el-option>
                     <el-option label="1992" value="1992"></el-option>
                     <el-option label="1993" value="1992"></el-option>
                     <el-option label="1994" value="1992"></el-option>
                   </el-select>
                   年
-                  <el-select v-model="form.month" placeholder="请选择" class="register_form_birthday">
+                  <el-select v-model="birthday_month" placeholder="请选择" class="register_form_birthday">
                     <el-option label="01" value="01"></el-option>
                     <el-option label="02" value="02"></el-option>
                     <el-option label="03" value="03"></el-option>
@@ -37,7 +37,7 @@
                     <el-option label="12" value="12"></el-option>
                   </el-select>
                   月
-                  <el-select v-model="form.day" placeholder="请选择" class="register_form_birthday">
+                  <el-select v-model="birthday_day" placeholder="请选择" class="register_form_birthday">
                     <el-option v-for="item in afterage_options" :key="item.id" :label="item.label" :value="item.value"></el-option>
                   </el-select>
                   日
@@ -46,10 +46,16 @@
                   <el-cascader
                     :options="cityList"
                     :props="{ checkStrictly: true }"
+                    v-model="minute_form.address"
                     clearable></el-cascader>
                 </el-form-item>
                 <el-form-item label="手机号">
-                  <el-input v-model="form.phone_number" class="phone_number"></el-input>
+                  <el-input v-model="minute_form.phone" class="phone_number" style="width: 190px;margin-right: 10px;"></el-input>
+                  <el-button type="primary" @click="sendcode" v-if="message_btn">短信验证</el-button>
+                  <el-button type="info" v-if="message_btn_count_down" disabled>{{message_count_down_time}} s后重新获取</el-button>
+                </el-form-item>
+                <el-form-item label="短信验证码">
+                  <el-input v-model="minute_form.code" style="width: 100px;"></el-input>
                 </el-form-item>
                 <el-form-item class="free_register_form_post">
                   <el-button type="primary" @click="free_register">免费注册</el-button>
@@ -317,8 +323,8 @@
                           </p>
                         </div>
                         <div class="event_right">
-                          <img src="../assets/huodong02.png" alt="">
-                          <img src="../assets/huodong03.png" alt="">
+                          <img src="../assets/huodong02.png" alt="" class="active_banner_img02">
+                          <img src="../assets/huodong03.png" alt="" class="active_banner_img03">
                         </div>
                       </div>
                     </div>
@@ -330,75 +336,52 @@
                     <div class="qingganjiaoliu_content">
                       <div class="qingganjiaoliu_title_list">
                         <ul>
-                          <li><a href="javascript:;">热文推荐</a></li>
-                          <li><a href="javascript:;">情感驿站</a></li>
-                          <li><a href="javascript:;">私密空间</a></li>
-                          <li><a href="javascript:;">倾诉树洞</a></li>
-                          <li><a href="javascript:;">微调查</a></li>
+                          <li v-for="item in affective_interaction" :key="item.id"><a href="javascript:;">{{item.cate_name}}</a></li>
                         </ul>
                         <a href="javascript:;">查看更多&gt;</a>
                       </div>
                       <div class="qingganjiaoliu_news_list">
-                        <div class="qingganjiaoliu_news_item">
-                          <div class="qingganjiaoliu_news_item_img">
-                            <img src="../assets/news_eg01.png" alt="">
-                            <p>男女之间的交流技巧</p>
-                          </div>
-                          <ul>
-                            <li>
-                              <a href="javascript:;">男女之间的交流技巧</a>
-                            </li>
-                            <li>
-                              <a href="javascript:;">男女之间的交流技巧</a>
-                            </li>
-                            <li>
-                              <a href="javascript:;">男女之间的交流技巧</a>
-                            </li>
-                            <li>
-                              <a href="javascript:;">男女之间的交流技巧</a>
-                            </li>
-                          </ul>
-                        </div>
-                        <div class="qingganjiaoliu_news_item">
-                          <div class="qingganjiaoliu_news_item_img">
-                            <img src="../assets/news_eg01.png" alt="">
-                            <p>男女之间的交流技巧</p>
-                          </div>
-                          <ul>
-                            <li>
-                              <a href="javascript:;">男女之间的交流技巧</a>
-                            </li>
-                            <li>
-                              <a href="javascript:;">男女之间的交流技巧</a>
-                            </li>
-                            <li>
-                              <a href="javascript:;">男女之间的交流技巧</a>
-                            </li>
-                            <li>
-                              <a href="javascript:;">男女之间的交流技巧</a>
-                            </li>
-                          </ul>
-                        </div>
-                        <div class="qingganjiaoliu_news_item">
-                          <div class="qingganjiaoliu_news_item_img">
-                            <img src="../assets/news_eg01.png" alt="">
-                            <p>男女之间的交流技巧</p>
-                          </div>
-                          <ul>
-                            <li>
-                              <a href="javascript:;">男女之间的交流技巧</a>
-                            </li>
-                            <li>
-                              <a href="javascript:;">男女之间的交流技巧</a>
-                            </li>
-                            <li>
-                              <a href="javascript:;">男女之间的交流技巧</a>
-                            </li>
-                            <li>
-                              <a href="javascript:;">男女之间的交流技巧</a>
-                            </li>
-                          </ul>
-                        </div>
+                        <el-row>
+                          <el-col :span="8">
+                            <div class="qingganjiaoliu_news_item">
+                              <div class="qingganjiaoliu_news_item_img">
+                                <img src="../assets/news_eg01.png" alt="">
+                                <p>男女之间的交流技巧</p>
+                              </div>
+                              <ul>
+                                <li v-for="item in article_list_one" :key="item.id">
+                                  <a :href="'/#/article_article?id='+item.id">{{item.title}}</a>
+                                </li>
+                              </ul>
+                            </div>
+                          </el-col>
+                          <el-col :span="8">
+                            <div class="qingganjiaoliu_news_item">
+                              <div class="qingganjiaoliu_news_item_img">
+                                <img src="../assets/news_eg01.png" alt="">
+                                <p>男女之间的交流技巧</p>
+                              </div>
+                              <ul>
+                                <li v-for="item in article_list_two" :key="item.id">
+                                  <a :href="'/#/article_article?id='+item.id">{{item.title}}</a>
+                                </li>
+                              </ul>
+                            </div>
+                          </el-col>
+                          <el-col :span="8">
+                            <div class="qingganjiaoliu_news_item">
+                              <div class="qingganjiaoliu_news_item_img">
+                                <img src="../assets/news_eg01.png" alt="">
+                                <p>男女之间的交流技巧</p>
+                              </div>
+                              <ul>
+                                <li v-for="item in article_list_three" :key="item.id">
+                                  <a :href="'/#/article_article?id='+item.id">{{item.title}}</a>
+                                </li>
+                              </ul>
+                            </div>
+                          </el-col>
+                        </el-row>
                       </div>
                     </div>
                   </div>
@@ -425,7 +408,9 @@
                         <span>红娘一对一</span>
                       </li>
                     </ul>
-                    <a href="javascript:;">加入会员</a>
+                    <router-link to="/join_member">
+                      加入会员
+                    </router-link>
                     <p>一年只交168元更快找到TA，无任何额外费用</p>
                   </div>
                   <div class="zuijiapipei">
@@ -458,6 +443,8 @@
 export default {
   data() {
     return {
+      // 情感交流
+      affective_interaction: [],
       cityList: [{
         value: '湖北省',
         label: '湖北省',
@@ -474,12 +461,19 @@ export default {
           }
         ]
       }],
-      form: {
-        day: ''
+      birthday_year: '',
+      birthday_month: '',
+      birthday_day: '',
+      minute_form: {
+        sex: '',
+        birthday: '',
+        address: [],
+        phone: '',
+        code: ''
       },
       afterage_options: [
-        // { id: 1, label: 1, value: '01' },
-        // { id: 2, label: 2, value: '02' },
+        { id: 1, label: '01', value: '01' },
+        { id: 2, label: '02', value: '02' },
         // { id: 3, label: 3, value: '03' },
         // { id: 4, label: 4, value: '04' },
         // { id: 5, label: 5, value: '05' },
@@ -491,15 +485,110 @@ export default {
         // { id: 11, label: 11, value: '11' },
         // { id: 12, label: 12, value: '12' }
       ],
-      search_form: {}
+      search_form: {},
+      // 情感交流列表1
+      article_list_one: [],
+      // 情感交流列表2
+      article_list_two: [],
+      // 情感交流列表3
+      article_list_three: [],
+      // 发送验证码按钮的显示隐藏
+      message_btn: true,
+      // 发送验证码按钮倒计时的显示隐藏
+      message_btn_count_down: false,
+      // 短信倒计时秒数
+      message_count_down_time: 0
     }
+  },
+  created: function() {
+    this.$axios.get('/wpapi/article/category', {})
+    .then((response) => {
+      this.affective_interaction = response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+    // 情感交流第一列数据
+    this.$axios.get('/wpapi/article/category_list', {id:1})
+    .then((result) => {
+      console.log(result);
+      this.article_list_one = result.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+    
+    // 情感交流第二列数据
+    this.$axios.get('/wpapi/article/category_list', {id:2})
+    .then((result) => {
+      this.article_list_two = result.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+    // 情感交流第三列数据
+    this.$axios.get('/wpapi/article/category_list', {id:3})
+    .then((result) => {
+      this.article_list_three = result.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   },
   methods: {
     free_register() {
-      this.$message('注册');
+      var address01 = '';
+      this.minute_form.birthday = this.birthday_year + '.' + this.birthday_month + '.' + this.birthday_day
+      for (let i = 0; i < this.minute_form.address.length; i++) {
+        address01 += this.minute_form.address[i];
+      }
+      this.minute_form.address = address01;
+      this.$axios.post('/wpapi/register/minute_form', this.minute_form)
+      .then((result) => {
+        console.log(result);
+        if (result.status !== '200') return this.$message.error(result.msg);
+        this.$message.success(result.msg);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     },
     search_onSubmit() {
       this.$message('搜索');
+    },
+    // 手机验证发送验证码
+    sendcode() {
+      const reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+      if (!this.minute_form.phone) return this.$message.error('手机号不能为空');
+      if (!reg.test(this.minute_form.phone)) {
+        this.$message.error('请输入正确的手机号');
+      } else {
+        this.$axios.post('/wpapi/register/send_sms', {phone: this.minute_form.phone})
+        .then((result) => {
+          if (result.status !== '200') return this.$message.error(result.msg);
+          this.$message.success('发送成功');
+          this.message_btn = false;
+          this.message_btn_count_down = true;
+          this.message_count_down_time = 60;
+          this.timer();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
+    },
+    // 60s倒计时
+    timer() {
+      if (this.message_count_down_time > 0) {
+        this.message_count_down_time--;
+        setTimeout(this.timer, 1000);
+      } else {
+        this.message_count_down_time = 0;
+        this.message_btn = true;
+        this.message_btn_count_down = false;
+      }
     }
   }
 }
@@ -686,14 +775,19 @@ export default {
   }
   .yuebazouqi_content_main img {
     width: 100%;
+    border-radius: 6px;
   }
   .yuebazouqi_content_main .event_left {
     flex: 2;
     position: relative;
     height: 100%;
+    margin-right: 10px;
   }
   .yuebazouqi_content_main .event_right {
     flex: 1;
+  }
+  .active_banner_img02 {
+    margin-bottom: 6px;
   }
   .yuebazouqi_content_main .event_left p {
     position: absolute;
@@ -747,9 +841,13 @@ export default {
   }
   .qingganjiaoliu_news_list img {
     width: 100%;
+    border-radius: 10px;
   }
   .qingganjiaoliu_news_list .qingganjiaoliu_news_item:nth-child(2) {
     margin: 0 15px;
+  }
+  .qingganjiaoliu_news_item {
+    margin: 0 7px;
   }
   .qingganjiaoliu {
     margin-bottom: 48px;
@@ -776,6 +874,9 @@ export default {
     padding-left: 20px;
     line-height: 34px;
     margin-top: 9px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .qingganjiaoliu_news_item ul li a {
     color: #000;

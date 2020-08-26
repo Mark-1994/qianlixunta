@@ -71,6 +71,10 @@ Vue.use(VueRouter)
     {
       path: '/article_article',
       component: () => import('@/views/Article_article')
+    },
+    {
+      path: '/article_list',
+      component: () => import('@/views/Article_list')
     }
 ]
 
