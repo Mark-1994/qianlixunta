@@ -71,7 +71,7 @@
                   <div class="tuijianhuiyuan">
                     <div class="tuijianhuiyuan_title">
                       <h3>推荐会员</h3>
-                      <a href="javascript:;">换一批</a>
+                      <a href="javascript:;" @click="btn_change_friend">换一批</a>
                     </div>
                     <el-form ref="search_form" :model="search_form" class="search_form">
                       <el-form-item label="">
@@ -83,19 +83,20 @@
                       </el-form-item>
                       <el-row class="flex_oneline">
                         <el-form-item label="年龄">
-                          <el-select v-model="search_form.year" placeholder="请选择">
-                            <el-option label="20-30岁" value="20"></el-option>
-                            <el-option label="30-40岁" value="30"></el-option>
+                          <el-select v-model="age" placeholder="请选择">
+                            <el-option label="20-30" value="20-30"></el-option>
+                            <el-option label="30-40" value="30-40"></el-option>
+                            <el-option label="40-50" value="40-50"></el-option>
                           </el-select>
                         </el-form-item>
                         <el-form-item label="性别">
                           <el-select v-model="search_form.sex" placeholder="请选择">
-                            <el-option label="男" value="男"></el-option>
-                            <el-option label="女" value="女"></el-option>
+                            <el-option label="男" value="1"></el-option>
+                            <el-option label="女" value="0"></el-option>
                           </el-select>
                         </el-form-item>
                         <el-form-item label="城市">
-                          <el-select v-model="search_form.city" placeholder="请选择">
+                          <el-select v-model="search_form.workplace" placeholder="请选择">
                             <el-option label="武汉" value="武汉"></el-option>
                             <el-option label="上海" value="上海"></el-option>
                           </el-select>
@@ -105,7 +106,7 @@
                         </el-form-item>
                       </el-row>
                     </el-form>
-                    <el-row :gutter="20" class="top_bottom_margin_25">
+                    <!-- <el-row :gutter="20" class="top_bottom_margin_25">
                       <el-col :span="8">
                         <div class="grid-content bg-purple">
                           <img src="../assets/user_img01.png" alt="">
@@ -300,7 +301,68 @@
                           </div>
                         </div>
                       </el-col>
-                    </el-row>
+                    </el-row> -->
+
+                    <ul class="default_recommend_member_list">
+                      <li v-for="item in default_recommend_member_list" :key="item.id">
+                        <div class="default_recommend_member_left">
+                          <div class="default_recommend_member_left_big_img">
+                            <img :src="'http://admin.qianlixunta.com'+item.head_portrait" alt="" />
+                          </div>
+                          <div class="default_recommend_member_left_small_img">
+                            <img v-for="(item01, index) in JSON.parse(item.life_imgs)" :key="index" :src="'http://'+item01" alt="" />
+                          </div>
+                        </div>
+                        <div class="default_recommend_member_right">
+                          <h4>{{item.name ? item.name : '无数据'}}</h4>
+                          <div class="default_recommend_member_left_info">
+                            <span>{{now_year-item.users_year == now_year ? '无数据' : now_year-item.users_year}}岁</span>
+                            <span>{{item.height ? item.height : '无数据'}}cm</span>
+                            <span>{{item.education ? item.education : '无数据'}}</span>
+                            <span>月薪{{item.monthly_salary ? item.monthly_salary : '无数据'}}</span>
+                          </div>
+                          <p>{{item.introduce_oneself ? item.introduce_oneself : '无数据'}}</p>
+                          <div class="default_recommend_member_right_click">
+                            <div>
+                              <img src="../assets/dazhaohu01.png" alt="" />
+                            </div>
+                            <div>
+                              <img src="../assets/youxiang01.png" alt="" />
+                            </div>
+                            <div>
+                              <img src="../assets/aixin01.png" alt="" />
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      <!-- <li>
+                        <div class="default_recommend_member_left">
+                          <img src="../assets/user_img01.png" alt="" />
+                        </div>
+                        <div class="default_recommend_member_right">
+                          <h4>雷军</h4>
+                          <div class="default_recommend_member_left_info">
+                            <span>18岁</span>
+                            <span>157cm</span>
+                            <span>本科</span>
+                            <span>月薪10000k</span>
+                          </div>
+                          <p>我是一个多变的女孩，动如脱兔，静如处子，可谓动静皆宜。生活中的我，不仅</p>
+                          <div class="default_recommend_member_right_click">
+                            <div>
+                              <img src="../assets/aixin01.png" alt="" />
+                            </div>
+                            <div>
+                              <img src="../assets/aixin01.png" alt="" />
+                            </div>
+                            <div>
+                              <img src="../assets/aixin01.png" alt="" />
+                            </div>
+                          </div>
+                        </div>
+                      </li> -->
+                    </ul>
+
                   </div>
                   <!-- 推荐会员end -->
                   <!-- 约吧走起start -->
@@ -485,7 +547,14 @@ export default {
         // { id: 11, label: 11, value: '11' },
         // { id: 12, label: 12, value: '12' }
       ],
-      search_form: {},
+      // 推荐会员
+      age: '',
+      search_form: {
+        age_low: '',
+        age_height: '',
+        sex: '',
+        workplace: ''
+      },
       // 情感交流列表1
       article_list_one: [],
       // 情感交流列表2
@@ -497,7 +566,11 @@ export default {
       // 发送验证码按钮倒计时的显示隐藏
       message_btn_count_down: false,
       // 短信倒计时秒数
-      message_count_down_time: 0
+      message_count_down_time: 0,
+      // 推荐会员默认列表
+      default_recommend_member_list: [],
+      // 当前年份
+      now_year: new Date().getFullYear()
     }
   },
   created: function() {
@@ -536,6 +609,16 @@ export default {
     .catch((error) => {
       console.log(error);
     });
+
+    // 推荐会员列表
+    this.$axios.post('/wpapi/member/recommend_friend', this.search_form)
+    .then((result) => {
+      console.log(result);
+      this.default_recommend_member_list = result.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   },
   methods: {
     free_register() {
@@ -556,7 +639,18 @@ export default {
       });
     },
     search_onSubmit() {
-      this.$message('搜索');
+      if (this.age) {
+        this.search_form.age_low = this.age.split('-')[0];
+        this.search_form.age_height = this.age.split('-')[1];
+      }
+      this.$axios.post('/wpapi/member/recommend_friend', this.search_form)
+      .then((result) => {
+        console.log(result);
+        this.default_recommend_member_list = result.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     },
     // 手机验证发送验证码
     sendcode() {
@@ -589,6 +683,17 @@ export default {
         this.message_btn = true;
         this.message_btn_count_down = false;
       }
+    },
+    // 推荐会员换一批
+    btn_change_friend() {
+      this.$axios.post('/wpapi/member/btn_change_friend', {sex: Math.random() > 0.5 ? '0' : '1'})
+      .then((result) => {
+        console.log(result);
+        this.default_recommend_member_list = result.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     }
   }
 }
@@ -997,5 +1102,65 @@ export default {
   }
   .active_time {
     margin-left: 19px;
+  }
+
+  /* 重构的默认推荐会员列表 */
+  .default_recommend_member_list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .default_recommend_member_list li {
+    background-color: #fff;
+    width: 31.33%;
+    margin: 1%;
+    display: flex;
+  }
+  .default_recommend_member_left {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+  }
+  .default_recommend_member_left img {
+    width: 100%;
+    height: 100%;
+  }
+  .default_recommend_member_left_small_img {
+    display: flex;
+    flex: 1;
+  }
+  .default_recommend_member_left_small_img img {
+    width: 50%;
+  }
+  .default_recommend_member_left_big_img {
+    flex: 1.8;
+  }
+  .default_recommend_member_right {
+    width: 52%;
+    padding: 13px;
+    box-shadow: 1px 2px 2px 0px rgba(0,0,0,0.16);
+  }
+  .default_recommend_member_right h4 {
+    font-size: 22px;
+    margin: 10px 0;
+  }
+  .default_recommend_member_left_info span {
+    font-size: 14px;
+    font-weight: 500;
+    margin-right: 10px;
+  }
+  .default_recommend_member_right p {
+    font-size: 12px;
+    color: rgba(152,152,152,1);
+    line-height: 20px;
+    text-indent: 2em;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+  }
+  .default_recommend_member_right_click {
+    display: flex;
+    justify-content: space-around;
   }
 </style>

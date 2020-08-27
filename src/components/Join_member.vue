@@ -9,12 +9,12 @@
         </div>
         <div class="x-wrap">
           <div class="price_list">
-            <div class="item_price_list">
+            <div class="item_price_list" v-for="item in member_card_list" :key="item.id">
               <div class="price_list_left">
-                <h4>168</h4>
+                <h4>{{item.vip_price}}</h4>
                 <div class="price_list_left_info">
                   <span>开通会员</span>
-                  <span>12个月</span>
+                  <span>{{item.vip_cycle}}个月</span>
                 </div>
               </div>
               <div class="price_list_right">
@@ -39,13 +39,13 @@
               </li>
               <li>
                 <div>
-                  <img src="../assets/chakan01.png" alt="">
+                  <img src="../assets/fabu02.png" alt="">
                 </div>
                 <p>发布消息</p>
               </li>
               <li>
                 <div>
-                  <img src="../assets/chakan01.png" alt="">
+                  <img src="../assets/changliao01.png" alt="">
                 </div>
                 <p>无限畅聊</p>
               </li>
@@ -61,8 +61,18 @@
 export default {
   data() {
     return {
-      msg: '加入会员'
+      // 会员卡信息
+      member_card_list: []
     }
+  },
+  created() {
+    this.$axios.get('/wpapi/member/index')
+    .then((result) => {
+      this.member_card_list.push(result.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 }
 </script>

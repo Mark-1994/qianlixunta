@@ -4,13 +4,12 @@
       <el-main>
         <div class="x-wrap">
           <div class="search_function_block">
-            <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
+            <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="input3" class="input-with-select">
               <el-select v-model="select" slot="prepend" placeholder="全部会员">
-                <el-option label="会员01" value="1"></el-option>
-                <el-option label="会员02" value="2"></el-option>
-                <el-option label="会员03" value="3"></el-option>
+                <el-option label="全部会员" value="1"></el-option>
+                <el-option label="在线会员" value="2"></el-option>
               </el-select>
-              <el-button slot="append" icon="el-icon-search"></el-button>
+              <el-button slot="append" @click="btn_select_friend">搜索</el-button>
             </el-input>
           </div>
           <!-- 条件筛选 -->
@@ -31,68 +30,66 @@
               <el-col :span="2">基本搜索</el-col>
             </el-row>
             <el-row>
-              <el-form ref="search_form" :model="search_form" label-width="60px"
+              <el-form ref="search_form" :model="search_form" label-width="55px"
               :inline="true">
                 <el-form-item label="年龄：">
-                  <el-col :span="5">
-                    <el-select v-model="search_form.region_start" placeholder="请选择">
-                      <el-option label="10" value="shanghai"></el-option>
-                      <el-option label="20" value="beijing"></el-option>
-                    </el-select>
-                  </el-col>
-                  <el-col class="line" :span="2" style="text-align: center;">-</el-col>
-                  <el-col :span="5">
-                    <el-select v-model="search_form.region_end" placeholder="请选择">
-                      <el-option label="20" value="shanghai"></el-option>
-                      <el-option label="30" value="beijing"></el-option>
-                    </el-select>
-                  </el-col>
-                  <el-col class="line" :span="2" style="text-align: center;">岁</el-col>
+                  <el-select v-model="age" placeholder="请选择" style="width: 90px;">
+                    <el-option label="20-30" value="20-30"></el-option>
+                    <el-option label="30-40" value="30-40"></el-option>
+                    <el-option label="40-50" value="40-50"></el-option>
+                  </el-select>
+                  岁
                 </el-form-item>
                 <el-form-item label="">
-                  <el-select v-model="search_form.education" placeholder="学历">
-                    <el-option label="本科" value="shanghai"></el-option>
-                    <el-option label="研究生" value="beijing"></el-option>
+                  <el-select v-model="search_form.education" placeholder="学历" style="width: 120px;">
+                    <el-option label="博士研究生" value="博士研究生"></el-option>
+                    <el-option label="硕士研究生" value="硕士研究生"></el-option>
+                    <el-option label="本科" value="本科"></el-option>
+                    <el-option label="大专" value="大专"></el-option>
+                    <el-option label="高职" value="高职"></el-option>
+                    <el-option label="其他" value="其他"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="">
-                  <el-select v-model="search_form.marital_status" placeholder="婚姻状况">
-                    <el-option label="未婚" value="shanghai"></el-option>
-                    <el-option label="离异" value="beijing"></el-option>
+                  <el-select v-model="search_form.marital_status" placeholder="婚姻状况" style="width: 110px;">
+                    <el-option label="未婚" value="未婚"></el-option>
+                    <el-option label="离异" value="离异"></el-option>
+                    <el-option label="丧偶" value="丧偶"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="">
-                  <el-select v-model="search_form.now_adress" placeholder="现居住地">
-                    <el-option label="" value="shanghai"></el-option>
-                    <el-option label="" value="beijing"></el-option>
+                  <el-select v-model="search_form.now_adress" placeholder="现居住地" style="width: 110px;">
+                    <el-option label="上海" value="上海"></el-option>
+                    <el-option label="北京" value="北京"></el-option>
+                    <el-option label="武汉" value="武汉"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="">
-                  <el-select v-model="search_form.now_height" placeholder="身高">
-                    <el-option label="" value="shanghai"></el-option>
-                    <el-option label="" value="beijing"></el-option>
+                  <el-input v-model="search_form.now_height" placeholder="身高" style="width: 90px;"></el-input>
+                  cm
+                </el-form-item>
+                <el-form-item label="">
+                  <el-select v-model="search_form.has_picture" placeholder="有照片" style="width: 90px;">
+                    <el-option label="有" value="有"></el-option>
+                    <el-option label="无" value="无"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="">
-                  <el-select v-model="search_form.has_picture" placeholder="有照片">
-                    <el-option label="" value="shanghai"></el-option>
-                    <el-option label="" value="beijing"></el-option>
+                  <el-select v-model="search_form.shop_cars" placeholder="购车情况" style="width: 110px;">
+                    <el-option label="有车" value="有车"></el-option>
+                    <el-option label="无车" value="无车"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="">
-                  <el-select v-model="search_form.shop_cars" placeholder="购车情况">
-                    <el-option label="" value="shanghai"></el-option>
-                    <el-option label="" value="beijing"></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="">
-                  <el-select v-model="search_form.month_income" placeholder="月收入">
-                    <el-option label="" value="shanghai"></el-option>
-                    <el-option label="" value="beijing"></el-option>
+                  <el-select v-model="search_form.month_income" placeholder="月收入" style="width: 135px;">
+                    <el-option label="3000-4000" value="3000-4000"></el-option>
+                    <el-option label="4000-5000" value="4000-5000"></el-option>
+                    <el-option label="5000-8000" value="5000-8000"></el-option>
+                    <el-option label="10000-20000" value="10000-20000"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary">查询</el-button>
+                  <el-button type="primary">确定</el-button>
                 </el-form-item>
               </el-form>
             </el-row>
@@ -100,7 +97,35 @@
           <!-- 搜索结果列表 -->
           <div class="search_result_list">
             <el-row>
-              <el-col :span="6">
+              <el-col :span="6" v-for="item in find_friend" :key="item.id">
+                <div class="item_list_info">
+                  <div class="item_left_img">
+                    <img src="../assets/user_img01.png" alt="">
+                  </div>
+                  <div class="item_right_info">
+                    <h4>{{item.name}}</h4>
+                    <div class="person_info">
+                      <span>18岁</span>
+                      <span>{{item.height}}cm</span>
+                      <span>{{item.education}}</span>
+                      <span>月薪{{item.monthly_salary}}</span>
+                    </div>
+                    <p>{{item.introduce_oneself}}</p>
+                    <div class="hi_email_like">
+                      <a href="javascript:;">
+                        <img src="../assets/dazhaohu01.png" alt="">
+                      </a>
+                      <a href="javascript:;">
+                        <img src="../assets/youxiang01.png" alt="">
+                      </a>
+                      <a href="javascript:;">
+                        <img src="../assets/aixin01.png" alt="">
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </el-col>
+              <!-- <el-col :span="6">
                 <div class="item_list_info">
                   <div class="item_left_img">
                     <img src="../assets/user_img01.png" alt="">
@@ -127,93 +152,17 @@
                     </div>
                   </div>
                 </div>
-              </el-col>
-              <el-col :span="6">
-                <div class="item_list_info">
-                  <div class="item_left_img">
-                    <img src="../assets/user_img01.png" alt="">
-                  </div>
-                  <div class="item_right_info">
-                    <h4>林俊杰</h4>
-                    <div class="person_info">
-                      <span>18岁</span>
-                      <span>157cm</span>
-                      <span>本科</span>
-                      <span>月薪1k</span>
-                    </div>
-                    <p>我是一个多变的女孩我是一个多变的女孩我是一个多变的女孩我是一个多变的</p>
-                    <div class="hi_email_like">
-                      <a href="javascript:;">
-                        <img src="../assets/dazhaohu01.png" alt="">
-                      </a>
-                      <a href="javascript:;">
-                        <img src="../assets/dazhaohu01.png" alt="">
-                      </a>
-                      <a href="javascript:;">
-                        <img src="../assets/dazhaohu01.png" alt="">
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="6">
-                <div class="item_list_info">
-                  <div class="item_left_img">
-                    <img src="../assets/user_img01.png" alt="">
-                  </div>
-                  <div class="item_right_info">
-                    <h4>林俊杰</h4>
-                    <div class="person_info">
-                      <span>18岁</span>
-                      <span>157cm</span>
-                      <span>本科</span>
-                      <span>月薪1k</span>
-                    </div>
-                    <p>我是一个多变的女孩我是一个多变的女孩我是一个多变的女孩我是一个多变的</p>
-                    <div class="hi_email_like">
-                      <a href="javascript:;">
-                        <img src="../assets/dazhaohu01.png" alt="">
-                      </a>
-                      <a href="javascript:;">
-                        <img src="../assets/dazhaohu01.png" alt="">
-                      </a>
-                      <a href="javascript:;">
-                        <img src="../assets/dazhaohu01.png" alt="">
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="6">
-                <div class="item_list_info">
-                  <div class="item_left_img">
-                    <img src="../assets/user_img01.png" alt="">
-                  </div>
-                  <div class="item_right_info">
-                    <h4>林俊杰</h4>
-                    <div class="person_info">
-                      <span>18岁</span>
-                      <span>157cm</span>
-                      <span>本科</span>
-                      <span>月薪1k</span>
-                    </div>
-                    <p>我是一个多变的女孩我是一个多变的女孩我是一个多变的女孩我是一个多变的</p>
-                    <div class="hi_email_like">
-                      <a href="javascript:;">
-                        <img src="../assets/dazhaohu01.png" alt="">
-                      </a>
-                      <a href="javascript:;">
-                        <img src="../assets/dazhaohu01.png" alt="">
-                      </a>
-                      <a href="javascript:;">
-                        <img src="../assets/dazhaohu01.png" alt="">
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
+              </el-col> -->
             </el-row>
           </div>
+          <!-- 页码 -->
+          <el-pagination
+            class="page_num"
+            :page-sizes="[100, 200, 300, 400]"
+            :page-size="100"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="400">
+          </el-pagination>
         </div>
       </el-main>
     </el-container>
@@ -224,10 +173,39 @@
 export default {
   data() {
     return {
-      msg: '寻找TA',
       input3: '',
       select: '',
-      search_form: {}
+      search_form: {},
+      // 基本搜索年龄参数
+      age: '',
+      // 全部会员信息
+      find_friend: []
+    }
+  },
+  created() {
+    console.log(1);
+    this.$axios.post('/wpapi/member/find_friend', { page: 1 })
+    .then((result) => {
+      console.log(result);
+      this.find_friend = result.data.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  },
+  methods: {
+    btn_select_friend() {
+      this.$axios.post('/wpapi/member/btn_select_friend', {
+        param: this.input3,
+        page: 1
+      })
+      .then((result) => {
+        console.log(result);
+        this.find_friend = result.data.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     }
   }
 }
@@ -254,6 +232,7 @@ export default {
     background-color: #fff;
     margin: 20px;
     display: flex;
+    height: 210px;
   }
   .item_left_img img {
     width: 115px;
@@ -283,9 +262,17 @@ export default {
     text-indent: 2em;
     color: rgba(152,152,152,1);
     margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
   }
   .hi_email_like {
     display: flex;
     justify-content: space-around;
+  }
+  .page_num {
+    text-align: center;
+    margin: 10px auto 90px;
   }
 </style>

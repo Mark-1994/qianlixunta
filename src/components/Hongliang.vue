@@ -100,11 +100,25 @@
 export default {
   data() {
     return {
-      msg: '红娘一对一'
+      // 报名列表
+      
     }
   },
   created() {
+    // 控制公共头是否显示隐藏
     this.$emit('header', false);
+
+    // 报名展示页
+    this.$axios.post('/wpapi/me/red_show', {
+      users_id: '',
+      token: ''
+    })
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 }
 </script>
