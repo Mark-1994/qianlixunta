@@ -7,8 +7,9 @@
           <div class="home_banner">
             <div class="home_banner_signup_form">
               <h3>一分钟注册</h3>
-              <el-form ref="minute_form" :model="minute_form" label-width="82px">
-                <el-form-item label="性别">
+              <el-form ref="minute_form" :model="minute_form" label-width="82px"
+              :rules="minuteRules">
+                <el-form-item label="性别" prop="sex">
                   <el-radio-group v-model="minute_form.sex">
                     <el-radio label="男"></el-radio>
                     <el-radio label="女"></el-radio>
@@ -42,23 +43,23 @@
                   </el-select>
                   日
                 </el-form-item>
-                <el-form-item label="现居住地">
+                <el-form-item label="现居住地" prop="address">
                   <el-cascader
                     :options="cityList"
                     :props="{ checkStrictly: true }"
                     v-model="minute_form.address"
                     clearable></el-cascader>
                 </el-form-item>
-                <el-form-item label="手机号">
+                <el-form-item label="手机号" prop="phone">
                   <el-input v-model="minute_form.phone" class="phone_number" style="width: 190px;margin-right: 10px;"></el-input>
                   <el-button type="primary" @click="sendcode" v-if="message_btn">短信验证</el-button>
                   <el-button type="info" v-if="message_btn_count_down" disabled>{{message_count_down_time}} s后重新获取</el-button>
                 </el-form-item>
-                <el-form-item label="短信验证码">
+                <el-form-item label="验证码" prop="code">
                   <el-input v-model="minute_form.code" style="width: 100px;"></el-input>
                 </el-form-item>
                 <el-form-item class="free_register_form_post">
-                  <el-button type="primary" @click="free_register">免费注册</el-button>
+                  <el-button type="primary" @click="free_register('minute_form')">免费注册</el-button>
                 </el-form-item>
               </el-form>
             </div>
@@ -523,6 +524,21 @@ export default {
           }
         ]
       }],
+      // 一分钟注册表单校验规则
+      minuteRules: {
+        sex: [
+          { required: true, message: '请选择性别', trigger: 'change' }
+        ],
+        address: [
+          { required: true, message: '请选择居住地址', trigger: 'change' }
+        ],
+        phone: [
+          { required: true, message: '请输入手机号', trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '请填写短信验证码', trigger: 'blur' }
+        ]
+      },
       birthday_year: '',
       birthday_month: '',
       birthday_day: '',
@@ -621,22 +637,29 @@ export default {
     });
   },
   methods: {
-    free_register() {
-      var address01 = '';
-      this.minute_form.birthday = this.birthday_year + '.' + this.birthday_month + '.' + this.birthday_day
-      for (let i = 0; i < this.minute_form.address.length; i++) {
-        address01 += this.minute_form.address[i];
-      }
-      this.minute_form.address = address01;
-      this.$axios.post('/wpapi/register/minute_form', this.minute_form)
-      .then((result) => {
-        console.log(result);
-        if (result.status !== '200') return this.$message.error(result.msg);
-        this.$message.success(result.msg);
+    free_register(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          var address01 = '';
+          this.minute_form.birthday = this.birthday_year + '.' + this.birthday_month + '.' + this.birthday_day
+          for (let i = 0; i < this.minute_form.address.length; i++) {
+            address01 += this.minute_form.address[i];
+          }
+          this.minute_form.address = address01;
+          this.$axios.post('/wpapi/register/minute_form', this.minute_form)
+          .then((result) => {
+            console.log(result);
+            if (result.status !== '200') return this.$message.error(result.msg);
+            this.$message.success(result.msg);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        } else {
+          console.log('温馨提示:有必填项没有填写');
+          return false;
+        }
       })
-      .catch((error) => {
-        console.log(error);
-      });
     },
     search_onSubmit() {
       if (this.age) {
@@ -742,7 +765,7 @@ export default {
     border: 0;
   }
   .el-form-item {
-    margin-bottom: 12px;
+    /* margin-bottom: 12px; */
   }
   .tuijianhuiyuan_title {
     display: flex;

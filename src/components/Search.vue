@@ -158,10 +158,11 @@
           <!-- 页码 -->
           <el-pagination
             class="page_num"
-            :page-sizes="[100, 200, 300, 400]"
-            :page-size="100"
+            @current-change="handleCurrentChange"
+            :page-sizes="[10]"
+            :page-size="per_page"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="400">
+            :total="total">
           </el-pagination>
         </div>
       </el-main>
@@ -179,15 +180,20 @@ export default {
       // 基本搜索年龄参数
       age: '',
       // 全部会员信息
-      find_friend: []
+      find_friend: [],
+      // 总条数
+      total: 0,
+      // 每页条数
+      per_page: 0
     }
   },
   created() {
-    console.log(1);
     this.$axios.post('/wpapi/member/find_friend', { page: 1 })
     .then((result) => {
       console.log(result);
       this.find_friend = result.data.data;
+      this.total = result.data.total;
+      this.per_page = result.data.per_page;
     })
     .catch((error) => {
       console.log(error);
@@ -201,6 +207,15 @@ export default {
       })
       .then((result) => {
         console.log(result);
+        this.find_friend = result.data.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    },
+    handleCurrentChange(val) {
+      this.$axios.post('/wpapi/member/find_friend', { page: val })
+      .then((result) => {
         this.find_friend = result.data.data;
       })
       .catch((error) => {

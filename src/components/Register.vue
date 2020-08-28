@@ -10,8 +10,8 @@
           <div class="line_9"></div>
           <div class="line_3"></div>
           <p class="weight_info">请多花点时间如实填写</p>
-          <el-form ref="free_register_form" :model="free_register_form" label-width="80px" class="form_user_info">
-            <el-form-item label="性别">
+          <el-form ref="free_register_form" :model="free_register_form" label-width="80px" class="form_user_info" :rules="registerRules">
+            <el-form-item label="性别" prop="sex">
               <el-radio-group v-model="free_register_form.sex">
                 <el-radio label="1">
                   <img width="20px" height="20px" src="../assets/nansheng01.png" alt="">
@@ -23,7 +23,15 @@
                 </el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="生日">
+            <el-form-item label="生日" prop="birthday">
+              <el-date-picker
+                v-model="free_register_form.birthday"
+                type="date"
+                placeholder="选择日期"
+                :picker-options="pickerOptions">
+              </el-date-picker>
+            </el-form-item>
+            <!-- <el-form-item label="生日">
               <el-select v-model="birthday_year" placeholder="请选择" class="register_form_birthday">
                 <el-option label="1991" value="1991"></el-option>
                 <el-option label="1992" value="1992"></el-option>
@@ -39,8 +47,8 @@
                 <el-option label="02" value="02"></el-option>
               </el-select>
               日
-            </el-form-item>
-            <el-form-item label="婚姻状况">
+            </el-form-item> -->
+            <el-form-item label="婚姻状况" prop="marital_status">
               <el-radio-group v-model="free_register_form.marital_status">
                 <el-radio label="未婚">
                   <img src="@/assets/weihun01.png" alt="">
@@ -56,11 +64,11 @@
                 </el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="身高">
+            <el-form-item label="身高" prop="height">
               <el-input v-model="free_register_form.height" style="width: 100px;"></el-input>
               cm
             </el-form-item>
-            <el-form-item label="学历">
+            <el-form-item label="学历" prop="education">
               <el-select v-model="free_register_form.education" placeholder="请选择" style="width: 120px;">
                 <el-option label="博士研究生" value="博士研究生"></el-option>
                 <el-option label="硕士研究生" value="硕士研究生"></el-option>
@@ -70,26 +78,26 @@
                 <el-option label="其他" value="其他"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="工作地">
+            <el-form-item label="工作地" prop="workplace">
               <el-cascader
                 v-model="free_register_form.workplace"
                 :options="cityList"
                 :props="{ checkStrictly: true }"
                 clearable></el-cascader>
             </el-form-item>
-            <el-form-item label="月薪">
+            <el-form-item label="月薪" prop="monthly_salary_end">
               <el-row>
                 <el-col :span="4">
-                  <el-input v-model="monthly_salary_start"></el-input>
+                  <el-input v-model="free_register_form.monthly_salary_start"></el-input>
                 </el-col>
                 <el-col :span="1" style="text-align: center;">-</el-col>
                 <el-col :span="4">
-                  <el-input v-model="monthly_salary_end"></el-input>
+                  <el-input v-model="free_register_form.monthly_salary_end"></el-input>
                 </el-col>
                 <el-col :span="1" style="text-align: center;">元</el-col>
               </el-row>
             </el-form-item>
-            <el-form-item label="手机号">
+            <el-form-item label="手机号" prop="phone">
               <el-row>
                 <el-col :span="8" style="margin-right: 16px;">
                   <el-input v-model="free_register_form.phone"></el-input>
@@ -102,16 +110,16 @@
                 </el-col>
               </el-row>
             </el-form-item>
-            <el-form-item label="验证码">
+            <el-form-item label="验证码" prop="code">
               <el-input v-model="free_register_form.code" style="width: 100px;"></el-input>
             </el-form-item>
-            <el-form-item label="账号密码">
+            <el-form-item label="账号密码" prop="password">
               <el-input type="password" v-model="free_register_form.password" style="width: 190px;"></el-input>
             </el-form-item>
-            <el-form-item label="昵称">
+            <el-form-item label="昵称" prop="nickname">
               <el-input v-model="free_register_form.nickname" style="width: 190px;"></el-input>
             </el-form-item>
-            <el-form-item label="自我介绍">
+            <el-form-item label="自我介绍" prop="introduce_oneself">
               <el-input type="textarea" :rows="8" v-model="free_register_form.introduce_oneself" style="width: 350px;"></el-input>
             </el-form-item>
             <el-form-item label="标签">
@@ -137,7 +145,7 @@
               <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
             </el-form-item>
             <el-form-item class="free_register_form_post">
-              <el-button type="primary" @click="free_register">免费注册</el-button>
+              <el-button type="primary" @click="free_register('free_register_form')">免费注册</el-button>
             </el-form-item>
             <el-form-item label="" class="free_register_form_protocol">
               <el-checkbox v-model="free_register_form.checked">
@@ -168,11 +176,54 @@ export default {
         { id: 6, name: '天津' },
         { id: 7, name: '重庆' }
       ],
+      // 表单规则校验
+      registerRules: {
+        sex: [
+          { required: true, message: '请选择性别', trigger: 'change' }
+        ],
+        birthday: [
+          { required: true, message: '请选择出生日期', trigger: 'change' }
+        ],
+        marital_status: [
+          { required: true, message: '请选择婚姻状况', trigger: 'change' }
+        ],
+        height: [
+          { required: true, message: '请填写身高', trigger: 'blur' }
+        ],
+        education: [
+          { required: true, message: '请选择学历', trigger: 'change' }
+        ],
+        workplace: [
+          { required: true, message: '请选择工作地', trigger: 'change' }
+        ],
+        monthly_salary_end: [
+          { required: true, message: '请填写月薪', trigger: 'blur' }
+        ],
+        phone: [
+          { required: true, message: '请填写手机号', trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '请填写验证码', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请填写账号密码', trigger: 'blur' }
+        ],
+        nickname: [
+          { required: true, message: '请填写昵称', trigger: 'blur' }
+        ],
+        introduce_oneself: [
+          { required: true, message: '请填写自我介绍', trigger: 'blur' }
+        ]
+      },
+      // 禁用大于今天的日期
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        }
+      },
       birthday_year: '',
       birthday_month: '',
       birthday_day: '',
-      monthly_salary_start: '',
-      monthly_salary_end: '',
       free_register_form: {
         sex: '',
         birthday: '',
@@ -180,6 +231,8 @@ export default {
         height: '',
         education: '',
         workplace: '',
+        monthly_salary_start: '',
+        monthly_salary_end: '',
         monthly_salary: '',
         phone: '',
         code: '',
@@ -217,25 +270,35 @@ export default {
     }
   },
   methods: {
-    free_register() {
-      console.log(this.free_register_form);
-      console.log(this.$refs.free_register_form);
-      this.free_register_form.birthday = this.birthday_year + '年' + this.birthday_month + '月' + this.birthday_day + '日';
-      this.free_register_form.monthly_salary = this.monthly_salary_start + '-' + this.monthly_salary_end;
-      this.$axios.post('/wpapi/register/form', this.free_register_form)
-      .then((response) => {
-        console.log(response);
-        if (response.status == 401) {
-          return this.$message.error(response.msg);
-        }else if (response.status == 400) {
-          return this.$message.error(response.msg);
-        }else if (response.status !== 200) {
-          return this.$message.error('注册失败！');
+    free_register(formName) {
+      console.log(this.free_register_form.checked);
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          console.log(this.free_register_form);
+          console.log(this.$refs.free_register_form);
+          // this.free_register_form.birthday = this.birthday_year + '年' + this.birthday_month + '月' + this.birthday_day + '日';
+          this.free_register_form.birthday = new Date(this.free_register_form.birthday).getFullYear() + '年' + new Date(this.free_register_form.birthday).getMonth() + '月' + new Date(this.free_register_form.birthday).getDate() + '日';
+          this.free_register_form.monthly_salary = this.free_register_form.monthly_salary_start + '-' + this.free_register_form.monthly_salary_end;
+          this.free_register_form.tag_id = this.dynamicTags;
+          this.$axios.post('/wpapi/register/form', this.free_register_form)
+          .then((response) => {
+            console.log(response);
+            if (response.status == 401) {
+              return this.$message.error(response.msg);
+            }else if (response.status == 400) {
+              return this.$message.error(response.msg);
+            }else if (response.status !== 200) {
+              return this.$message.error('注册失败！');
+            }
+            this.$message.success('恭喜你，注册成功！');
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        } else {
+          console.log('温馨提示:有必填项没有填写');
+          return false;
         }
-        this.$message.success('恭喜你，注册成功！');
-      })
-      .catch((error) => {
-        console.log(error);
       });
     },
     handleCommand(clickThis) {

@@ -109,7 +109,7 @@ export default {
     this.$emit('header', false);
 
     // 报名展示页
-    this.$axios.post('/wpapi/me/red_show', {
+    this.$axios.post('/wpapi/me/red_show_list', {
       users_id: '',
       token: ''
     })
