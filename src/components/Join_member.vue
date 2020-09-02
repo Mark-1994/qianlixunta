@@ -18,7 +18,7 @@
                 </div>
               </div>
               <div class="price_list_right">
-                <a href="javascript:;" class="click_join_member">加入会员</a>
+                <a href="javascript:;" @click="is_vip" class="click_join_member">加入会员</a>
                 <a href="javascript:;" class="membership_renewal">会员续费</a>
               </div>
             </div>
@@ -73,6 +73,17 @@ export default {
     .catch((error) => {
       console.log(error);
     });
+  },
+  methods: {
+    is_vip() {
+      this.$axios.post('/wpapi/member/is_vip', {users_id:localStorage.getItem('users_id')})
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
   }
 }
 </script>

@@ -57,7 +57,7 @@ export default {
       loginRules: {
         phone: [
           { required: true, message: '请输入账号', trigger: 'blur' },
-          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+          { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
@@ -81,7 +81,8 @@ export default {
             console.log(result);
             if (result.status !== '200') return this.$message.error(result.msg);
             this.$message.success('登陆成功');
-            window.sessionStorage.setItem('token', result.data.token);
+            window.localStorage.setItem('token', result.data.token);
+            window.localStorage.setItem('users_id', result.data.users_id);
             this.$router.push('/index');
           })
           .catch((error) => {

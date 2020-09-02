@@ -239,7 +239,7 @@ export default {
         password: '',
         nickname: '',
         introduce_oneself: '',
-        tag_id: '',
+        tag_id: [],
         checked: false
       },
       cityList: [{
@@ -271,26 +271,35 @@ export default {
   },
   methods: {
     free_register(formName) {
-      console.log(this.free_register_form.checked);
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          console.log(this.free_register_form.checked);
+          if (!this.free_register_form.checked) return this.$message.error('请勾选注册条款');
           console.log(this.free_register_form);
           console.log(this.$refs.free_register_form);
           // this.free_register_form.birthday = this.birthday_year + '年' + this.birthday_month + '月' + this.birthday_day + '日';
-          this.free_register_form.birthday = new Date(this.free_register_form.birthday).getFullYear() + '年' + new Date(this.free_register_form.birthday).getMonth() + '月' + new Date(this.free_register_form.birthday).getDate() + '日';
+          this.free_register_form.birthday = new Date(this.free_register_form.birthday).getFullYear() + '.' + new Date(this.free_register_form.birthday).getMonth() + '.' + new Date(this.free_register_form.birthday).getDate();
+          let workplace = '';
+          for (let i = 0; i < this.free_register_form.workplace.length; i++) {
+            workplace += this.free_register_form.workplace[i];
+          }
+          this.free_register_form.workplace = workplace;
           this.free_register_form.monthly_salary = this.free_register_form.monthly_salary_start + '-' + this.free_register_form.monthly_salary_end;
           this.free_register_form.tag_id = this.dynamicTags;
           this.$axios.post('/wpapi/register/form', this.free_register_form)
           .then((response) => {
             console.log(response);
-            if (response.status == 401) {
+            if (response.status == '401') {
               return this.$message.error(response.msg);
-            }else if (response.status == 400) {
+            }else if (response.status == '400') {
               return this.$message.error(response.msg);
-            }else if (response.status !== 200) {
+            }else if (response.status !== '200') {
               return this.$message.error('注册失败！');
             }
             this.$message.success('恭喜你，注册成功！');
+            window.localStorage.setItem('token', response.data.token);
+            window.localStorage.setItem('users_id', response.data.users_id);
+            this.$router.push('/login');
           })
           .catch((error) => {
             console.log(error);

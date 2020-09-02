@@ -9,18 +9,41 @@
                 <div class="article_box">
                   <div class="nav_title_cut_off">
                     <el-row>
-                      <el-col :span="3">2020.7.8<el-divider direction="vertical"></el-divider></el-col>
-                      <el-col :span="4">
-                        <el-link :underline="false"><i class="el-icon-view el-icon--left"></i> 被查看 100<el-divider direction="vertical"></el-divider></el-link>
+                      <el-col :span="3">
+                        <a href="javascript:;">最新文章</a>
                       </el-col>
-                      <el-col :span="4">
-                        <el-link :underline="false"><i class="el-icon-view el-icon--left"></i> 点赞 100</el-link>
+                      <el-col :span="3">
+                        <a href="javascript:;">最新文章</a>
+                      </el-col>
+                      <el-col :span="3">
+                        <a href="javascript:;">最新文章</a>
                       </el-col>
                     </el-row>
                     <el-divider class="cut_off_line"></el-divider>
                   </div>
                   <div class="article_article_content_info">
-                    <el-row class="article_list_item">
+                    <el-row class="article_list_item" v-for="item in article_list" :key="item.id">
+                      <el-col :span="6">
+                        <el-image
+                          :src="require('@/assets/article_list_example01.png')"
+                          fit="fit"></el-image>
+                      </el-col>
+                      <el-col :span="18">
+                        <el-row class="article_list_item_right">
+                          <el-col class="article_list_item_title">
+                            <h4>{{item.title}}</h4>
+                          </el-col>
+                          <el-col>
+                            <p>现实生活中，农夫与蛇的故事似乎总在不断上演。还记得几年前的“刘鑫江歌案”，至今仍热度不减，而舆论的焦点便是，惨案背后折射的关乎人性深处</p>
+                          </el-col>
+                          <el-col>
+                            <el-link :underline="false" icon="el-icon-edit">100</el-link>
+                            <el-link :underline="false" icon="el-icon-edit">100</el-link>
+                          </el-col>
+                        </el-row>
+                      </el-col>
+                    </el-row>
+                    <!-- <el-row class="article_list_item">
                       <el-col :span="6">
                         <el-image
                           :src="require('@/assets/article_list_example01.png')"
@@ -40,28 +63,7 @@
                           </el-col>
                         </el-row>
                       </el-col>
-                    </el-row>
-                    <el-row class="article_list_item">
-                      <el-col :span="6">
-                        <el-image
-                          :src="require('@/assets/article_list_example01.png')"
-                          fit="fit"></el-image>
-                      </el-col>
-                      <el-col :span="18">
-                        <el-row class="article_list_item_right">
-                          <el-col class="article_list_item_title">
-                            <h4>你最喜欢哪种类型的TA</h4>
-                          </el-col>
-                          <el-col>
-                            <p>现实生活中，农夫与蛇的故事似乎总在不断上演。还记得几年前的“刘鑫江歌案”，至今仍热度不减，而舆论的焦点便是，惨案背后折射的关乎人性深处</p>
-                          </el-col>
-                          <el-col>
-                            <el-link :underline="false" icon="el-icon-edit">100</el-link>
-                            <el-link :underline="false" icon="el-icon-edit">100</el-link>
-                          </el-col>
-                        </el-row>
-                      </el-col>
-                    </el-row>
+                    </el-row> -->
                   </div>
                 </div>
                 <!-- 页码 -->
@@ -102,7 +104,7 @@
                   </el-row>
                   <el-row class="join_member_box">
                     <el-col>
-                      <el-button type="primary" class="join_member">加入会员</el-button>
+                      <el-button type="primary" class="join_member"><router-link to="/join_member">加入会员</router-link></el-button>
                     </el-col>
                   </el-row>
                   <el-row>
@@ -144,8 +146,29 @@
 export default {
   data() {
     return {
-      msg: '文章页'
+      // 文章列表
+      article_list: []
     }
+  },
+  created() {
+    // 默认文章列表
+    this.$axios.get('/wpapi/article/category_list', {params: {id:1}})
+    .then((result) => {
+      console.log(result);
+      this.article_list = result.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+    // 最新文章
+    this.$axios.get('/wpapi/article/category', {params:{}})
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 }
 </script>
@@ -227,6 +250,9 @@ export default {
     font-weight: 700;
     font-size: 24px;
   }
+  .join_member a {
+    color: #fff;
+  }
   .xuntazhuanxian01_des_info {
     text-shadow: 0px 3px 6px rgba(0,0,0,0.29);
     padding: 0 35px;
@@ -266,6 +292,9 @@ export default {
   }
   .nav_title_cut_off {
     padding: 23px 59px 0;
+  }
+  .nav_title_cut_off .el-row .el-col a {
+    border-bottom: 1px solid red;
   }
   .article_list_item {
     padding: 24px 59px;

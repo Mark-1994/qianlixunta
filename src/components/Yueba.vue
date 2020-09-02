@@ -6,24 +6,25 @@
           <el-row class="distance_top">
             <el-col :span="17">
               <div class="activity_list_all">
-                <el-card class="activity_list_item">
+                <el-card class="activity_list_item" v-for="item in yuebazouqi_list.data" :key="item.id">
                   <div class="activity_list_item_top">
-                    <span>免费</span>
-                    <h4>单身福利！大型线下联谊活动</h4>
+                    <span>{{item.pay_price}}元</span>
+                    <h4>{{item.title}}</h4>
                   </div>
                   <div class="activity_list_item_middle">
-                    <img src="../assets/xianxialianyi01.png" alt="">
+                    <img :src="'http://admin.qianlixunta.com'+item.img" alt="" v-if="item.img">
+                    <div v-if="!item.img"><br><br><br></div>
                     <div class="position_bottom_info">
                       <div class="left_adress_time">
-                        <span class="adress_activity_now">武汉</span>
-                        <span class="adress_activity_time">活动时间：7月-9月</span>
+                        <span class="adress_activity_now">{{item.city}}</span>
+                        <span class="adress_activity_time">活动时间：{{item.start_time}}-{{item.end_time}}</span>
                       </div>
-                      <div class="right_adress_time">已报名：<span>68</span></div>
+                      <div class="right_adress_time">已报名：<span>{{item.join_nums}}</span></div>
                     </div>
                   </div>
                   <div class="activity_list_item_bottom">
                     <div class="item_bottom_left">
-                      倒计时 00:11:22
+                      倒计时 {{countTime(item.end_time)}}
                     </div>
                     <div class="item_bottom_right">
                       <a href="javascript:;">立即报名</a>
@@ -82,12 +83,51 @@
 export default {
   data() {
     return {
-      msg: '约吧页面'
+      // 约吧走起展示列表
+      yuebazouqi_list: {},
+      // 倒计时
+      d: '0',
+      h: '0',
+      m: '0',
+      s: '0'
     }
   },
   created() {
     this.$emit('header', true);
     this.$emit('footer', true);
+
+    // 约吧走起--展示列表
+    this.$axios.get('/wpapi/member/let_go_list', {params:{}})
+    .then((result) => {
+      console.log(result);
+      this.yuebazouqi_list = result;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  },
+  methods: {
+    countTime: function(end_time) {
+      // 获取当前时间
+      let date = new Date();
+      let now = date.getTime();
+      // 设置截止时间
+      let endDate = new Date(end_time);
+      let end = endDate.getTime();
+      // 时间差
+      let leftTime = end - now;
+      // 定义变量 d,h,m,s 保存倒计时的时间
+      if(leftTime >= 0) {
+        this.d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+        this.h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+        this.m = Math.floor((leftTime / 1000 / 60) % 60);
+        this.s = Math.floor((leftTime / 1000) % 60);
+      }
+      // console.log(this.s);
+      // 递归每秒调用countTime方法，显示动态时间效果
+      setTimeout(this.countTime, 1000);
+      return this.d + '天' + this.h + '时' + this.m + '分' + this.s + '秒';
+    }
   }
 }
 </script>

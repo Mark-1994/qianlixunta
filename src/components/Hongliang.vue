@@ -26,20 +26,20 @@
     </div>
     <div class="x-wrap">
       <ul class="ul_list_goods">
-        <li>
+        <li v-for="item in baoming_taocan_list.data" :key="item.id">
           <div class="list_item_left">
-            <h3>3000</h3>
+            <h3>{{item.price}}</h3>
             <div class="right_right">
-              <span>红娘一对一</span>
-              <span>12个月</span>
+              <span>{{item.title}}</span>
+              <span>{{item.cycle}}个月</span>
             </div>
           </div>
-          <p class="list_item_center">按您的要求精心挑选20位心仪的对象</p>
+          <p class="list_item_center">{{item.describe}}</p>
           <div class="list_item_right">
             <a href="javascript:;">立即报名</a>
           </div>
         </li>
-        <li>
+        <!-- <li>
           <div class="list_item_left">
             <h3>1888</h3>
             <div class="right_right">
@@ -51,7 +51,7 @@
           <div class="list_item_right">
             <a href="javascript:;">立即报名</a>
           </div>
-        </li>
+        </li> -->
       </ul>
       <!-- 红娘一对一特权 -->
       <div class="description_word">
@@ -100,8 +100,8 @@
 export default {
   data() {
     return {
-      // 报名列表
-      
+      // 报名套餐列表
+      baoming_taocan_list: {}
     }
   },
   created() {
@@ -109,12 +109,13 @@ export default {
     this.$emit('header', false);
 
     // 报名展示页
-    this.$axios.post('/wpapi/me/red_show_list', {
-      users_id: '',
-      token: ''
+    this.$axios.get('/wpapi/member/red_show_list', {
+      // users_id: '',
+      // token: ''
     })
     .then((result) => {
       console.log(result);
+      this.baoming_taocan_list = result;
     })
     .catch((error) => {
       console.log(error);

@@ -15,8 +15,13 @@
                     <el-radio label="女"></el-radio>
                   </el-radio-group>
                 </el-form-item>
-                <el-form-item label="生日">
-                  <el-select v-model="birthday_year" placeholder="请选择" class="register_form_birthday">
+                <el-form-item label="生日" prop="birthday">
+                  <el-date-picker
+                    v-model="minute_form.birthday"
+                    type="date"
+                    placeholder="选择日期" :picker-options="pickerOptions">
+                  </el-date-picker>
+                  <!--<el-select v-model="birthday_year" placeholder="请选择" class="register_form_birthday">
                     <el-option label="1991" value="1991"></el-option>
                     <el-option label="1992" value="1992"></el-option>
                     <el-option label="1993" value="1992"></el-option>
@@ -41,7 +46,7 @@
                   <el-select v-model="birthday_day" placeholder="请选择" class="register_form_birthday">
                     <el-option v-for="item in afterage_options" :key="item.id" :label="item.label" :value="item.value"></el-option>
                   </el-select>
-                  日
+                  日-->
                 </el-form-item>
                 <el-form-item label="现居住地" prop="address">
                   <el-cascader
@@ -315,7 +320,7 @@
                           </div>
                         </div>
                         <div class="default_recommend_member_right">
-                          <h4>{{item.name ? item.name : '无数据'}}</h4>
+                          <h4>{{item.nickname ? item.nickname : '无数据'}}</h4>
                           <div class="default_recommend_member_left_info">
                             <span>{{now_year-item.users_year == now_year ? '无数据' : now_year-item.users_year}}岁</span>
                             <span>{{item.height ? item.height : '无数据'}}cm</span>
@@ -401,7 +406,8 @@
                         <ul>
                           <li v-for="item in affective_interaction" :key="item.id"><a href="javascript:;">{{item.cate_name}}</a></li>
                         </ul>
-                        <a href="javascript:;">查看更多&gt;</a>
+                        <!-- <a href="javascript:;">查看更多&gt;</a> -->
+                        <router-link to="/article_list">查看更多&gt;</router-link>
                       </div>
                       <div class="qingganjiaoliu_news_list">
                         <el-row>
@@ -413,7 +419,7 @@
                               </div>
                               <ul>
                                 <li v-for="item in article_list_one" :key="item.id">
-                                  <a :href="'/#/article_article?id='+item.id">{{item.title}}</a>
+                                  <a :href="'/#/article_article/'+item.id">{{item.title}}</a>
                                 </li>
                               </ul>
                             </div>
@@ -426,7 +432,7 @@
                               </div>
                               <ul>
                                 <li v-for="item in article_list_two" :key="item.id">
-                                  <a :href="'/#/article_article?id='+item.id">{{item.title}}</a>
+                                  <a :href="'/#/article_article/'+item.id">{{item.title}}</a>
                                 </li>
                               </ul>
                             </div>
@@ -439,7 +445,7 @@
                               </div>
                               <ul>
                                 <li v-for="item in article_list_three" :key="item.id">
-                                  <a :href="'/#/article_article?id='+item.id">{{item.title}}</a>
+                                  <a :href="'/#/article_article/'+item.id">{{item.title}}</a>
                                 </li>
                               </ul>
                             </div>
@@ -524,10 +530,19 @@ export default {
           }
         ]
       }],
+      // 禁用大于今天的日期
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        }
+      },
       // 一分钟注册表单校验规则
       minuteRules: {
         sex: [
           { required: true, message: '请选择性别', trigger: 'change' }
+        ],
+        birthday: [
+          { required: true, message: '请填写出生日期', trigger: 'change' }
         ],
         address: [
           { required: true, message: '请选择居住地址', trigger: 'change' }
@@ -599,7 +614,7 @@ export default {
     });
 
     // 情感交流第一列数据
-    this.$axios.get('/wpapi/article/category_list', {id:1})
+    this.$axios.get('/wpapi/article/category_list', {params:{id:1}})
     .then((result) => {
       console.log(result);
       this.article_list_one = result.data;
@@ -609,7 +624,7 @@ export default {
     });
     
     // 情感交流第二列数据
-    this.$axios.get('/wpapi/article/category_list', {id:2})
+    this.$axios.get('/wpapi/article/category_list', {params:{id:2}})
     .then((result) => {
       this.article_list_two = result.data;
     })
@@ -618,7 +633,7 @@ export default {
     });
 
     // 情感交流第三列数据
-    this.$axios.get('/wpapi/article/category_list', {id:3})
+    this.$axios.get('/wpapi/article/category_list', {params:{id:3}})
     .then((result) => {
       this.article_list_three = result.data;
     })
@@ -641,7 +656,8 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           var address01 = '';
-          this.minute_form.birthday = this.birthday_year + '.' + this.birthday_month + '.' + this.birthday_day
+          // this.minute_form.birthday = this.birthday_year + '.' + this.birthday_month + '.' + this.birthday_day;
+          this.minute_form.birthday = new Date(this.minute_form.birthday).getFullYear() + '.' + new Date(this.minute_form.birthday).getMonth() + '.' + new Date(this.minute_form.birthday).getDate();
           for (let i = 0; i < this.minute_form.address.length; i++) {
             address01 += this.minute_form.address[i];
           }
@@ -651,6 +667,7 @@ export default {
             console.log(result);
             if (result.status !== '200') return this.$message.error(result.msg);
             this.$message.success(result.msg);
+            this.$router.push('/login');
           })
           .catch((error) => {
             console.log(error);

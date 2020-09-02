@@ -5,7 +5,7 @@
       <el-main>
         <div class="mine_info_show_change">
           <div class="mine_info">
-            <el-row>
+            <el-row class="mine_info_items">
               <el-col :span="6">
                 <div class="mine_info_left">
                   <div class="mine_img_info">
@@ -17,7 +17,7 @@
                     <div class="three_images_status">
                       <img src="../assets/shouji01.png" alt="">
                       <img src="../assets/shimingrenzheng01.png" alt="">
-                      <img src="../assets/shouji01.png" alt="">
+                      <img src="../assets/shimingrenzheng03.png" alt="">
                     </div>
                     <a href="javascript:;">完善个人信息</a>
                   </div>
@@ -466,6 +466,12 @@ export default {
       activeNames: ['1']
     }
   },
+  created: function() {
+    if (!(window.localStorage.getItem('token') && window.localStorage.getItem('users_id'))) {
+      this.$message.error('您还没有登录，请您先登陆！');
+      this.$router.push('/login');
+    }
+  },
   methods: {
     handleCommand(command) {
       this.$message('click on item ' + command);
@@ -487,6 +493,10 @@ export default {
     border-radius: 30px;
     box-shadow: 1px 2px 2px 0px rgba(141,141,141,0.3);
     padding: 27px;
+  }
+  .mine_info_items {
+    display: flex;
+    align-items: center;
   }
   .mine_info_left {
     display: flex;
