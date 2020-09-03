@@ -2,7 +2,7 @@
   <div class="one_by_one">
     <header>
       <div class="header_content_center">
-        <a href="javascript:;">
+        <a href="/#/index">
           <!-- <img src="../assets/logo01.png" alt="" /> -->
           <span>LOGO</span>
           <span>红娘一对一</span>
@@ -21,16 +21,16 @@
         </div>
         <div class="logo_income_desk_middle">
           <div>
-            <p>订单编号：********</p>
-            <p>订单类型：********</p>
+            <p>订单编号：{{order_son}}</p>
+            <p>订单类型：{{title}}</p>
           </div>
-          <div>应付金额：¥78.40</div>
+          <div>应付金额：¥{{order_price}}</div>
         </div>
         <div class="logo_income_desk_bottom">
           <el-tabs type="border-card">
             <el-tab-pane label="微信支付">
               <div class="center_erweima_two">
-                <img src="../assets/eg_erweima01.png" alt=""><br>
+                <img :src="code_img" alt=""><br>
                 <img src="../assets/shuomingwenzi01.png" alt="">
               </div>
             </el-tab-pane>
@@ -46,26 +46,49 @@
 export default {
   data() {
     return {
-      msg: '红娘一对一',
-      radio: '1',
-      checked: false
+      // 订单编号
+      order_son: '',
+      // 应付金额
+      order_price: '',
+      // 订单类型
+      title: '',
+      // 微信支付二维码
+      code_img: ''
     }
   },
   created: function() {
-    this.$axios.post('/api/statistics', {
-        abc: 'a',
-        def: 'b'
-    })
-    .then(function(response) {
-      console.log(response);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
     this.$emit('header', false);
+
+    // 168会员微信支付展示页面
+    if (this.$route.params.type == 1) {
+      this.$axios.get('/wpapi/member/wx_pay', {params:{users_id:localStorage.getItem('users_id'),order_id:this.$route.params.order_id,type:this.$route.params.type}})
+      .then((result) => {
+        console.log(result);
+        this.order_son = result.data.order_son;
+        this.order_price = result.data.order_price;
+        this.title = result.data.title;
+        this.code_img = result.data.code_img;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    } else if (this.$route.params.type == 3) {
+      // 红娘一对一微信支付展示页面
+      this.$axios.get('/wpapi/member/wx_pay', {params:{users_id:localStorage.getItem('user_id'),order_id:this.$route.params.order_id,type:this.$route.params.type,super_vip_id: this.$route.params.super_vip_id}})
+      .then((result) => {
+        console.log(result);
+        this.order_son = result.data.order_son;
+        this.order_price = result.data.order_price;
+        this.title = result.data.title;
+        this.code_img = result.data.code_img;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
   },
   methods: {
-    
+
   }
 }
 </script>

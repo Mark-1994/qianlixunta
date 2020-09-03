@@ -19,7 +19,7 @@
                       <img src="../assets/shimingrenzheng01.png" alt="">
                       <img src="../assets/shimingrenzheng03.png" alt="">
                     </div>
-                    <a href="javascript:;">完善个人信息</a>
+                    <a href="javascript:;"><el-badge is-dot>完善个人信息</el-badge></a>
                   </div>
                 </div>
               </el-col>
@@ -30,13 +30,13 @@
                       <span class="flag_num">0</span>
                       <span class="flag_name">未读消息</span>
                     </li>
-                    <li>
-                      <span class="flag_num">0</span>
-                      <span class="flag_name">未读消息</span>
+                    <li class="shuikanguowo01">
+                      <span class="flag_num"><el-badge is-dot class="item">0</el-badge></span>
+                      <span class="flag_name">谁看过我</span>
                     </li>
                     <li>
                       <span class="flag_num">0</span>
-                      <span class="flag_name">未读消息</span>
+                      <span class="flag_name">新增关注</span>
                     </li>
                   </ul>
                 </div>
@@ -54,15 +54,15 @@
                       </li>
                       <li>
                         <span class="other_num">0</span>
-                        <span class="other_name">关注我的</span>
+                        <span class="other_name">我看过的</span>
                       </li>
                       <li>
                         <span class="other_num">0</span>
-                        <span class="other_name">关注我的</span>
+                        <span class="other_name">好友</span>
                       </li>
                       <li>
                         <span class="other_num">0</span>
-                        <span class="other_name">关注我的</span>
+                        <span class="other_name">赞过我</span>
                       </li>
                     </ul>
                   </div>
@@ -83,10 +83,10 @@
                     <p class="wanshanziliaoshuoming01">为保证资料真实有效，灰色字体信息不得随意修改</p>
                     <el-form ref="mine_data_form" :model="mine_data_form" label-width="80px">
                       <el-form-item label="昵称">
-                        <el-input v-model="mine_data_form.name"></el-input>
+                        <el-input v-model="mine_data_form.nickname" style="width: 220px;" placeholder="请输入"></el-input>
                       </el-form-item>
                       <el-form-item label="性别">
-                        <el-select v-model="sex" placeholder="请选择">
+                        <el-select v-model="mine_data_form.improve_sex" placeholder="请选择">
                           <el-option
                             v-for="item in sex_options"
                             :key="item.id"
@@ -96,24 +96,14 @@
                         </el-select>
                       </el-form-item>
                       <el-form-item label="出生日期">
-                        <el-select v-model="mine_data_form.year" placeholder="年" class="register_form_birthday">
-                          <el-option label="1991" value="1991"></el-option>
-                          <el-option label="1992" value="1992"></el-option>
-                        </el-select>
-                        年
-                        <el-select v-model="mine_data_form.month" placeholder="月" class="register_form_birthday">
-                          <el-option label="01" value="01"></el-option>
-                          <el-option label="02" value="02"></el-option>
-                        </el-select>
-                        月
-                        <el-select v-model="mine_data_form.day" placeholder="日" class="register_form_birthday">
-                          <el-option label="01" value="01"></el-option>
-                          <el-option label="02" value="02"></el-option>
-                        </el-select>
-                        日
+                        <el-date-picker
+                          v-model="mine_data_form.birth_day"
+                          type="date"
+                          placeholder="选择日期">
+                        </el-date-picker>
                       </el-form-item>
                       <el-form-item label="生肖">
-                        <el-select v-model="animal" placeholder="请选择">
+                        <el-select v-model="mine_data_form.the_chinese_zodiac" placeholder="请选择">
                           <el-option
                             v-for="item in animal_options"
                             :key="item.id"
@@ -123,7 +113,7 @@
                         </el-select>
                       </el-form-item>
                       <el-form-item label="星座">
-                        <el-select v-model="constellation" placeholder="请选择">
+                        <el-select v-model="mine_data_form.constellation" placeholder="请选择">
                           <el-option
                             v-for="item in constellation_options"
                             :key="item.id"
@@ -133,10 +123,10 @@
                         </el-select>
                       </el-form-item>
                       <el-form-item label="姓名">
-                        <el-input v-model="mine_data_form.username"></el-input>
+                        <el-input v-model="mine_data_form.name" style="width: 220px;"></el-input>
                       </el-form-item>
                       <el-form-item label="婚姻状况">
-                        <el-select v-model="marriage" placeholder="请选择">
+                        <el-select v-model="mine_data_form.imp_marital_status" placeholder="请选择">
                           <el-option
                             v-for="item in marriage_options"
                             :key="item.id"
@@ -146,14 +136,14 @@
                         </el-select>
                       </el-form-item>
                       <el-form-item label="身份证号">
-                        <el-input v-model="mine_data_form.userid"></el-input>
+                        <el-input v-model="mine_data_form.id_card" style="width: 220px;"></el-input>
                       </el-form-item>
                       <p class="height_education_monthly_pay">身高、学历、月薪的信息不可随意修改，一个月内只允许修改一次。</p>
                       <el-form-item label="身高">
-                        <el-input v-model="mine_data_form.userheight"></el-input>
+                        <el-input v-model="mine_data_form.imp_height" style="width: 100px;"></el-input>&nbsp;cm
                       </el-form-item>
                       <el-form-item label="学历">
-                        <el-select v-model="education" placeholder="请选择">
+                        <el-select v-model="mine_data_form.imp_education" placeholder="请选择">
                           <el-option
                             v-for="item in education_options"
                             :key="item.id"
@@ -163,23 +153,23 @@
                         </el-select>
                       </el-form-item>
                       <el-form-item label="月薪">
-                        <el-input v-model="mine_data_form.monthmoney"></el-input>
+                        <el-input v-model="mine_data_form.imp_monthly_salary" style="width: 100px;"></el-input>&nbsp;元
                       </el-form-item>
                       <p class="danger_info_edit">以下信息，希望您依照实际情况谨慎修改。</p>
                       <el-form-item label="所在地区">
-                        <el-input v-model="mine_data_form.nowadress"></el-input>
+                        <el-input v-model="mine_data_form.address" style="width: 220px;"></el-input>
                       </el-form-item>
                       <el-form-item label="有无子女">
-                        <el-input v-model="mine_data_form.nochildren"></el-input>
+                        <el-input v-model="mine_data_form.is_children" style="width: 220px;"></el-input>
                       </el-form-item>
                       <el-form-item label="血型">
-                        <el-input v-model="mine_data_form.blood"></el-input>
+                        <el-input v-model="mine_data_form.blood_type" style="width: 220px;"></el-input>
                       </el-form-item>
                       <el-form-item label="购车情况">
-                        <el-input v-model="mine_data_form.car"></el-input>
+                        <el-input v-model="mine_data_form.car_type" style="width: 220px;"></el-input>
                       </el-form-item>
                       <el-form-item>
-                        <el-button type="primary">保存</el-button>
+                        <el-button type="primary" @click="save_info">保存</el-button>
                       </el-form-item>
                     </el-form>
                   </el-tab-pane>
@@ -381,34 +371,73 @@ export default {
         { id: 7, name: '重庆' }
       ],
       mine_data_form: {
-        
+        nickname: '',
+        improve_sex: '',
+        birth_day: '',
+        the_chinese_zodiac: '',
+        constellation: '',
+        name: '',
+        imp_marital_status: '',
+        id_card: '',
+        imp_height: '',
+        imp_education: '',
+        imp_monthly_salary: '',
+        address: '',
+        is_children: '',
+        blood_type: '',
+        car_type: ''
       },
       customColor: '#409eff',
       percentage: 20,
       sex: '',
       sex_options: [
-        { value: '男', label: '男', id: 1},
-        { value: '女', label: '女', id: 2}
+        { value: '1', label: '男', id: 1},
+        { value: '0', label: '女', id: 2}
       ],
       animal: '',
       animal_options: [
-        { value: '猪', label: '猪', id: 1},
-        { value: '狗', label: '狗', id: 2}
+        { value: '鼠', label: '鼠', id: 1},
+        { value: '牛', label: '牛', id: 2},
+        { value: '虎', label: '虎', id: 3},
+        { value: '兔', label: '兔', id: 4},
+        { value: '龙', label: '龙', id: 5},
+        { value: '蛇', label: '蛇', id: 6},
+        { value: '马', label: '马', id: 7},
+        { value: '羊', label: '羊', id: 8},
+        { value: '猴', label: '猴', id: 9},
+        { value: '鸡', label: '鸡', id: 10},
+        { value: '狗', label: '狗', id: 11},
+        { value: '猪', label: '猪', id: 12}
       ],
       constellation: '',
       constellation_options: [
-        { value: '天蝎座', label: '天蝎座', id: 1},
-        { value: '金牛座', label: '金牛座', id: 2}
+        { value: '白羊座', label: '白羊座', id: 1},
+        { value: '金牛座', label: '金牛座', id: 2},
+        { value: '双子座', label: '双子座', id: 3},
+        { value: '巨蟹座', label: '巨蟹座', id: 4},
+        { value: '狮子座', label: '狮子座', id: 5},
+        { value: '处女座', label: '处女座', id: 6},
+        { value: '天秤座', label: '天秤座', id: 7},
+        { value: '天蝎座', label: '天蝎座', id: 8},
+        { value: '射手座', label: '射手座', id: 9},
+        { value: '摩羯座', label: '摩羯座', id: 10},
+        { value: '水瓶座', label: '水瓶座', id: 11},
+        { value: '双鱼座', label: '双鱼座', id: 12}
       ],
       marriage: '',
       marriage_options: [
         { value: '未婚', label: '未婚', id: 1},
-        { value: '离异', label: '离异', id: 2}
+        { value: '离异', label: '离异', id: 2},
+        { value: '丧偶', label: '丧偶', id: 3}
       ],
       education: '',
       education_options: [
-        { value: '本科', label: '本科', id: 1},
-        { value: '研究生', label: '研究生', id: 2}
+        { value: '博士研究生', label: '博士研究生', id: 1},
+        { value: '硕士研究生', label: '硕士研究生', id: 2},
+        { value: '本科', label: '本科', id: 3},
+        { value: '大专', label: '大专', id: 4},
+        { value: '高职', label: '高职', id: 5},
+        { value: '其他', label: '其他', id: 6}
       ],
       // 设置择偶条件表单
       set_choose_form: {},
@@ -471,6 +500,8 @@ export default {
       this.$message.error('您还没有登录，请您先登陆！');
       this.$router.push('/login');
     }
+
+
   },
   methods: {
     handleCommand(command) {
@@ -478,6 +509,13 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    // 基本资料保存按钮
+    save_info() {
+      if (this.mine_data_form.birth_day) {
+        this.mine_data_form.birth_day = new Date(this.mine_data_form.birth_day).getFullYear() + '.' + new Date(this.mine_data_form.birth_day).getMonth() + '.' + new Date(this.mine_data_form.birth_day).getDate();
+      }
+      console.log(this.mine_data_form);
     }
   }
 }
@@ -514,6 +552,7 @@ export default {
   }
   .mine_info_middle ul li .flag_num {
     font-size: 60px;
+    color: rgba(234,234,234,1);
   }
   .mine_info_middle ul li .flag_name {
     font-size: 24px;
@@ -625,5 +664,9 @@ export default {
     width: 178px;
     height: 178px;
     display: block;
+  }
+  .shuikanguowo01,
+  .mine_info_middle ul li.shuikanguowo01 .flag_num {
+    color: rgba(230,73,128,1);
   }
 </style>

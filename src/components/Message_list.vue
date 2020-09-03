@@ -5,7 +5,7 @@
       <el-main>
         <div class="mine_info_show_change">
           <div class="mine_info">
-            <el-row>
+            <el-row class="mine_info_items">
               <el-col :span="6">
                 <div class="mine_info_left">
                   <div class="mine_img_info">
@@ -17,9 +17,9 @@
                     <div class="three_images_status">
                       <img src="../assets/shouji01.png" alt="">
                       <img src="../assets/shimingrenzheng01.png" alt="">
-                      <img src="../assets/shouji01.png" alt="">
+                      <img src="../assets/shimingrenzheng01.png" alt="">
                     </div>
-                    <a href="javascript:;">完善个人信息</a>
+                    <a href="javascript:;"><el-badge is-dot>完善个人信息</el-badge></a>
                   </div>
                 </div>
               </el-col>
@@ -30,13 +30,13 @@
                       <span class="flag_num">0</span>
                       <span class="flag_name">未读消息</span>
                     </li>
-                    <li>
-                      <span class="flag_num">0</span>
-                      <span class="flag_name">未读消息</span>
+                    <li class="shuikanguowo01">
+                      <span class="flag_num"><el-badge is-dot>0</el-badge></span>
+                      <span class="flag_name">谁看过我</span>
                     </li>
                     <li>
                       <span class="flag_num">0</span>
-                      <span class="flag_name">未读消息</span>
+                      <span class="flag_name">新增关注</span>
                     </li>
                   </ul>
                 </div>
@@ -54,15 +54,15 @@
                       </li>
                       <li>
                         <span class="other_num">0</span>
-                        <span class="other_name">关注我的</span>
+                        <span class="other_name">我看过的</span>
                       </li>
                       <li>
                         <span class="other_num">0</span>
-                        <span class="other_name">关注我的</span>
+                        <span class="other_name">好友</span>
                       </li>
                       <li>
                         <span class="other_num">0</span>
-                        <span class="other_name">关注我的</span>
+                        <span class="other_name">赞过我</span>
                       </li>
                     </ul>
                   </div>
@@ -176,6 +176,10 @@ export default {
     box-shadow: 1px 2px 2px 0px rgba(141,141,141,0.3);
     padding: 27px;
   }
+  .mine_info_items {
+    display: flex;
+    align-items: center;
+  }
   .mine_info_left {
     display: flex;
   }
@@ -192,9 +196,14 @@ export default {
   }
   .mine_info_middle ul li .flag_num {
     font-size: 60px;
+    color: rgba(234,234,234,1);
   }
   .mine_info_middle ul li .flag_name {
     font-size: 24px;
+  }
+  .mine_info_middle ul li.shuikanguowo01,
+  .mine_info_middle ul li.shuikanguowo01 .flag_num {
+    color: rgba(230,73,128,1);
   }
   .min_info_right_top {
     text-align: center;

@@ -18,7 +18,7 @@
                 </div>
               </div>
               <div class="price_list_right">
-                <a href="javascript:;" @click="is_vip" class="click_join_member">加入会员</a>
+                <a href="javascript:;" @click="is_vip(item.id,type)" class="click_join_member">加入会员</a>
                 <a href="javascript:;" class="membership_renewal">会员续费</a>
               </div>
             </div>
@@ -62,23 +62,29 @@ export default {
   data() {
     return {
       // 会员卡信息
-      member_card_list: []
+      member_card_list: [],
+      // 支付产品类型
+      type: ''
     }
   },
   created() {
     this.$axios.get('/wpapi/member/index')
     .then((result) => {
       this.member_card_list.push(result.data);
+      this.type = '1';
     })
     .catch((error) => {
       console.log(error);
     });
   },
   methods: {
-    is_vip() {
+    is_vip(id,type) {
+      if (!(localStorage.getItem('users_id') && localStorage.getItem('token'))) return this.$router.push('/login');
       this.$axios.post('/wpapi/member/is_vip', {users_id:localStorage.getItem('users_id')})
       .then((result) => {
         console.log(result);
+        if (result.data.vip_status !== 0) return this.$message.success('您已经是168会员');
+        this.$router.push('/hongniang_pay/'+id+'/'+type);
       })
       .catch((error) => {
         console.log(error);

@@ -9,14 +9,8 @@
                 <div class="article_box">
                   <div class="nav_title_cut_off">
                     <el-row>
-                      <el-col :span="3">
-                        <a href="javascript:;">最新文章</a>
-                      </el-col>
-                      <el-col :span="3">
-                        <a href="javascript:;">最新文章</a>
-                      </el-col>
-                      <el-col :span="3">
-                        <a href="javascript:;">最新文章</a>
+                      <el-col :span="3" v-for="(item,index) in article_category" :key="item.id">
+                        <a href="javascript:;" :class="index == cur ? 'nav_this' : ''" @click="click_change_list(item.id, index)">{{item.cate_name}}</a>
                       </el-col>
                     </el-row>
                     <el-divider class="cut_off_line"></el-divider>
@@ -24,21 +18,26 @@
                   <div class="article_article_content_info">
                     <el-row class="article_list_item" v-for="item in article_list" :key="item.id">
                       <el-col :span="6">
-                        <el-image
+                        <!-- <el-image
                           :src="require('@/assets/article_list_example01.png')"
+                          fit="fit"></el-image> -->
+                        <el-image
+                          :src="'http://admin.qianlixunta.com'+item.thumbnail"
                           fit="fit"></el-image>
                       </el-col>
                       <el-col :span="18">
                         <el-row class="article_list_item_right">
                           <el-col class="article_list_item_title">
-                            <h4>{{item.title}}</h4>
+                            <h4>
+                              <router-link :to="'/article_article/'+item.id">{{item.title}}</router-link>
+                            </h4>
                           </el-col>
-                          <el-col>
-                            <p>现实生活中，农夫与蛇的故事似乎总在不断上演。还记得几年前的“刘鑫江歌案”，至今仍热度不减，而舆论的焦点便是，惨案背后折射的关乎人性深处</p>
+                          <el-col class="show_article_desc01">
+                            <p v-html="item.content" class="show_article_desc02"></p>
                           </el-col>
-                          <el-col>
-                            <el-link :underline="false" icon="el-icon-edit">100</el-link>
-                            <el-link :underline="false" icon="el-icon-edit">100</el-link>
+                          <el-col class="num_of_likes_views01">
+                            <el-link :underline="false" icon="el-icon-edit">{{item.num_of_likes}}</el-link>
+                            <el-link :underline="false" icon="el-icon-edit">{{item.views}}</el-link>
                           </el-col>
                         </el-row>
                       </el-col>
@@ -69,10 +68,10 @@
                 <!-- 页码 -->
                 <el-pagination
                 class="page_list"
-                :page-sizes="[100, 200, 300, 400]"
-                :page-size="100"
+                :page-sizes="[20, 30, 50, 80]"
+                :page-size="6"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="400">
+                :total="total">
               </el-pagination>
               </div>
             </el-col>
@@ -146,29 +145,53 @@
 export default {
   data() {
     return {
+      // 文章分类
+      article_category: {},
       // 文章列表
-      article_list: []
+      article_list: [],
+      // 指定分类下添加下划线
+      cur: '0',
+      // 文章总条数
+      total: 1,
     }
   },
   created() {
     // 默认文章列表
-    this.$axios.get('/wpapi/article/category_list', {params: {id:1}})
+    this.$axios.get('/wpapi/article/category_list_page', {params: {cate_id:1,page:1}})
     .then((result) => {
       console.log(result);
-      this.article_list = result.data;
+      this.article_list = result.data.data;
+      this.total = result.data.total;
     })
     .catch((error) => {
       console.log(error);
     });
 
-    // 最新文章
+    // 文章分类列表
     this.$axios.get('/wpapi/article/category', {params:{}})
     .then((result) => {
       console.log(result);
+      this.article_category = result.data;
     })
     .catch((error) => {
       console.log(error);
     });
+  },
+  methods: {
+    click_change_list(id,index) {
+      // console.log(id);
+      // console.log(index);
+      this.cur = index;
+      this.$axios.get('/wpapi/article/category_list_page', {params:{cate_id: id,page:1}})
+      .then((result) => {
+        console.log(result);
+        this.article_list = result.data.data;
+        this.total = result.data.total;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
   }
 }
 </script>
@@ -291,10 +314,14 @@ export default {
     margin: 10px auto 0;
   }
   .nav_title_cut_off {
-    padding: 23px 59px 0;
+    padding: 23px 0 0 59px;
   }
   .nav_title_cut_off .el-row .el-col a {
-    border-bottom: 1px solid red;
+    color: rgba(35,41,52,1);
+    padding-bottom: 6px;
+  }
+  .nav_title_cut_off .el-row .el-col a.nav_this {
+    border-bottom: 4px solid rgba(230,73,128,1);
   }
   .article_list_item {
     padding: 24px 59px;
@@ -307,6 +334,9 @@ export default {
     margin: 0;
     font-size: 20px;
   }
+  .article_list_item_title h4 a {
+    color: #000;
+  }
   .article_list_item_right {
     margin-left: 34px;
   }
@@ -315,5 +345,19 @@ export default {
   }
   .page_list {
     margin: 36px 0 46px;
+  }
+  .show_article_desc01 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .show_article_desc02 {
+    overflow: hidden;
+    margin: 0 0 10px;
+  }
+  .num_of_likes_views01 a {
+    margin: 0 5px;
   }
 </style>

@@ -37,11 +37,11 @@ Vue.use(VueRouter)
       component: () => import('@/components/Hongliang')
     },
     {
-      path: '/hongniang_pay',
+      path: '/hongniang_pay/:id/:type',
       component: () => import('@/components/Hongniang_pay')
     },
     {
-      path: '/weixin_pay',
+      path: '/weixin_pay/:order_id/:type/:super_vip_id',
       component: () => import('@/components/Weixin_pay')
     },
     {

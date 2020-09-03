@@ -36,7 +36,7 @@
           </div>
           <p class="list_item_center">{{item.describe}}</p>
           <div class="list_item_right">
-            <a href="javascript:;">立即报名</a>
+            <a href="javascript:;" @click="is_vip(item.id,type)">立即报名</a>
           </div>
         </li>
         <!-- <li>
@@ -101,7 +101,9 @@ export default {
   data() {
     return {
       // 报名套餐列表
-      baoming_taocan_list: {}
+      baoming_taocan_list: {},
+      // 支付产品类型
+      type: ''
     }
   },
   created() {
@@ -116,10 +118,25 @@ export default {
     .then((result) => {
       console.log(result);
       this.baoming_taocan_list = result;
+      this.type = '3';
     })
     .catch((error) => {
       console.log(error);
     });
+  },
+  methods: {
+    is_vip(id,type) {
+      if (!(localStorage.getItem('users_id') && localStorage.getItem('token'))) return this.$router.push('/login');
+      this.$axios.post('/wpapi/member/is_vip', {users_id:localStorage.getItem('users_id')})
+      .then((result) => {
+        console.log(result);
+        if (result.data.super_vip_status !== 0) return this.$message.success('您已经是红娘一对一会员');
+        this.$router.push('/hongniang_pay/'+id+'/'+type);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
   }
 }
 </script>
