@@ -75,6 +75,10 @@ Vue.use(VueRouter)
     {
       path: '/article_list',
       component: () => import('@/views/Article_list')
+    },
+    {
+      path: '/other_user',
+      component: () => import('@/views/Other_user')
     }
 ]
 

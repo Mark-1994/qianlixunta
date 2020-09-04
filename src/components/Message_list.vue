@@ -9,11 +9,11 @@
               <el-col :span="6">
                 <div class="mine_info_left">
                   <div class="mine_img_info">
-                    <img src="../assets/username01.png" alt="" />
+                    <img :src="'http://admin.qianlixunta.com'+come_news.head_portrait" alt="" />
                     <p>我的资料：80%</p>
                   </div>
                   <div class="name_phone_info">
-                    <h4>林俊杰</h4>
+                    <h4>{{come_news.nickname}}</h4>
                     <div class="three_images_status">
                       <img src="../assets/shouji01.png" alt="">
                       <img src="../assets/shimingrenzheng01.png" alt="">
@@ -27,15 +27,15 @@
                 <div class="mine_info_middle">
                   <ul>
                     <li>
-                      <span class="flag_num">0</span>
+                      <span class="flag_num">{{come_news.no_read_message}}</span>
                       <span class="flag_name">未读消息</span>
                     </li>
                     <li class="shuikanguowo01">
-                      <span class="flag_num"><el-badge is-dot>0</el-badge></span>
+                      <span class="flag_num"><el-badge is-dot>{{come_news.who_seed}}</el-badge></span>
                       <span class="flag_name">谁看过我</span>
                     </li>
                     <li>
-                      <span class="flag_num">0</span>
+                      <span class="flag_num">{{come_news.add_bind}}</span>
                       <span class="flag_name">新增关注</span>
                     </li>
                   </ul>
@@ -44,24 +44,24 @@
               <el-col :span="9">
                 <div class="mine_info_right">
                   <div class="min_info_right_top">
-                    <img src="../assets/username01.png" alt="">
+                    <img :src="'http://admin.qianlixunta.com'+come_news.head_portrait" alt="">
                   </div>
                   <div class="min_info_right_bottom">
                     <ul>
                       <li>
-                        <span class="other_num">0</span>
+                        <span class="other_num">{{come_news.bind_num}}</span>
                         <span class="other_name">关注我的</span>
                       </li>
                       <li>
-                        <span class="other_num">0</span>
+                        <span class="other_num">{{come_news.seed_num}}</span>
                         <span class="other_name">我看过的</span>
                       </li>
                       <li>
-                        <span class="other_num">0</span>
+                        <span class="other_num">{{come_news.friend_num}}</span>
                         <span class="other_name">好友</span>
                       </li>
                       <li>
-                        <span class="other_num">0</span>
+                        <span class="other_num">{{come_news.fabulous_num}}</span>
                         <span class="other_name">赞过我</span>
                       </li>
                     </ul>
@@ -74,7 +74,7 @@
             <el-row>
               <el-col :span="17">
                 <template>
-                  <el-tabs v-model="activeName" style="background-color: #fff;border-radius: 30px;">
+                  <el-tabs v-model="activeName" style="background-color: #fff;border-radius: 30px;padding: 20px;" @tab-click="handleClick">
                     <el-tab-pane label="未读消息" name="first">
                       <ul class="unread_message_list">
                         <li>
@@ -154,12 +154,69 @@ export default {
         { id: 6, name: '天津' },
         { id: 7, name: '重庆' }
       ],
-      activeName: 'first'
+      activeName: 'first',
+      // 个人信息数据
+      come_news: {}
     }
   },
+  created() {
+    // 判断用户是否登录，如果没有登录就跳转到登录页面
+    if (!(window.localStorage.getItem('token') && window.localStorage.getItem('users_id'))) {
+      this.$message.error('您还没有登录，请您先登陆！');
+      this.$router.push('/login');
+    }
+
+    // 个人信息初始化
+    this.$axios.post('/wpapi/member/come_news', {users_id: localStorage.getItem('users_id')})
+    .then((result) => {
+      console.log(result);
+      this.come_news = result.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+    // 未读消息
+    this.$axios.post('/wpapi/member/is_read_message', {users_id: localStorage.getItem('users_id'),page: 1})
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  },
   methods: {
-    handleCommand(command) {
-      this.$message('click on item ' + command);
+    // tab栏 未读消息 已读消息 系统消息 切换时触发
+    handleClick(tab, event) {
+      // console.log(tab, event);
+      if (tab.name == 'first') {
+        // 未读消息
+        this.$axios.post('/wpapi/member/is_read_message', {users_id:localStorage.getItem('users_id'),page:1})
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      } else if (tab.name == 'second') {
+        // 已读消息
+        this.$axios.post('/wpapi/member/had_read_message', {users_id:localStorage.getItem('users_id'),page:1})
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      } else if (tab.name == 'third') {
+        // 系统消息
+        this.$axios.post('/wpapi/member/system_message', {users_id:localStorage.getItem('users_id'),page:1})
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
     }
   }
 }
@@ -224,7 +281,12 @@ export default {
     align-items: center;
     justify-content: center;
   }
-  
+  .mine_img_info img {
+    border-radius: 50%;
+    padding: 10px;
+    width: 130px;
+    height: 130px;
+  }
   .mine_img_info p {
     border-radius: 12px;
     box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.19);

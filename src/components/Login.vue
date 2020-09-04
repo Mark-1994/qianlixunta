@@ -83,7 +83,8 @@ export default {
             this.$message.success('登陆成功');
             window.localStorage.setItem('token', result.data.token);
             window.localStorage.setItem('users_id', result.data.users_id);
-            this.$router.push('/index');
+            // this.$router.push('/index');
+            this.$router.go(-1);
           })
           .catch((error) => {
             console.log(error);

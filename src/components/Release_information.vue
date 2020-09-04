@@ -9,17 +9,17 @@
               <el-col :span="6">
                 <div class="mine_info_left">
                   <div class="mine_img_info">
-                    <img src="../assets/username01.png" alt="" />
+                    <img :src="'http://admin.qianlixunta.com'+come_news.head_portrait" alt="" />
                     <p>我的资料：80%</p>
                   </div>
                   <div class="name_phone_info">
-                    <h4>林俊杰</h4>
+                    <h4>{{come_news.nickname}}</h4>
                     <div class="three_images_status">
                       <img src="../assets/shouji01.png" alt="">
                       <img src="../assets/shimingrenzheng01.png" alt="">
                       <img src="../assets/shimingrenzheng01.png" alt="">
                     </div>
-                    <a href="javascript:;">完善个人信息</a>
+                    <a href="javascript:;"><el-badge is-dot>完善个人信息</el-badge></a>
                   </div>
                 </div>
               </el-col>
@@ -27,16 +27,16 @@
                 <div class="mine_info_middle">
                   <ul>
                     <li>
-                      <span class="flag_num">0</span>
+                      <span class="flag_num">{{come_news.no_read_message}}</span>
                       <span class="flag_name">未读消息</span>
                     </li>
-                    <li>
-                      <span class="flag_num">0</span>
-                      <span class="flag_name">未读消息</span>
+                    <li class="shuikanguowo01">
+                      <span class="flag_num"><el-badge is-dot>{{come_news.who_seed}}</el-badge></span>
+                      <span class="flag_name">谁看过我</span>
                     </li>
                     <li>
-                      <span class="flag_num">0</span>
-                      <span class="flag_name">未读消息</span>
+                      <span class="flag_num">{{come_news.add_bind}}</span>
+                      <span class="flag_name">新增关注</span>
                     </li>
                   </ul>
                 </div>
@@ -44,25 +44,25 @@
               <el-col :span="9">
                 <div class="mine_info_right">
                   <div class="min_info_right_top">
-                    <img src="../assets/username01.png" alt="">
+                    <img v-for="(item, index) in come_news.img_arr" :key="index" :src="'http://admin.qianlixunta.com'+item.head_portrait" alt="">
                   </div>
                   <div class="min_info_right_bottom">
                     <ul>
                       <li>
-                        <span class="other_num">0</span>
+                        <span class="other_num">{{come_news.bind_num}}</span>
                         <span class="other_name">关注我的</span>
                       </li>
                       <li>
-                        <span class="other_num">0</span>
-                        <span class="other_name">关注我的</span>
+                        <span class="other_num">{{come_news.seed_num}}</span>
+                        <span class="other_name">我看过的</span>
                       </li>
                       <li>
-                        <span class="other_num">0</span>
-                        <span class="other_name">关注我的</span>
+                        <span class="other_num">{{come_news.friend_num}}</span>
+                        <span class="other_name">好友</span>
                       </li>
                       <li>
-                        <span class="other_num">0</span>
-                        <span class="other_name">关注我的</span>
+                        <span class="other_num">{{come_news.fabulous_num}}</span>
+                        <span class="other_name">赞过的</span>
                       </li>
                     </ul>
                   </div>
@@ -73,21 +73,21 @@
           <div class="mine_message_list">
             <el-row>
               <el-col :span="17">
-                <el-card class="box-card" style="border-radius: 30px;margin-bottom: 23px;">
+                <el-card class="box-card" style="border-radius: 30px;margin-bottom: 23px;" v-for="(item, index) in circle_list" :key="index">
                   <div slot="header" class="clearfix header_title_info_show">
-                    <el-avatar :size="60" src="http://localhost:8080/img/username01.ea4e23dc.png"></el-avatar>
+                    <el-avatar :size="60" :src="'http://admin.qianlixunta.com'+item.head_portrait"></el-avatar>
                     <div class="item_name_time">
-                      <span class="item_name_info">林俊杰</span>
-                      <span class="month_day_item">3月10日</span>
+                      <span class="item_name_info">{{item.nickname}}</span>
+                      <span class="month_day_item">{{item.create_time}}</span>
                     </div>
                   </div>
                   <div class="text item item_fabuneirong">
-                    <p>今天天气真好，想恋爱了😃😃</p>
+                    <p>{{item.content}}</p>
                     <img src="../assets/fabu01.png" alt="">
                   </div>
                   <div class="dianzan_pinglun_num">
-                    <el-link icon="el-icon-edit">22</el-link>
-                    <el-link><i class="el-icon-view el-icon--right"></i> 3</el-link>
+                    <el-link icon="el-icon-edit">{{item.zan_num}}</el-link>
+                    <el-link><i class="el-icon-view el-icon--right"></i> {{item.message_num}}</el-link>
                   </div>
                   <div class="bottom clearfix click_three_items">
                     <el-button type="text" class="button">点赞</el-button>
@@ -169,11 +169,42 @@ export default {
       ],
       activeName: 'first',
       // 发布信息的文本
-      fabuxinxi_text: ''
+      fabuxinxi_text: '',
+      // 个人信息数据
+      come_news: {},
+      // 朋友圈列表数据初始化
+      circle_list: {}
     }
   },
   created: function() {
     this.$emit('header', true);
+
+    // 判断用户是否登录，如果没有登录就跳转到登录页面
+    if (!(window.localStorage.getItem('token') && window.localStorage.getItem('users_id'))) {
+      this.$message.error('您还没有登录，请您先登陆！');
+      this.$router.push('/login');
+    }
+
+    // 个人信息初始化
+    this.$axios.post('/wpapi/member/come_news', {users_id: localStorage.getItem('users_id')})
+    .then((result) => {
+      console.log(result);
+      this.come_news = result.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+    // 朋友圈列表数据初始化
+    this.$axios.post('/wpapi/me/circle_list', {token:localStorage.getItem('token'),users_id: localStorage.getItem('users_id')})
+    .then((result) => {
+      console.log(result);
+      this.circle_list = result.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
   },
   methods: {
     handleCommand(command) {
@@ -201,6 +232,9 @@ export default {
   .mine_info_left {
     display: flex;
   }
+  .shuikanguowo01 {
+    color: rgba(230,73,128,1);
+  }
   .mine_info_middle ul {
     display: flex;
     justify-content: space-around;
@@ -214,17 +248,36 @@ export default {
   }
   .mine_info_middle ul li .flag_num {
     font-size: 60px;
+    color: rgba(234,234,234,1);
+  }
+  .mine_info_middle ul li.shuikanguowo01 .flag_num {
+    color: rgba(230,73,128,1);
   }
   .mine_info_middle ul li .flag_name {
     font-size: 24px;
   }
   .min_info_right_top {
     text-align: center;
+    height: 70px;
+    position: relative;
   }
   .min_info_right_top img {
     width: 70px;
     height: 70px;
     border-radius: 50%;
+    position: absolute;
+    left: 50%;
+  }
+  .min_info_right_top img:nth-child(1) {
+    transform: translateX(-10%);
+    filter: blur(1px);
+  }
+  .min_info_right_top img:nth-child(2) {
+    transform: translateX(-50%);
+    filter: blur(1px);
+  }
+  .min_info_right_top img:nth-child(3) {
+    transform: translateX(-90%);
   }
   .min_info_right_bottom ul {
     display: flex;
@@ -237,7 +290,12 @@ export default {
     align-items: center;
     justify-content: center;
   }
-  
+  .mine_img_info img {
+    border-radius: 50%;
+    padding: 10px;
+    width: 130px;
+    height: 130px;
+  }
   .mine_img_info p {
     border-radius: 12px;
     box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.19);
@@ -298,7 +356,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    align-items: center;
+    /* align-items: center; */
     margin-left: 15px;
   }
   .month_day_item {
