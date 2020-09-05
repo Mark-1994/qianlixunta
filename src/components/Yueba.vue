@@ -27,7 +27,7 @@
                       倒计时 {{countTime(item.end_time)}}
                     </div>
                     <div class="item_bottom_right">
-                      <a href="javascript:;">立即报名</a>
+                      <a href="javascript:;" @click="let_go_show">立即报名</a>
                     </div>
                   </div>
                 </el-card>
@@ -127,6 +127,12 @@ export default {
       // 递归每秒调用countTime方法，显示动态时间效果
       setTimeout(this.countTime, 1000);
       return this.d + '天' + this.h + '时' + this.m + '分' + this.s + '秒';
+    },
+    // 报名展示页
+    let_go_show() {
+      this.$alert('<strong>这是 <i>HTML</i> 片段</strong>', '确认报名活动', {
+        dangerouslyUseHTMLString: true
+      });
     }
   }
 }
