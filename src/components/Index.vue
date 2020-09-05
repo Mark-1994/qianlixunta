@@ -1179,10 +1179,17 @@ export default {
     width: 52%;
     padding: 13px;
     box-shadow: 1px 2px 2px 0px rgba(0,0,0,0.16);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   .default_recommend_member_right h4 {
     font-size: 22px;
     margin: 10px 0;
+    width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .default_recommend_member_left_info span {
     font-size: 14px;
@@ -1196,7 +1203,7 @@ export default {
     text-indent: 2em;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 3;
     overflow: hidden;
   }
   .default_recommend_member_right_click {

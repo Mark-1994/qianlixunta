@@ -19,12 +19,22 @@
               <el-dropdown-item v-for="item in cityInfo" :key="item.id" :command="item.name">{{item.name}}</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <router-link to="/login">
-            <el-button size="small" round class="login">登录</el-button>
-          </router-link>
-          <router-link to="/register">
-            <el-button size="small" round class="signin">注册</el-button>
-          </router-link>
+          <span v-if="!(users_id && token)">
+            <router-link to="/login">
+              <el-button size="small" round class="login">登录</el-button>
+            </router-link>
+            <router-link to="/register">
+              <el-button size="small" round class="signin">注册</el-button>
+            </router-link>
+          </span>
+          <el-dropdown v-else @command="users_nav">
+            <span class="el-dropdown-link">
+              你好，{{users_id}}<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </el-col>
       </el-row>
       <div class="nav_bg_color">
@@ -84,12 +94,21 @@ export default {
         { id: 6, navName: '来消息啦', index: '/message_list' },
         { id: 7, navName: '红娘一对一', index: '/hongniang' },
         { id: 8, navName: '我的', index: '/basicinformation' }
-      ]
+      ],
+      // users_id
+      users_id: localStorage.getItem('users_id'),
+      // token
+      token: localStorage.getItem('token')
     }
   },
   methods: {
-    handleCommand(abc) {
-      this.$message(abc);
+    handleCommand(command) {
+      this.$message(command);
+    },
+    // 退出登录
+    users_nav(command) {
+      localStorage.clear();
+      this.$router.push('/login');
     }
   },
   created() {

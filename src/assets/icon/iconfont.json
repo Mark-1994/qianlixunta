@@ -1,0 +1,30 @@
+{
+  "id": "2048017",
+  "name": "qianlixunta-yanqianyiliang",
+  "font_family": "iconfont-qianlixunta",
+  "css_prefix_text": "icon-qianlixunta",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "579286",
+      "name": "点赞",
+      "font_class": "dianzan",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "827650",
+      "name": "评论",
+      "font_class": "pinglun",
+      "unicode": "e664",
+      "unicode_decimal": 58980
+    },
+    {
+      "icon_id": "5652786",
+      "name": "关注",
+      "font_class": "guanzhu",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    }
+  ]
+}

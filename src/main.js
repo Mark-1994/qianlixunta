@@ -4,6 +4,8 @@ import router from './router'
 import ElementUI from 'element-ui'
 import axios from 'axios'
 import 'element-ui/lib/theme-chalk/index.css'
+// 引入阿里字体图标文件
+import '@/assets/icon/iconfont.css'
 
 // 配置全局axios默认值
 axios.defaults.baseURL = 'http://admin.qianlixunta.com'

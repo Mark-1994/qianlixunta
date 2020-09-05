@@ -13,7 +13,7 @@
                     <p>我的资料：80%</p>
                   </div>
                   <div class="name_phone_info">
-                    <h4>{{come_news.nickname}}</h4>
+                    <h4>{{come_news.nickname}}<img src="../assets/zuanshi03.png" alt="" /><span>v3</span></h4>
                     <div class="three_images_status">
                       <img src="../assets/shouji01.png" alt="">
                       <img src="../assets/shimingrenzheng01.png" alt="">
@@ -44,7 +44,7 @@
               <el-col :span="9">
                 <div class="mine_info_right">
                   <div class="min_info_right_top">
-                    <img :src="'http://admin.qianlixunta.com'+come_news.head_portrait" alt="">
+                    <img v-for="(item, index) in come_news.img_arr" :key="index" :src="'http://admin.qianlixunta.com'+item.head_portrait" alt="">
                   </div>
                   <div class="min_info_right_bottom">
                     <ul>
@@ -806,7 +806,7 @@ export default {
     handleAvatarSuccess(res, file) {
       console.log(res,file);
       this.imageUrl = URL.createObjectURL(file.raw);
-      this.$message.error('上传成功！');
+      this.$message.success('上传成功！');
     },
     handleAvatarError(res, file) {
       this.$message.error('上传失败！');
@@ -982,11 +982,26 @@ export default {
   }
   .min_info_right_top {
     text-align: center;
+    height: 70px;
+    position: relative;
   }
   .min_info_right_top img {
     width: 70px;
     height: 70px;
     border-radius: 50%;
+    position: absolute;
+    left: 50%;
+  }
+  .min_info_right_top img:nth-child(1) {
+    filter: blur(1px);
+    transform: translateX(-10%);
+  }
+  .min_info_right_top img:nth-child(2) {
+    filter: blur(1px);
+    transform: translateX(-50%);
+  }
+  .min_info_right_top img:nth-child(3) {
+    transform: translateX(-90%);
   }
   .min_info_right_bottom ul {
     display: flex;
@@ -1052,6 +1067,16 @@ export default {
   }
   .name_phone_info h4 {
     text-align: center;
+    font-size: 18px;
+  }
+  .name_phone_info h4 img {
+    vertical-align: bottom;
+    margin: 0 2px 0 5px;
+  }
+  .name_phone_info h4 span {
+    color: rgba(250,176,5,1);
+    font-size: 12px;
+    vertical-align: bottom;
   }
   .name_phone_info a {
     color: rgba(230,73,128,1);

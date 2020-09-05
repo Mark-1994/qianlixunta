@@ -6,7 +6,7 @@
           <el-row class="distance_top">
             <el-col :span="17">
               <div class="activity_list_all">
-                <el-card class="activity_list_item" v-for="item in yuebazouqi_list.data" :key="item.id">
+                <el-card class="activity_list_item" v-for="item in yuebazouqi_list.data" :key="item.id" :body-style="{ padding: '20px' }">
                   <div class="activity_list_item_top">
                     <span>{{item.pay_price}}元</span>
                     <h4>{{item.title}}</h4>
@@ -139,6 +139,10 @@ export default {
   .activity_list_all {
     background-color: #fff;
   }
+  .activity_list_item {
+    border: 0;
+    box-shadow: none;
+  }
   .activity_list_item_middle img {
     width: 100%;
   }
@@ -200,7 +204,7 @@ export default {
   }
   .item_bottom_right a {
     display: inline-block;
-    background-color: rgba(255,42,134,1);
+    background: linear-gradient(125deg,#ff2a86 9%, #917fff 51%, #9effff 91%);
     border-radius: 24px;
     box-shadow: 8px 9px 18px 0px rgba(0,247,255,0.16);
     color: #fff;

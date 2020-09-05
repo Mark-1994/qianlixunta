@@ -13,7 +13,7 @@
                     <p>我的资料：80%</p>
                   </div>
                   <div class="name_phone_info">
-                    <h4>{{come_news.nickname}}</h4>
+                    <h4>{{come_news.nickname}}<img src="../assets/zuanshi03.png" alt="" /><span>v3</span></h4>
                     <div class="three_images_status">
                       <img src="../assets/shouji01.png" alt="">
                       <img src="../assets/shimingrenzheng01.png" alt="">
@@ -44,7 +44,7 @@
               <el-col :span="9">
                 <div class="mine_info_right">
                   <div class="min_info_right_top">
-                    <img :src="'http://admin.qianlixunta.com'+come_news.head_portrait" alt="">
+                    <img v-for="(item, index) in come_news.img_arr" :key="index" :src="'http://admin.qianlixunta.com'+item.head_portrait" alt="">
                   </div>
                   <div class="min_info_right_bottom">
                     <ul>
@@ -77,20 +77,21 @@
                   <el-tabs v-model="activeName" style="background-color: #fff;border-radius: 30px;padding: 20px;" @tab-click="handleClick">
                     <el-tab-pane label="未读消息" name="first">
                       <ul class="unread_message_list">
-                        <li>
+                        <li v-for="item in general_message_list.data" :key="item.id">
                           <div class="left_img_name_des">
                             <div class="user_img">
-                              <img src="../assets/username01.png" alt="">
+                              <!-- <img src="../assets/username01.png" alt=""> -->
+                              <img :src="'http://admin.qianlixunta.com'+item.head_portrait" alt="">
                             </div>
                             <div class="name_age_adress_time">
-                              <h4>昵称</h4>
+                              <h4>{{item.fromname}}</h4>
                               <div>
                                 <span>27岁</span>
                                 <span class="message_adress_item">武汉</span>
                               </div>
-                              <div class="day_time_message_list">今天 18:00</div>
+                              <div class="day_time_message_list">{{item.time}}</div>
                             </div>
-                            <div class="message_info_item">哈喽，让我唱歌给你听吧</div>
+                            <div class="message_info_item">{{item.content}}</div>
                           </div>
                           <div class="right_lijihuifu">
                             <a href="javascript:;">立即回复</a>
@@ -98,14 +99,22 @@
                         </li>
                       </ul>
                     </el-tab-pane>
-                    <el-tab-pane label="已读消息" name="second">已读消息</el-tab-pane>
-                    <el-tab-pane label="系统消息" name="third">系统消息</el-tab-pane>
+                    <el-tab-pane label="已读消息" name="second">
+                      <ul>
+                        <li v-for="item in general_message_list.data" :key="item.id">已读消息</li>
+                      </ul>
+                    </el-tab-pane>
+                    <el-tab-pane label="系统消息" name="third">
+                      <ul>
+                        <li v-for="item in general_message_list.data" :key="item.id">系统消息</li>
+                      </ul>
+                    </el-tab-pane>
                   </el-tabs>
                   <el-pagination
-                    :page-sizes="[100, 200, 300, 400]"
-                    :page-size="100"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="10"
                     layout="total, sizes, prev, pager, next, jumper"
-                    :total="400">
+                    :total="general_message_list.total">
                   </el-pagination>
                 </template>
               </el-col>
@@ -156,7 +165,9 @@ export default {
       ],
       activeName: 'first',
       // 个人信息数据
-      come_news: {}
+      come_news: {},
+      // 消息列表
+      general_message_list: {}
     }
   },
   created() {
@@ -180,6 +191,7 @@ export default {
     this.$axios.post('/wpapi/member/is_read_message', {users_id: localStorage.getItem('users_id'),page: 1})
     .then((result) => {
       console.log(result);
+      this.general_message_list = result.data;
     })
     .catch((error) => {
       console.log(error);
@@ -194,6 +206,7 @@ export default {
         this.$axios.post('/wpapi/member/is_read_message', {users_id:localStorage.getItem('users_id'),page:1})
         .then((result) => {
           console.log(result);
+          this.general_message_list = result.data;
         })
         .catch((error) => {
           console.log(error);
@@ -203,6 +216,7 @@ export default {
         this.$axios.post('/wpapi/member/had_read_message', {users_id:localStorage.getItem('users_id'),page:1})
         .then((result) => {
           console.log(result);
+          this.general_message_list = result.data;
         })
         .catch((error) => {
           console.log(error);
@@ -212,6 +226,7 @@ export default {
         this.$axios.post('/wpapi/member/system_message', {users_id:localStorage.getItem('users_id'),page:1})
         .then((result) => {
           console.log(result);
+          this.general_message_list = result.data;
         })
         .catch((error) => {
           console.log(error);
@@ -264,11 +279,26 @@ export default {
   }
   .min_info_right_top {
     text-align: center;
+    height: 70px;
+    position: relative;
   }
   .min_info_right_top img {
     width: 70px;
     height: 70px;
     border-radius: 50%;
+    position: absolute;
+    left: 50%;
+  }
+  .min_info_right_top img:nth-child(1) {
+    transform: translateX(-10%);
+    filter: blur(1px);
+  }
+  .min_info_right_top img:nth-child(2) {
+    transform: translateX(-50%);
+    filter: blur(1px);
+  }
+  .min_info_right_top img:nth-child(3) {
+    transform: translateX(-90%);
   }
   .min_info_right_bottom ul {
     display: flex;
@@ -320,6 +350,16 @@ export default {
   }
   .name_phone_info h4 {
     text-align: center;
+    font-size: 18px;
+  }
+  .name_phone_info h4 img {
+    vertical-align: bottom;
+    margin: 0 2px 0 5px;
+  }
+  .name_phone_info h4 span {
+    color: rgba(250,176,5,1);
+    font-size: 12px;
+    vertical-align: bottom;
   }
   .name_phone_info a {
     color: rgba(230,73,128,1);
@@ -360,7 +400,8 @@ export default {
     font-weight: 400;
     letter-spacing: 1px;
     font-size: 20px;
-    width: 400px;
+    width: 370px;
+    margin-right: 10px;
   }
   .right_lijihuifu a {
     background-color: rgba(230,73,128,1);
@@ -427,6 +468,7 @@ export default {
     height: 108px;
   }
   .user_img img {
-    width: 100%;
+    width: 80%;
+    border-radius: 50%;
   }
 </style>

@@ -2,7 +2,7 @@
   <div class="one_by_one">
     <header>
       <div class="header_content_center">
-        <a href="javascript:;">
+        <a href="/#/index">
           <!-- <img src="../assets/logo01.png" alt="" /> -->
           <span>LOGO</span>
           <span>红娘一对一</span>
@@ -217,7 +217,7 @@ export default {
     padding: 37px 62px;
   }
   .pay_method {
-    margin-bottom: 67px;
+    padding-bottom: 67px;
   }
   .pay_method h4 {
     margin: 43px 0 17px;

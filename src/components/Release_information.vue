@@ -13,7 +13,7 @@
                     <p>我的资料：80%</p>
                   </div>
                   <div class="name_phone_info">
-                    <h4>{{come_news.nickname}}</h4>
+                    <h4>{{come_news.nickname}}<img src="../assets/zuanshi03.png" alt="" /><span>v3</span></h4>
                     <div class="three_images_status">
                       <img src="../assets/shouji01.png" alt="">
                       <img src="../assets/shimingrenzheng01.png" alt="">
@@ -83,16 +83,17 @@
                   </div>
                   <div class="text item item_fabuneirong">
                     <p>{{item.content}}</p>
-                    <img src="../assets/fabu01.png" alt="">
+                    <!-- <img src="../assets/fabu01.png" alt=""> -->
+                    <img :src="'http://'+item.send_img" alt="">
                   </div>
                   <div class="dianzan_pinglun_num">
-                    <el-link icon="el-icon-edit">{{item.zan_num}}</el-link>
-                    <el-link><i class="el-icon-view el-icon--right"></i> {{item.message_num}}</el-link>
+                    <el-link><i class="iconfont-qianlixunta icon-qianlixuntadianzan"></i> {{item.zan_num}}</el-link>
+                    <el-link><i class="iconfont-qianlixunta icon-qianlixuntapinglun"></i> {{item.message_num}}</el-link>
                   </div>
                   <div class="bottom clearfix click_three_items">
-                    <el-button type="text" class="button">点赞</el-button>
-                    <el-button type="text" class="button">评论</el-button>
-                    <el-button type="text" class="button">关注</el-button>
+                    <el-button type="text" class="button"><i class="iconfont-qianlixunta icon-qianlixuntadianzan"></i> 点赞</el-button>
+                    <el-button type="text" class="button"><i class="iconfont-qianlixunta icon-qianlixuntapinglun"></i> 评论</el-button>
+                    <el-button type="text" class="button"><i class="iconfont-qianlixunta icon-qianlixuntaguanzhu"></i> 关注</el-button>
                   </div>
                 </el-card>
               </el-col>
@@ -200,6 +201,13 @@ export default {
     .then((result) => {
       console.log(result);
       this.circle_list = result.data;
+      console.log(JSON.parse(result.data[0].send_img)[0]);
+      this.circle_list.forEach(element => {
+        if (element.send_img) {
+          element.send_img = JSON.parse(element.send_img)[0];
+          // console.log(element.send_img);
+        }
+      });
     })
     .catch((error) => {
       console.log(error);
@@ -329,6 +337,16 @@ export default {
   }
   .name_phone_info h4 {
     text-align: center;
+    font-size: 18px;
+  }
+  .name_phone_info h4 span {
+    color: rgba(250,176,5,1);
+    font-size: 12px;
+    vertical-align: bottom;
+  }
+  .name_phone_info h4 img {
+    vertical-align: bottom;
+    margin: 0 2px 0 5px;
   }
   .name_phone_info a {
     color: rgba(230,73,128,1);
@@ -347,7 +365,7 @@ export default {
     margin-top: 26px;
   }
   .item_fabuneirong img {
-    width: 100%;
+    max-width: 100%;
   }
   .header_title_info_show {
     display: flex;
@@ -426,5 +444,17 @@ export default {
   }
   .dianzan_pinglun_num a {
     margin: 0 5px;
+  }
+  .icon-qianlixuntadianzan {
+    color: rgba(82, 106, 241, 1);
+  }
+  .icon-qianlixuntapinglun {
+    color: #fab005;
+  }
+  .icon-qianlixuntaguanzhu {
+    color: #e64980;
+  }
+  .button {
+    color: #000;
   }
 </style>
