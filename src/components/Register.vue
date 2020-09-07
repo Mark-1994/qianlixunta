@@ -269,6 +269,9 @@ export default {
       message_count_down_time: 0
     }
   },
+  created() {
+    this.$emit('header', true);
+  },
   methods: {
     free_register(formName) {
       this.$refs[formName].validate((valid) => {

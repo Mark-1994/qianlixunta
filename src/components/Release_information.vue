@@ -172,7 +172,9 @@ export default {
       // 发布信息的文本
       fabuxinxi_text: '',
       // 个人信息数据
-      come_news: {},
+      come_news: {
+        head_portrait: '/upload/admin/article/thumbnail/20200807/nv.png'
+      },
       // 朋友圈列表数据初始化
       circle_list: {}
     }

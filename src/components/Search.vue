@@ -210,6 +210,8 @@ export default {
     }
   },
   created() {
+    this.$emit('header', true);
+    
     this.$axios.post('/wpapi/member/find_friend', { page: 1 })
     .then((result) => {
       console.log(result);

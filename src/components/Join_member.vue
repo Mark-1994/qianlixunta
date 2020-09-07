@@ -68,6 +68,8 @@ export default {
     }
   },
   created() {
+    this.$emit('header', true);
+
     this.$axios.get('/wpapi/member/index')
     .then((result) => {
       this.member_card_list.push(result.data);

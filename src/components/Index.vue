@@ -605,6 +605,8 @@ export default {
     }
   },
   created: function() {
+    this.$emit('header', true);
+
     this.$axios.get('/wpapi/article/category', {})
     .then((response) => {
       this.affective_interaction = response.data;

@@ -77,7 +77,7 @@
             </p>
             <el-tabs>
               <el-tab-pane label="完善资料">
-                <el-tabs tab-position="left">
+                <el-tabs tab-position="left" @tab-click="handleClick">
                   <el-tab-pane label="基本资料">
                     <p class="wanshanziliao01">完善资料</p>
                     <p class="wanshanziliaoshuoming01">为保证资料真实有效，灰色字体信息不得随意修改</p>
@@ -281,7 +281,7 @@
                       </el-form-item>
                     </el-form>
                   </el-tab-pane>
-                  <el-tab-pane label="我的照片">
+                  <el-tab-pane label="我的照片" name="3">
                     <el-row>
                       <el-col>我的照片</el-col>
                     </el-row>
@@ -779,10 +779,14 @@ export default {
         // avocation: ''
       },
       // 个人信息数据
-      come_news: {}
+      come_news: {
+        head_portrait: '/upload/admin/article/thumbnail/20200807/nv.png'
+      }
     }
   },
   created: function() {
+    this.$emit('header', true);
+
     if (!(window.localStorage.getItem('token') && window.localStorage.getItem('users_id'))) {
       this.$message.error('您还没有登录，请您先登陆！');
       this.$router.push('/login');
@@ -800,8 +804,19 @@ export default {
 
   },
   methods: {
-    handleCommand(command) {
-      this.$message('click on item ' + command);
+    handleClick(tab, event) {
+      // 判断当前栏目是否是我的照片
+      if (tab.name == 3) {
+        this.$axios.post('/wpapi/register/picture_init', {
+          users_id: localStorage.getItem('users_id')
+        })
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
     },
     handleAvatarSuccess(res, file) {
       console.log(res,file);

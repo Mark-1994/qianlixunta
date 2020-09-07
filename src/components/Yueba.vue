@@ -27,7 +27,7 @@
                       倒计时 {{countTime(item.end_time)}}
                     </div>
                     <div class="item_bottom_right">
-                      <a href="javascript:;" @click="let_go_show">立即报名</a>
+                      <a href="javascript:;" @click="let_go_show(item.id)">立即报名</a>
                     </div>
                   </div>
                 </el-card>
@@ -76,6 +76,55 @@
         </div>
       </el-main>
     </el-container>
+
+    <!-- 这个是嵌套的表单 -->
+    <el-dialog title="" :visible.sync="dialogFormVisible" center class="dialog_activity">
+      <div slot="title" class="dialog-header">
+        <h3>确认报名活动</h3>
+        <span class="activity_sign_up">报名活动</span>
+        <div class="activity_des">
+          <div class="activity_des_left">
+            <img :src="'http://admin.qianlixunta.com'+let_go_show_info.img" alt="">
+          </div>
+          <div class="activity_des_right">
+            <p>{{let_go_show_info.title}}</p>
+            <div class="activity_des_right_bottom">
+              <span>活动地点：{{let_go_show_info.address}}</span>
+              <span>活动时间：{{let_go_show_info.start_time}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="contact_way">联系方式</span>
+      <el-form :model="activityForm" class="activity_form_info" ref="refActivityForm">
+        <div class="activity_form_info_top">
+          <el-form-item label="手机号：" :label-width="formLabelWidth">
+            <el-input v-model="activityForm.phone" autocomplete="off" style="width: 217px;"></el-input>
+            <span class="phone_num_des">仅用于活动联系，不会展示</span>
+          </el-form-item>
+          <el-form-item label="验证码：" :label-width="formLabelWidth">
+            <el-input v-model="activityForm.verify" autocomplete="off" style="width: 100px;"></el-input>
+            <el-image
+              style="width: 70px; height: 30px; vertical-align: middle; display: inline-block;margin: 0 20px;"
+              src="http://localhost:8080/img/huodong_yugao01.095909fa.png"
+              fit="fit"></el-image>
+            <el-link href="javascript:;" style="display: inline;">换一张</el-link>
+          </el-form-item>
+        </div>
+        <span class="payment_method_text">支付方式</span>
+        <el-form-item class="payment_method">
+          <el-radio v-model="activityForm.payment_method" label="0">支付宝</el-radio>
+          <el-radio v-model="activityForm.payment_method" label="1">微信支付</el-radio>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <!-- <el-button @click="dialogFormVisible = false">取 消</el-button> -->
+        <el-button type="primary" class="activity_sign_up_sure" @click="activity_sign_up_sure_btn(activityForm.id)">确认报名</el-button>
+        <!-- `checked` 为 true 或 false -->
+        <el-checkbox v-model="activity_checked">同意千里寻他报名须知</el-checkbox>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -89,7 +138,23 @@ export default {
       d: '0',
       h: '0',
       m: '0',
-      s: '0'
+      s: '0',
+      // 控制弹框显示隐藏
+      dialogFormVisible: false,
+      // 确认报名活动表单数据
+      activityForm: {
+        phone: '',
+        verify: '',
+        payment_method: '0'
+      },
+      // 输入框描述
+      formLabelWidth: '80px',
+      // 同意千里寻他报名须知
+      activity_checked: false,
+      // 活动报名页信息
+      let_go_show_info: {
+        img: '/upload/admin/let_go/20200729/ff37e981b3b7ca9130eca455e13e4fbe.png'
+      }
     }
   },
   created() {
@@ -129,10 +194,49 @@ export default {
       return this.d + '天' + this.h + '时' + this.m + '分' + this.s + '秒';
     },
     // 报名展示页
-    let_go_show() {
-      this.$alert('<strong>这是 <i>HTML</i> 片段</strong>', '确认报名活动', {
-        dangerouslyUseHTMLString: true
+    let_go_show(let_go_id) {
+      this.dialogFormVisible = true;
+      this.activityForm.id = let_go_id;
+      console.log(let_go_id);
+      this.$axios.post('/wpapi/member/let_go_show', {
+        let_go_id: let_go_id
+      })
+      .then((result) => {
+        console.log(result);
+        this.let_go_show_info = result.data[0];
+      })
+      .catch((error) => {
+        console.log(error);
       });
+    },
+    // 确认报名按钮
+    activity_sign_up_sure_btn(let_go_id) {
+      if (!this.activity_checked) return this.$message.warning('请勾选协议');
+      this.dialogFormVisible = false;
+      // 判断当前是支付宝还是微信支付
+      if (!this.activityForm.payment_method) {
+        // 支付宝支付
+        this.$axios.get('/wpapi/member/let_go_zfb_pay', {
+          params: {users_id:localStorage.getItem('users_id'),let_go_id:let_go_id,phone:this.activityForm.phone}
+        })
+        .then((result) => {
+          console.log(result);
+          if (result.status !== '200') return this.$message.error(result.msg);
+          
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      } else {
+        // 微信支付
+        this.$axios.get('/wpapi/member/let_go_zfb_pay', {params:{users_id:localStorage.getItem('users_id'),let_go_id:let_go_id,phone:this.activityForm.phone}})
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
     }
   }
 }
@@ -305,5 +409,77 @@ export default {
   }
   .activity_recent_time_bottom li p {
     font-weight: 500;
+  }
+  .dialog-header .activity_sign_up {
+    text-align: left;
+    display: block;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .contact_way {
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #000;
+    display: block;
+  }
+  .activity_des {
+    display: flex;
+    box-shadow: 1px 2px 2px 0px rgba(141,141,141,0.3);
+    /* border: 1px solid gray; */
+    padding: 5px;
+    align-items: center;
+  }
+  .activity_des_left img {
+    width: 148px;
+    height: 102px;
+  }
+  .activity_des_right {
+    text-align: left;
+    margin-left: 30px;
+    height: 102px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+  .activity_des_right p {
+    margin: 0;
+    font-weight: 700;
+  }
+  .activity_des_right_bottom span:nth-child(1) {
+    margin-right: 20px;
+  }
+  .activity_form_info_top {
+    /* border: 1px solid gray; */
+    box-shadow: 1px 2px 2px 0px rgba(141,141,141,0.3);
+    padding: 23px 0 1px;
+  }
+  .payment_method {
+    /* border: 1px solid gray; */
+    box-shadow: 1px 2px 2px 0px rgba(141,141,141,0.3);
+    padding: 0 30px;
+  }
+  .payment_method_text {
+    display: block;
+    margin-bottom: 10px;
+    margin-top: 25px;
+    font-size: 16px;
+    color: #000;
+    font-weight: 700;
+  }
+  .activity_sign_up_sure {
+    display: block;
+    margin: 0 auto;
+    background: linear-gradient(125deg,#ff2a86 9%, #917fff 51%, #9effff 91%);
+    border-radius: 6px;
+    box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.16);
+    border: 0;
+  }
+  .activity_form_info {
+    /* padding: 10px; */
+  }
+  .phone_num_des {
+    color: #989898;
+    margin-left: 20px;
   }
 </style>

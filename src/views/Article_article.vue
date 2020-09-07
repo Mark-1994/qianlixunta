@@ -137,6 +137,8 @@ export default {
     }
   },
   created: function() {
+    this.$emit('header', true);
+    
     console.log(this.$route.params.id);
     this.$axios.get('/wpapi/article/category_detail', {params:{id: this.$route.params.id}})
     .then((result) => {

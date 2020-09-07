@@ -156,6 +156,8 @@ export default {
     }
   },
   created() {
+    this.$emit('header', true);
+    
     // 默认文章列表
     this.$axios.get('/wpapi/article/category_list_page', {params: {cate_id:1,page:1}})
     .then((result) => {

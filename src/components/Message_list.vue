@@ -165,12 +165,16 @@ export default {
       ],
       activeName: 'first',
       // 个人信息数据
-      come_news: {},
+      come_news: {
+        head_portrait: '/upload/admin/article/thumbnail/20200807/nv.png'
+      },
       // 消息列表
       general_message_list: {}
     }
   },
   created() {
+    this.$emit('header', true);
+
     // 判断用户是否登录，如果没有登录就跳转到登录页面
     if (!(window.localStorage.getItem('token') && window.localStorage.getItem('users_id'))) {
       this.$message.error('您还没有登录，请您先登陆！');

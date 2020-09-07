@@ -68,6 +68,9 @@ export default {
       checked: false
     }
   },
+  created: function() {
+    this.$emit('header', true);
+  },
   methods: {
     handleCommand(command) {
       this.$message('click on item ' + command);
@@ -83,6 +86,7 @@ export default {
             this.$message.success('登陆成功');
             window.localStorage.setItem('token', result.data.token);
             window.localStorage.setItem('users_id', result.data.users_id);
+            window.localStorage.setItem('nickname', result.data.nickname);
             // this.$router.push('/index');
             this.$router.go(-1);
           })

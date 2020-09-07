@@ -29,7 +29,7 @@
           </span>
           <el-dropdown v-else @command="users_nav">
             <span class="el-dropdown-link">
-              你好，{{users_id}}<i class="el-icon-arrow-down el-icon--right"></i>
+              你好，{{nickname}}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="logout">退出登录</el-dropdown-item>
@@ -98,7 +98,9 @@ export default {
       // users_id
       users_id: localStorage.getItem('users_id'),
       // token
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      // nickname
+      nickname: localStorage.getItem('nickname')
     }
   },
   methods: {

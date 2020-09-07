@@ -82,16 +82,6 @@ export default {
     }
   },
   created: function() {
-    this.$axios.post('/api/statistics', {
-        abc: 'a',
-        def: 'b'
-    })
-    .then(function(response) {
-      console.log(response);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
     // 是否显示公共头部
     this.$emit('header', false);
   },
