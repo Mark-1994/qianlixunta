@@ -316,7 +316,7 @@
                             <img :src="'http://admin.qianlixunta.com'+item.head_portrait" alt="" />
                           </div>
                           <div class="default_recommend_member_left_small_img">
-                            <img v-for="(item01, index) in JSON.parse(item.life_imgs)" :key="index" :src="'http://'+item01" alt="" />
+                            <img v-for="(item01, index) in JSON.parse(item.life_imgs)" :key="index" :src="'http://admin.qianlixunta.com'+item01" alt="" />
                           </div>
                         </div>
                         <div class="default_recommend_member_right">

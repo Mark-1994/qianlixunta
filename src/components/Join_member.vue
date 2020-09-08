@@ -19,7 +19,7 @@
               </div>
               <div class="price_list_right">
                 <a href="javascript:;" @click="is_vip(item.id,type)" class="click_join_member">加入会员</a>
-                <a href="javascript:;" class="membership_renewal">会员续费</a>
+                <a href="javascript:;" @click="go_is_vip(item.id,type)" class="membership_renewal">会员续费</a>
               </div>
             </div>
             <div class="huiyuan_explain_info">
@@ -78,14 +78,44 @@ export default {
     .catch((error) => {
       console.log(error);
     });
+
+    // 检测是否是168会员
+    this.$axios.post('/wpapi/member/is_vip', {
+      users_id: localStorage.getItem('users_id')
+    })
+    .then((result) => {
+      console.log(result);
+      if (result.data.vip_status == 1) {
+        this.type = '2'
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   },
   methods: {
+    // 加入会员
     is_vip(id,type) {
       if (!(localStorage.getItem('users_id') && localStorage.getItem('token'))) return this.$router.push('/login');
       this.$axios.post('/wpapi/member/is_vip', {users_id:localStorage.getItem('users_id')})
       .then((result) => {
         console.log(result);
         if (result.data.vip_status !== 0) return this.$message.success('您已经是168会员');
+        this.$router.push('/hongniang_pay/'+id+'/'+type);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    },
+    // 会员续费
+    go_is_vip(id,type) {
+      if (!(localStorage.getItem('users_id') && localStorage.getItem('token'))) return this.$router.push('/login');
+      this.$axios.post('/wpapi/member/is_vip', {
+        users_id: localStorage.getItem('users_id')
+      })
+      .then((result) => {
+        console.log(result);
+        if (result.data.vip_status == 0) return this.$message.warning('您还不是168会员哦');
         this.$router.push('/hongniang_pay/'+id+'/'+type);
       })
       .catch((error) => {

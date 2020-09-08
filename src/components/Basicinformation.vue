@@ -297,21 +297,25 @@
                     </el-upload>
                     <el-divider></el-divider>
                     <el-row>
-                      <el-col :span="6">
-                        <img src="../assets/example01.png" alt="">
+                      <el-col :span="6" v-for="(item, index) in life_image_url" :key="index">
+                        <div class="img_pad">
+                          <img :src="'http://admin.qianlixunta.com'+item" alt="">
+                        </div>
                       </el-col>
-                      <el-col :span="6">
+                      <!-- <el-col :span="6">
                         <img src="../assets/example01.png" alt="">
-                      </el-col>
-                      <el-col :span="6">
-                        <img src="../assets/example01.png" alt="">
-                      </el-col>
-                      <el-col :span="6">
-                        <img src="../assets/example01.png" alt="">
-                      </el-col>
+                      </el-col> -->
                     </el-row>
+                    <el-upload
+                      class="upload-demo"
+                      action="http://admin.qianlixunta.com/wpapi/register/up_life_imgs"
+                      :on-remove="handleRemove"
+                      list-type="picture" :data="{token:token}" :on-success="up_mine_life_imgs">
+                      <el-button size="small" type="primary">点击上传生活照</el-button>
+                      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
                     <el-row>
-                      <el-button type="primary">上传照片</el-button>
+                      <el-button type="primary" @click="post_images_sure">确认提交头像和生活照</el-button>
                     </el-row>
                   </el-tab-pane>
                   <el-tab-pane label="详细资料">
@@ -545,7 +549,48 @@
                 </el-tabs>
               </el-tab-pane>
               <el-tab-pane label="我的账号">我的账号</el-tab-pane>
-              <el-tab-pane label="实名认证">实名认证</el-tab-pane>
+              <el-tab-pane label="实名认证">
+                <h4>实名认证</h4>
+                <p>为保证资料真实有效，请如实填写</p>
+                <el-form ref="real_name_form" :model="real_name_form" label-width="100px">
+                  <el-form-item label="姓名：">
+                    <el-input v-model="real_name_form.name" style="width: 217px;"></el-input>
+                  </el-form-item>
+                  <el-form-item label="证件类型：">
+                    <el-select v-model="real_name_form.document_type" placeholder="请选择证件类型">
+                      <el-option label="身份证" value="身份证"></el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item label="证件号：">
+                    <el-input v-model="real_name_form.document_num" style="width: 217px;"></el-input>
+                  </el-form-item>
+                  <el-form-item label="身份证">
+                    <el-upload
+                      class="id_card_uploader"
+                      action="http://admin.qianlixunta.com/wpapi/register/id_card"
+                      :show-file-list="false"
+                      :on-success="handleAvatarSuccess01"
+                      :before-upload="beforeAvatarUpload"
+                      :data="{token:token}">
+                      <img v-if="imageUrl01" :src="imageUrl01" class="id_card_avatar">
+                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                    <el-upload
+                      class="id_card_uploader id_card_uploader01"
+                      action="http://admin.qianlixunta.com/wpapi/register/id_card"
+                      :show-file-list="false"
+                      :on-success="handleAvatarSuccess02"
+                      :before-upload="beforeAvatarUpload"
+                      :data="{token:token}">
+                      <img v-if="imageUrl02" :src="imageUrl02" class="id_card_avatar">
+                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-button type="primary" @click="post_real_name_form">提交上传</el-button>
+                  </el-form-item>
+                </el-form>
+              </el-tab-pane>
             </el-tabs>
           </div>
         </div>
@@ -559,15 +604,6 @@
 export default {
   data() {
     return {
-      cityInfo: [
-        { id: 1, name: '北京' },
-        { id: 2, name: '上海' },
-        { id: 3, name: '广州' },
-        { id: 4, name: '武汉' },
-        { id: 5, name: '成都' },
-        { id: 6, name: '天津' },
-        { id: 7, name: '重庆' }
-      ],
       mine_data_form: {
         // nickname: '',
         // improve_sex: '',
@@ -697,6 +733,8 @@ export default {
       soliloquy_form: {},
       neixindubai: '',
       imageUrl: '',
+      // 生活照
+      life_image_url: [],
       activeNames: ['1'],
       // 工作与教育经历表单
       job_form: {
@@ -781,7 +819,15 @@ export default {
       // 个人信息数据
       come_news: {
         head_portrait: '/upload/admin/article/thumbnail/20200807/nv.png'
-      }
+      },
+      // 实名认证表单
+      real_name_form: {},
+      imageUrl01: '',
+      imageUrl02: '',
+      // 将要上传的我的头像
+      mine_head_portrait: '',
+      // 将要上传的我的生活照
+      mine_life_imgs: []
     }
   },
   created: function() {
@@ -812,6 +858,10 @@ export default {
         })
         .then((result) => {
           console.log(result);
+          if (result.data.head_portrait) {
+            this.imageUrl = 'http://admin.qianlixunta.com'+result.data.head_portrait;
+          }
+          this.life_image_url = JSON.parse(result.data.life_imgs);
         })
         .catch((error) => {
           console.log(error);
@@ -820,6 +870,7 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       console.log(res,file);
+      this.mine_head_portrait = res.path;
       this.imageUrl = URL.createObjectURL(file.raw);
       this.$message.success('上传成功！');
     },
@@ -950,6 +1001,72 @@ export default {
       .then((result) => {
         if (result.status !== '200') return this.$message.error('保存失败！');
         this.$message.success('保存成功！');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    },
+    // 生活照上传成功后的回调
+    up_mine_life_imgs(response, file, fileList) {
+      console.log(response, file, fileList);
+      let life_imgs_arr = [];
+      fileList.forEach(item => {
+        life_imgs_arr.push(item.response.path);
+      });
+      this.mine_life_imgs = life_imgs_arr;
+    },
+    // 删除生活照
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+      let life_imgs_arr = [];
+      fileList.forEach(item => {
+        life_imgs_arr.push(item.response.path);
+      });
+      this.mine_life_imgs = life_imgs_arr;
+    },
+    // 提交头像和生活照
+    post_images_sure() {
+      this.$axios.post('/wpapi/me/picture_form', {
+        users_id: localStorage.getItem('users_id'),
+        token: localStorage.getItem('token'),
+        head_portrait: this.mine_head_portrait,
+        life_imgs: this.mine_life_imgs
+      })
+      .then((result) => {
+        console.log(result);
+        if (result.status !== '200') return this.$message.error('提交失败');
+        this.$message.success('提交成功');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    },
+    // 上传身份证文件之前的钩子
+    beforeAvatarUpload(file) {
+      console.log('上传身份证文件之前的钩子');
+    },
+    // 身份证文件上传成功时的钩子
+    handleAvatarSuccess01(res, file) {
+      console.log('身份证文件上传成功时的钩子');
+      this.imageUrl01 = URL.createObjectURL(file.raw);
+      this.real_name_form.imageUrl01 = res.path;
+    },
+    // 身份证文件上传成功时的钩子
+    handleAvatarSuccess02(res, file) {
+      console.log('身份证文件上传成功时的钩子');
+      this.imageUrl02 = URL.createObjectURL(file.raw);
+      this.real_name_form.imageUrl02 = res.path;
+    },
+    // 提交实名认证表单
+    post_real_name_form() {
+      console.log('提交实名认证表单');
+      this.real_name_form.token = localStorage.getItem('token');
+      this.real_name_form.users_id = localStorage.getItem('users_id');
+      this.$axios.post('/wpapi/me/real_name', this.real_name_form)
+      .then((result) => {
+        console.log(result);
+        if (result.status !== '200') return this.$message.error(result.msg);
+        this.$message.warning(result.msg);
       })
       .catch((error) => {
         console.log(error);
@@ -1111,6 +1228,9 @@ export default {
   .danger_info_edit {
     margin-left: 80px;
   }
+  .avatar-uploader {
+    padding: 10px;
+  }
   .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
@@ -1137,5 +1257,30 @@ export default {
   .shuikanguowo01,
   .mine_info_middle ul li.shuikanguowo01 .flag_num {
     color: rgba(230,73,128,1);
+  }
+  .img_pad {
+    padding: 10px;
+  }
+  .img_pad img {
+    width: 100%;
+    height: 178px;
+  }
+  .id_card_uploader {
+    display: inline-block;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+  }
+  .id_card_uploader,
+  .avatar-uploader-icon {
+    width: 251px;
+    height: 148px;
+    line-height: 148px;
+  }
+  .id_card_uploader01 {
+    margin-left: 40px;
+  }
+  .id_card_avatar {
+    width: 251px;
+    height: 148px;
   }
 </style>

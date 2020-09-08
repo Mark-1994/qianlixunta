@@ -5,11 +5,13 @@
         <a href="/#/index">
           <!-- <img src="../assets/logo01.png" alt="" /> -->
           <span>LOGO</span>
+          <el-divider direction="vertical"></el-divider>
           <span>红娘一对一</span>
         </a>
         <div>
-          <span>您好，林俊杰</span>
-          <span>安全退出</span>
+          <span>您好，{{nickname}}</span>
+          <el-divider direction="vertical"></el-divider>
+          <span @click="safe_withdrawing">安全退出</span>
         </div>
       </div>
     </header>
@@ -55,7 +57,6 @@
 export default {
   data() {
     return {
-      msg: '红娘一对一',
       radio: '1',
       checked: false,
       // 订单id
@@ -65,11 +66,15 @@ export default {
       // 产品信息
       vip_info: {},
       // 支付产品类型
-      type: ''
+      type: '',
+      // 登录名
+      nickname: ''
     }
   },
   created() {
     this.$emit('header', false);
+
+    this.nickname = localStorage.getItem('nickname');
 
     console.log(this.$route.params.id);
     console.log(this.$route.params.type);
@@ -88,6 +93,25 @@ export default {
         this.vip_info.title = '千里寻TA会员服务';
         this.order_id = result.data.order_id;
         this.type = '1';
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    } else if (this.$route.params.type == 2) {
+      // 会员续费支付展示页面
+      console.log('会员续费支付展示页面');
+      this.$axios.post('/wpapi/member/vip_list', {
+        users_id: localStorage.getItem('users_id'),
+        token: localStorage.getItem('token'),
+        vip_id: this.$route.params.id
+      })
+      .then((result) => {
+        console.log(result);
+        this.order_osn = result.data.order_osn;
+        this.vip_info = result.data.vip_info;
+        this.vip_info.title = '千里寻TA会员续费服务';
+        this.order_id = result.data.order_id;
+        this.type = '2';
       })
       .catch((error) => {
         console.log(error);
@@ -133,6 +157,30 @@ export default {
         } else if (this.radio == 2) {
           this.$router.push('/weixin_pay/'+this.order_id+'/'+this.type+'/0');
         }
+      } else if (this.$route.params.type == 2) {
+        // 168会员续费支付逻辑
+        if (this.radio == 1) {
+          // 168会员续费支付宝支付
+          this.$axios.get('/wpapi/member/go_zfb_pay', {
+            params: {
+              users_id: localStorage.getItem('users_id'),
+              order_id: this.order_id
+            }
+          })
+          .then((result) => {
+            console.log(result);
+            const div = document.createElement('div');
+            div.innerHTML = result;
+            document.body.appendChild(div);
+            document.forms[0].submit();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        } else if (this.radio == 2) {
+          // 168会员续费微信支付
+          this.$router.push('/weixin_pay/'+this.order_id+'/'+this.type+'/0');
+        }
       } else if (this.$route.params.type == 3) {
         // 红娘一对一支付逻辑
         if (this.radio == 1) {
@@ -151,6 +199,11 @@ export default {
           this.$router.push('/weixin_pay/'+this.order_id+'/'+this.type+'/'+this.$route.params.id);
         }
       }
+    },
+    // 退出按钮
+    safe_withdrawing() {
+      localStorage.clear();
+      this.$router.push('/index');
     }
   }
 }

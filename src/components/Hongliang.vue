@@ -2,14 +2,16 @@
   <div class="one_by_one">
     <header>
       <div class="header_content_center">
-        <a href="javascript:;">
+        <a href="/#/index">
           <!-- <img src="../assets/logo01.png" alt="" /> -->
           <span>LOGO</span>
+          <el-divider direction="vertical"></el-divider>
           <span>红娘一对一</span>
         </a>
         <div>
-          <span>您好，林俊杰</span>
-          <span>安全退出</span>
+          <span>您好，{{nickname}}</span>
+          <el-divider direction="vertical"></el-divider>
+          <span @click="safe_withdrawing">安全退出</span>
         </div>
       </div>
     </header>
@@ -103,12 +105,16 @@ export default {
       // 报名套餐列表
       baoming_taocan_list: {},
       // 支付产品类型
-      type: ''
+      type: '',
+      // 登录名
+      nickname: ''
     }
   },
   created() {
     // 控制公共头是否显示隐藏
     this.$emit('header', false);
+
+    this.nickname = localStorage.getItem('nickname') ? localStorage.getItem('nickname') : '用户名';
 
     // 报名展示页
     this.$axios.get('/wpapi/member/red_show_list', {
@@ -136,6 +142,11 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+    },
+    // 退出登录
+    safe_withdrawing() {
+      localStorage.clear();
+      this.$router.push('/index');
     }
   }
 }

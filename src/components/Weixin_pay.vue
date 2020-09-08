@@ -5,15 +5,17 @@
         <a href="/#/index">
           <!-- <img src="../assets/logo01.png" alt="" /> -->
           <span>LOGO</span>
+          <el-divider direction="vertical"></el-divider>
           <span>红娘一对一</span>
         </a>
         <div>
-          <span>您好，林俊杰</span>
-          <span>安全退出</span>
+          <span>您好，{{nickname}}</span>
+          <el-divider direction="vertical"></el-divider>
+          <span @click="safe_withdrawing">安全退出</span>
         </div>
       </div>
     </header>
-    <div class="x-wrap">
+    <div class="x-wrap" style="padding-bottom:1px;">
       <!-- 微信支付 -->
       <div class="logo_income_desk">
         <div class="logo_income_desk_top">
@@ -53,14 +55,29 @@ export default {
       // 订单类型
       title: '',
       // 微信支付二维码
-      code_img: ''
+      code_img: '',
+      nickname: ''
     }
   },
   created: function() {
     this.$emit('header', false);
 
+    this.nickname = localStorage.getItem('nickname');
+
     // 168会员微信支付展示页面
     if (this.$route.params.type == 1) {
+      this.$axios.get('/wpapi/member/wx_pay', {params:{users_id:localStorage.getItem('users_id'),order_id:this.$route.params.order_id,type:this.$route.params.type}})
+      .then((result) => {
+        console.log(result);
+        this.order_son = result.data.order_son;
+        this.order_price = result.data.order_price;
+        this.title = result.data.title;
+        this.code_img = result.data.code_img;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    } else if (this.$route.params.type == 2) {
       this.$axios.get('/wpapi/member/wx_pay', {params:{users_id:localStorage.getItem('users_id'),order_id:this.$route.params.order_id,type:this.$route.params.type}})
       .then((result) => {
         console.log(result);
@@ -88,7 +105,10 @@ export default {
     }
   },
   methods: {
-
+    safe_withdrawing() {
+      localStorage.clear();
+      this.$router.push('/index');
+    }
   }
 }
 </script>

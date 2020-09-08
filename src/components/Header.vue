@@ -19,7 +19,7 @@
               <el-dropdown-item v-for="item in cityInfo" :key="item.id" :command="item.name">{{item.name}}</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <span v-if="!(users_id && token)">
+          <span v-if="login_register">
             <router-link to="/login">
               <el-button size="small" round class="login">登录</el-button>
             </router-link>
@@ -100,7 +100,8 @@ export default {
       // token
       token: localStorage.getItem('token'),
       // nickname
-      nickname: localStorage.getItem('nickname')
+      nickname: localStorage.getItem('nickname'),
+      login_register: true
     }
   },
   methods: {
@@ -111,10 +112,12 @@ export default {
     users_nav(command) {
       localStorage.clear();
       this.$router.push('/login');
+      this.login_register = true;
     }
   },
   created() {
-
+    // 控制登录、注册的显示、隐藏
+    this.login_register = !(this.users_id && this.token);
   }
 }
 </script>

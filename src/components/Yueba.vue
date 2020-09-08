@@ -40,7 +40,7 @@
                     <h4>活动预告</h4>
                   </div>
                   <div class="activity_prediction_time_img">
-                    <img src="../assets/huodong_yugao01.png" alt="">
+                    <img :src="'http://admin.qianlixunta.com'+activity_forecast.img" alt="">
                   </div>
                   <div class="activity_prediction_time_now">
                     <div class="right_now_click">
@@ -154,7 +154,9 @@ export default {
       // 活动报名页信息
       let_go_show_info: {
         img: '/upload/admin/let_go/20200729/ff37e981b3b7ca9130eca455e13e4fbe.png'
-      }
+      },
+      // 活动预告
+      activity_forecast: {}
     }
   },
   created() {
@@ -166,6 +168,16 @@ export default {
     .then((result) => {
       console.log(result);
       this.yuebazouqi_list = result;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+    // 活动预告、近期活动
+    this.$axios.get('/wpapi/member/let_go_list_sidebar', {params:{}})
+    .then((result) => {
+      console.log(result);
+      this.activity_forecast = result.data.list_sidebar_first;
     })
     .catch((error) => {
       console.log(error);
@@ -195,6 +207,9 @@ export default {
     },
     // 报名展示页
     let_go_show(let_go_id) {
+      // 判断当前是否登录
+      if (!(localStorage.getItem('users_id') && localStorage.getItem('token'))) return this.$router.push('/login');
+
       this.dialogFormVisible = true;
       this.activityForm.id = let_go_id;
       console.log(let_go_id);
@@ -214,7 +229,7 @@ export default {
       if (!this.activity_checked) return this.$message.warning('请勾选协议');
       this.dialogFormVisible = false;
       // 判断当前是支付宝还是微信支付
-      if (!this.activityForm.payment_method) {
+      if (!Number(this.activityForm.payment_method)) {
         // 支付宝支付
         this.$axios.get('/wpapi/member/let_go_zfb_pay', {
           params: {users_id:localStorage.getItem('users_id'),let_go_id:let_go_id,phone:this.activityForm.phone}
