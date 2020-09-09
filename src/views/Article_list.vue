@@ -36,8 +36,8 @@
                             <p v-html="item.content" class="show_article_desc02"></p>
                           </el-col>
                           <el-col class="num_of_likes_views01">
-                            <el-link :underline="false" icon="el-icon-edit">{{item.num_of_likes}}</el-link>
-                            <el-link :underline="false" icon="el-icon-edit">{{item.views}}</el-link>
+                            <el-link :underline="false"><i class="iconfont-qianlixunta icon-qianlixuntadianzan"></i> {{item.num_of_likes}}</el-link>
+                            <el-link :underline="false" icon="el-icon-view">{{item.views}}</el-link>
                           </el-col>
                         </el-row>
                       </el-col>
@@ -349,15 +349,21 @@ export default {
     margin: 36px 0 46px;
   }
   .show_article_desc01 {
-    overflow: hidden;
+    /* overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    -webkit-box-orient: vertical; */
   }
   .show_article_desc02 {
-    overflow: hidden;
     margin: 0 0 10px;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-overflow: -o-ellipsis-lastline;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
   .num_of_likes_views01 a {
     margin: 0 5px;
