@@ -20,7 +20,7 @@
                       <el-link :underline="false"><i class="el-icon-view el-icon--left"></i> 被查看 {{article_views}}<el-divider direction="vertical"></el-divider></el-link>
                     </el-col>
                     <el-col :span="4">
-                      <el-link :underline="false"><i class="el-icon-view el-icon--left"></i> 点赞 {{article_num_of_likes}}</el-link>
+                      <el-link :underline="false"><i class="iconfont-qianlixunta icon-qianlixuntadianzan"></i> 点赞 {{article_num_of_likes}}</el-link>
                     </el-col>
                   </el-row>
                   <el-divider class="cut_off_line"></el-divider>

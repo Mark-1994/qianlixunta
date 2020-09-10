@@ -16,7 +16,7 @@
                     <h4>{{come_news.nickname}}<img src="../assets/zuanshi03.png" alt="" /><span>v3</span></h4>
                     <div class="three_images_status">
                       <img src="../assets/shouji01.png" alt="">
-                      <img src="../assets/shimingrenzheng01.png" alt="">
+                      <img src="../assets/faxiaoxi01.png" alt="">
                       <img src="../assets/shimingrenzheng03.png" alt="">
                     </div>
                     <a href="javascript:;"><el-badge is-dot>完善个人信息</el-badge></a>

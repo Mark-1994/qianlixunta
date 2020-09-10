@@ -377,22 +377,23 @@
                     <div class="yuebazouqi_content">
                       <div class="yuebazouqi_content_title">
                         <h4>七月之约</h4>
-                        <a href="javascript:;">查看更多活动&gt;</a>
+                        <router-link to="/yueba">查看更多活动&gt;</router-link>
+                        <!-- <a href="javascript:;">查看更多活动&gt;</a> -->
                       </div>
                       <div class="yuebazouqi_content_main">
                         <div class="event_left">
-                          <img src="../assets/huodong01.png" alt="">
+                          <img :src="'http://admin.qianlixunta.com'+qixi_festival_first.img" alt="">
                           <p>
                             <section>
-                              <span class="active_adress">武汉</span>
-                              <span class="active_time">活动时间：7月-9月</span>
+                              <span class="active_adress">{{qixi_festival_first.city}}</span>
+                              <span class="active_time">活动时间：{{qixi_festival_first.start_time}}</span>
                             </section>
-                            <span class="active_join">已报名：<i>68</i></span>
+                            <span class="active_join">已报名：<i>{{qixi_festival_first.join_nums}}</i></span>
                           </p>
                         </div>
                         <div class="event_right">
-                          <img src="../assets/huodong02.png" alt="" class="active_banner_img02">
-                          <img src="../assets/huodong03.png" alt="" class="active_banner_img03">
+                          <img :src="'http://admin.qianlixunta.com'+qixi_festival_second.img" alt="" class="active_banner_img02">
+                          <img :src="'http://admin.qianlixunta.com'+qixi_festival_third.img" alt="" class="active_banner_img03">
                         </div>
                       </div>
                     </div>
@@ -404,7 +405,7 @@
                     <div class="qingganjiaoliu_content">
                       <div class="qingganjiaoliu_title_list">
                         <ul>
-                          <li v-for="item in affective_interaction" :key="item.id"><a href="javascript:;">{{item.cate_name}}</a></li>
+                          <li v-for="item in affective_interaction" :key="item.id"><router-link to="/article_list">{{item.cate_name}}</router-link></li>
                         </ul>
                         <!-- <a href="javascript:;">查看更多&gt;</a> -->
                         <router-link to="/article_list">查看更多&gt;</router-link>
@@ -485,10 +486,10 @@
                   <div class="zuijiapipei">
                     <h4>最佳匹配</h4>
                     <div class="zuijiapipei_info">
-                      <img src="../assets/user_img01.png" alt="">
+                      <img :src="'http://admin.qianlixunta.com'+agreement_join_shuffle.head_portrait" alt="">
                       <div>
-                        <h4>JJ Lin</h4>
-                        <p>容貌一般，不吓人，性格温和，bai脾气好，人品善良，真诚，du正直，吸烟，滴酒不沾...</p>
+                        <h4>{{agreement_join_shuffle.nickname}}</h4>
+                        <p>{{agreement_join_shuffle.introduce_oneself}}</p>
                         <el-row>
                           <el-tag size="mini">90后</el-tag>
                           <el-tag size="mini" type="success">开朗</el-tag>
@@ -601,7 +602,25 @@ export default {
       // 推荐会员默认列表
       default_recommend_member_list: [],
       // 当前年份
-      now_year: new Date().getFullYear()
+      now_year: new Date().getFullYear(),
+      // 七月之约活动展示
+      qixi_festival: [],
+      // 七月之约第一个活动
+      qixi_festival_first: {
+        img: '/upload/admin/let_go/20200730/795a496fd0d47413976d4a6cc69a9f89.png'
+      },
+      // 七月之约第二个活动
+      qixi_festival_second: {
+        img: '/upload/admin/let_go/20200730/795a496fd0d47413976d4a6cc69a9f89.png'
+      },
+      // 七月之约第三个活动
+      qixi_festival_third: {
+        img: '/upload/admin/let_go/20200730/795a496fd0d47413976d4a6cc69a9f89.png'
+      },
+      // 右侧最佳匹配
+      agreement_join_shuffle: {
+        head_portrait: '/upload/admin/article/thumbnail/20200807/nan.png'
+      }
     }
   },
   created: function() {
@@ -648,6 +667,29 @@ export default {
     .then((result) => {
       console.log(result);
       this.default_recommend_member_list = result.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+    // 约吧走起-活动展示
+    this.$axios.get('/wpapi/member/let_go_list', {params:{}})
+    .then((result) => {
+      console.log(result);
+      this.qixi_festival = result.data;
+      this.qixi_festival_first = this.qixi_festival[0];
+      this.qixi_festival_second = this.qixi_festival[1];
+      this.qixi_festival_third = this.qixi_festival[2];
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+    // 右侧边栏-最佳匹配
+    this.$axios.get('/wpapi/register/agreement_join_shuffle', {params:{}})
+    .then((result) => {
+      console.log(result);
+      this.agreement_join_shuffle = result.data;
     })
     .catch((error) => {
       console.log(error);
@@ -923,11 +965,13 @@ export default {
   .yuebazouqi_content_main img {
     width: 100%;
     border-radius: 6px;
+    height: 126px;
   }
   .yuebazouqi_content_main .event_left {
     flex: 2;
     position: relative;
-    height: 100%;
+    /* height: 100%; */
+    height: 259px;
     margin-right: 10px;
   }
   .yuebazouqi_content_main .event_right {
@@ -952,6 +996,9 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+  .yuebazouqi_content_main .event_left img {
+    height: 100%;
   }
   .qingganjiaoliu_content {
     background-color: #fff;
@@ -1123,11 +1170,19 @@ export default {
     font-weight: normal;
     font-size: 24px;
     margin: 10px 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 138px;
   }
   .zuijiapipei_info p {
     margin: 0;
     font-size: 12px;
     margin-bottom: 9px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
   }
   .zuijiapipei_info .el-row span {
     margin: 3px;

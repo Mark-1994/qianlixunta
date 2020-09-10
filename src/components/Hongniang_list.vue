@@ -2,21 +2,34 @@
   <div class="one_by_one">
     <header>
       <div class="header_content_center">
-        <a href="javascript:;">
+        <router-link to="/index">
           <!-- <img src="../assets/logo01.png" alt="" /> -->
           <span>LOGO</span>
+          <el-divider direction="vertical"></el-divider>
           <span>红娘一对一</span>
-        </a>
+        </router-link>
         <div>
-          <span>您好，林俊杰</span>
-          <span>安全退出</span>
+          <span>您好，{{nickname}}</span>
+          <el-divider direction="vertical"></el-divider>
+          <span @click="safe_withdrawing">安全退出</span>
         </div>
       </div>
     </header>
     <div class="x-wrap">
       <!-- 10年红娘经验 -->
       <ul class="hongniang_list_item_info">
-        <li>
+        <li v-for="item in kf_list" :key="item.id">
+          <div class="teacher_img">
+            <img :src="'http://admin.qianlixunta.com'+item.img_src" alt="">
+          </div>
+          <h3 class="teacher_name">{{item.name}}</h3>
+          <h4 class="matt_parry">{{item.title}}</h4>
+          <h3 class="ten_year_exp">{{item.describe}}</h3>
+          <p class="phonenumber">{{item.phone}}</p>
+          <p class="qqnumber">{{item.qq}}</p>
+          <img class="qr_code_src" :src="'http://admin.qianlixunta.com' + item.qr_code_src" alt="">
+        </li>
+        <!-- <li>
           <div class="teacher_img">
             <img src="../assets/coco_teacher01.png" alt="">
           </div>
@@ -25,47 +38,7 @@
           <h3 class="ten_year_exp">10年红娘经验</h3>
           <p class="phonenumber">18572487828</p>
           <p class="qqnumber">464729484</p>
-        </li>
-        <li>
-          <div class="teacher_img">
-            <img src="../assets/coco_teacher01.png" alt="">
-          </div>
-          <h3 class="teacher_name">COCO老师</h3>
-          <h4 class="matt_parry">资深顾问</h4>
-          <h3 class="ten_year_exp">10年红娘经验</h3>
-          <p class="phonenumber">18572487828</p>
-          <p class="qqnumber">464729484</p>
-        </li>
-        <li>
-          <div class="teacher_img">
-            <img src="../assets/coco_teacher01.png" alt="">
-          </div>
-          <h3 class="teacher_name">COCO老师</h3>
-          <h4 class="matt_parry">资深顾问</h4>
-          <h3 class="ten_year_exp">10年红娘经验</h3>
-          <p class="phonenumber">18572487828</p>
-          <p class="qqnumber">464729484</p>
-        </li>
-        <li>
-          <div class="teacher_img">
-            <img src="../assets/coco_teacher01.png" alt="">
-          </div>
-          <h3 class="teacher_name">COCO老师</h3>
-          <h4 class="matt_parry">资深顾问</h4>
-          <h3 class="ten_year_exp">10年红娘经验</h3>
-          <p class="phonenumber">18572487828</p>
-          <p class="qqnumber">464729484</p>
-        </li>
-        <li>
-          <div class="teacher_img">
-            <img src="../assets/coco_teacher01.png" alt="">
-          </div>
-          <h3 class="teacher_name">COCO老师</h3>
-          <h4 class="matt_parry">资深顾问</h4>
-          <h3 class="ten_year_exp">10年红娘经验</h3>
-          <p class="phonenumber">18572487828</p>
-          <p class="qqnumber">464729484</p>
-        </li>
+        </li> -->
       </ul>
     </div>
     
@@ -76,17 +49,37 @@
 export default {
   data() {
     return {
-      msg: '红娘一对一',
-      radio: '1',
-      checked: false
+      // 登录名
+      nickname: '',
+      // 红娘一对一客服列表数据
+      kf_list: []
     }
   },
   created: function() {
     // 是否显示公共头部
     this.$emit('header', false);
+
+    this.nickname = localStorage.getItem('nickname');
+
+    // 红娘一对一客服列表数据初始化
+    this.$axios.post('/wpapi/me/kf_list', {
+      users_id: localStorage.getItem('users_id'),
+      token: localStorage.getItem('token')
+    })
+    .then((result) => {
+      console.log(result);
+      this.kf_list = result.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    })
   },
   methods: {
-    
+    // 退出按钮
+    safe_withdrawing() {
+      localStorage.clear();
+      this.$router.push('/index');
+    }
   }
 }
 </script>
@@ -168,5 +161,12 @@ export default {
     top: 188px;
     font-size: 14px;
     color: rgba(108,99,255,1);
+  }
+  .qr_code_src {
+    width: 100px;
+    height: 96px;
+    position: absolute;
+    right: 77px;
+    top: 60px;
   }
 </style>

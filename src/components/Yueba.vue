@@ -47,7 +47,7 @@
                       <a href="javascript:;">立即预约</a>
                     </div>
                     <div class="item_apply_time">
-                      报名时间：7月8日-9日
+                      报名时间：{{activity_forecast.start_time}} - {{activity_forecast.end_time}}
                     </div>
                   </div>
                 </div>
@@ -59,13 +59,13 @@
                     <img src="../assets/huodong_yugao01.png" alt="">
                   </div>
                   <ul class="activity_recent_time_bottom">
-                    <li>
+                    <li v-for="item in near_term_activities" :key="item.id">
                       <div class="activity_recent_time_calendar">
-                        <h5>7.20</h5>
+                        <h5>{{item.start_time}}</h5>
                       </div>
                       <div class="activity_recent_time_des">
-                        <p>单身福利！大型线下联谊活动</p>
-                        <p>秋意渐浓，你还没有找到你的另一半吗？</p>
+                        <p>{{item.title}}</p>
+                        <!-- <p>秋意渐浓，你还没有找到你的另一半吗？</p> -->
                       </div>
                     </li>
                   </ul>
@@ -106,7 +106,7 @@
             <el-input v-model="activityForm.verify" autocomplete="off" style="width: 100px;"></el-input>
             <el-image
               style="width: 70px; height: 30px; vertical-align: middle; display: inline-block;margin: 0 20px;"
-              src="http://localhost:8080/img/huodong_yugao01.095909fa.png"
+              :src="require('@/assets/huodong_yugao01.png')"
               fit="fit"></el-image>
             <el-link href="javascript:;" style="display: inline;">换一张</el-link>
           </el-form-item>
@@ -156,7 +156,11 @@ export default {
         img: '/upload/admin/let_go/20200729/ff37e981b3b7ca9130eca455e13e4fbe.png'
       },
       // 活动预告
-      activity_forecast: {}
+      activity_forecast: {
+        img: '/upload/admin/let_go/20200730/795a496fd0d47413976d4a6cc69a9f89.png'
+      },
+      // 近期活动
+      near_term_activities: []
     }
   },
   created() {
@@ -178,6 +182,7 @@ export default {
     .then((result) => {
       console.log(result);
       this.activity_forecast = result.data.list_sidebar_first;
+      this.near_term_activities = result.data.list_sidebar;
     })
     .catch((error) => {
       console.log(error);
@@ -232,21 +237,27 @@ export default {
       if (!Number(this.activityForm.payment_method)) {
         // 支付宝支付
         this.$axios.get('/wpapi/member/let_go_zfb_pay', {
-          params: {users_id:localStorage.getItem('users_id'),let_go_id:let_go_id,phone:this.activityForm.phone}
+          params: {users_id:localStorage.getItem('users_id'),let_go_id:let_go_id,phone:this.activityForm.phone,pay_price:this.let_go_show_info.pay_price}
         })
         .then((result) => {
           console.log(result);
-          if (result.status !== '200') return this.$message.error(result.msg);
-          
+          const div = document.createElement('div');
+          div.innerHTML = result;
+          document.body.appendChild(div);
+          document.forms[0].submit();
         })
         .catch((error) => {
           console.log(error);
         });
       } else {
         // 微信支付
-        this.$axios.get('/wpapi/member/let_go_zfb_pay', {params:{users_id:localStorage.getItem('users_id'),let_go_id:let_go_id,phone:this.activityForm.phone}})
+        this.$axios.get('/wpapi/member/let_go_zfb_pay', {params:{users_id:localStorage.getItem('users_id'),let_go_id:let_go_id,phone:this.activityForm.phone,pay_price:this.let_go_show_info.pay_price,type:4}})
         .then((result) => {
           console.log(result);
+          const div = document.createElement('div');
+          div.innerHTML = result;
+          document.body.appendChild(div);
+          document.forms[0].submit();
         })
         .catch((error) => {
           console.log(error);
@@ -342,6 +353,7 @@ export default {
   }
   .activity_prediction_time_img img {
     width: 100%;
+    height: 174px;
   }
   .activity_prediction_recent {
     margin-left: 20px;
@@ -370,12 +382,18 @@ export default {
     display: flex;
     justify-content: space-between;
   }
+  .right_now_click {
+    flex: 1;
+  }
   .right_now_click a {
     background-color: rgba(255,42,134,1);
     color: #fff;
     border-radius: 18px;
     padding: 7px 22px;
     box-shadow: 8px 9px 18px 0px rgba(0,247,255,0.16);
+  }
+  .item_apply_time {
+    flex: 1.5;
   }
   .activity_recent_time {
     background-color: #fff;

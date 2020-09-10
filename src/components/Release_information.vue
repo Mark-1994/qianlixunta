@@ -16,7 +16,7 @@
                     <h4>{{come_news.nickname}}<img src="../assets/zuanshi03.png" alt="" /><span>v3</span></h4>
                     <div class="three_images_status">
                       <img src="../assets/shouji01.png" alt="">
-                      <img src="../assets/shimingrenzheng01.png" alt="">
+                      <img src="../assets/faxiaoxi01.png" alt="">
                       <img src="../assets/shimingrenzheng01.png" alt="">
                     </div>
                     <a href="javascript:;"><el-badge is-dot>完善个人信息</el-badge></a>
@@ -113,14 +113,26 @@
                           v-model="fabuxinxi_text">
                         </el-input>
                       </div>
+
+                      <!-- 图片上传 -->
+                      <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
                       <div class="fabuxinxi_items_top_bottom">
                         <div class="two_btn_text_send">
                           <span>
                             <img src="../assets/meirong01.png" alt="">
                           </span>
-                          <span>
-                            <img src="../assets/tupian01.png" alt="">
-                          </span>
+                          <el-upload
+                            class="upload-demo01"
+                            action="http://admin.qianlixunta.com/wpapi/member/send_image"
+                            :on-preview="handlePreview"
+                            :on-remove="handleRemove"
+                            :file-list="fileList"
+                            list-type="picture"
+                            :data="{token:token}">
+                            <span>
+                              <img src="../assets/tupian01.png" alt="">
+                            </span>
+                          </el-upload>
                         </div>
                         <div class="fabu_anniu">
                           <a href="javascript:;">发布</a>
@@ -159,15 +171,8 @@
 export default {
   data() {
     return {
-      cityInfo: [
-        { id: 1, name: '北京' },
-        { id: 2, name: '上海' },
-        { id: 3, name: '广州' },
-        { id: 4, name: '武汉' },
-        { id: 5, name: '成都' },
-        { id: 6, name: '天津' },
-        { id: 7, name: '重庆' }
-      ],
+      // 上传的文件列表
+      fileList: [],
       activeName: 'first',
       // 发布信息的文本
       fabuxinxi_text: '',
@@ -176,7 +181,9 @@ export default {
         head_portrait: '/upload/admin/article/thumbnail/20200807/nv.png'
       },
       // 朋友圈列表数据初始化
-      circle_list: {}
+      circle_list: {},
+      // 登陆后保存的 token
+      token: localStorage.getItem('token')
     }
   },
   created: function() {
@@ -217,8 +224,13 @@ export default {
 
   },
   methods: {
-    handleCommand(command) {
-      this.$message('click on item ' + command);
+    // 上传图片文件列表移除文件时的钩子
+    handleRemove() {
+      console.log('上传图片文件列表移除文件时的钩子');
+    },
+    // 点击上传图片文件列表中已上传的文件时的钩子
+    handlePreview() {
+      console.log('点击上传图片文件列表中已上传的文件时的钩子');
     }
   }
 }
@@ -402,6 +414,11 @@ export default {
   }
   .fabuxinxi_items_top_top {
     display: flex;
+    margin: 0 0 10px;
+  }
+  .fabuxinxi_items_top_top h4 {
+    margin: 0 0 0 10px;
+    line-height: 40px;
   }
   .fabuxinxi_items_top_top img {
     width: 40px;
@@ -429,10 +446,15 @@ export default {
   }
   .woguanzhude_title {
     display: flex;
+    margin-bottom: 10px;
   }
   .woguanzhude_title img {
     width: 37px;
     height: 36px;
+  }
+  .woguanzhude_title h4 {
+    margin: 0 0 0 10px;
+    line-height: 36px;
   }
   .woguanzhude_list li img {
     width: 59px;
@@ -458,5 +480,8 @@ export default {
   }
   .button {
     color: #000;
+  }
+  .upload-demo01 {
+    display: inline-block;
   }
 </style>

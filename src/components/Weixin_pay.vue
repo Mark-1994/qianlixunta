@@ -73,6 +73,21 @@ export default {
         this.order_price = result.data.order_price;
         this.title = result.data.title;
         this.code_img = result.data.code_img;
+
+        // 检测当前订单是否支付成功
+        clearInterval(timer);
+        let timer = setInterval(() => {
+          this.$axios.post('/wpapi/member/super_status_check', {
+            order_son: this.order_son
+          })
+          .then((result) => {
+            console.log(result);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        }, 2000);
+
       })
       .catch((error) => {
         console.log(error);
@@ -85,6 +100,21 @@ export default {
         this.order_price = result.data.order_price;
         this.title = result.data.title;
         this.code_img = result.data.code_img;
+        
+        // 检测当前订单是否支付成功
+        clearInterval(timer);
+        let timer = setInterval(() => {
+          this.$axios.post('/wpapi/member/vip_status_check', {
+            order_son: this.order_son
+          })
+          .then((result) => {
+            console.log(result);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        }, 2000);
+
       })
       .catch((error) => {
         console.log(error);
@@ -98,11 +128,26 @@ export default {
         this.order_price = result.data.order_price;
         this.title = result.data.title;
         this.code_img = result.data.code_img;
+
+        // 检测当前订单是否支付成功
+        clearInterval(timer);
+        let timer = setInterval(() => {
+          this.$axios.post('/wpapi/member/super_status_check', {
+            order_son: this.order_son
+          })
+          .then((result) => {
+            console.log(result);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        }, 2000);
+
       })
       .catch((error) => {
         console.log(error);
       });
-    }
+    };
   },
   methods: {
     safe_withdrawing() {

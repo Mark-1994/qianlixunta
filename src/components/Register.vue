@@ -150,7 +150,7 @@
             <el-form-item label="" class="free_register_form_protocol">
               <el-checkbox v-model="free_register_form.checked">
                 <div class="free_register_clause">
-                  <span>我同意注册条款和会员加入标准</span>
+                  <span>我同意<i @click="registration_terms">注册条款</i>和<i @click="members_to_join">会员加入</i>标准</span>
                   <span>并承诺年满18岁、单身、抱着积极的态度，真诚交友</span>
                 </div>
               </el-checkbox>
@@ -160,6 +160,31 @@
       </el-main>
       
     </el-container>
+
+    <!-- 注册条款 -->
+    <el-dialog
+      title="注册条款"
+      :visible.sync="centerDialogVisible"
+      width="50%"
+      center>
+      <div v-html="agreement_register">需要注意的是内容是默认不居中的</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="centerDialogVisible = false">我已阅读</el-button>
+      </span>
+    </el-dialog>
+
+    <!-- 加入标准 -->
+    <el-dialog
+      title="加入标准"
+      :visible.sync="centerDialogVisible01"
+      width="50%"
+      center>
+      <div v-html="agreement_register01">需要注意的是内容是默认不居中的</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="centerDialogVisible01 = false">我已阅读</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -167,6 +192,14 @@
 export default {
   data() {
     return {
+      // 注册条款
+      centerDialogVisible: false,
+      // 加入标准
+      centerDialogVisible01: false,
+      // 注册条款内容
+      agreement_register: '',
+      // 加入标准内容
+      agreement_register01: '',
       cityInfo: [
         { id: 1, name: '北京' },
         { id: 2, name: '上海' },
@@ -365,6 +398,32 @@ export default {
         this.message_btn = true;
         this.message_btn_count_down = false;
       }
+    },
+    // 注册条款
+    registration_terms() {
+      this.centerDialogVisible = true;
+      this.$axios.get('/wpapi/register/agreement_register', {params:{}})
+      .then((result) => {
+        console.log(result);
+        if (result.status !== '200') return this.$message.error('error');
+        this.agreement_register = result.data.content;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    },
+    // 加入标准
+    members_to_join() {
+      this.centerDialogVisible01 = true;
+      this.$axios.get('/wpapi/register/agreement_join', {params:{}})
+      .then((result) => {
+        console.log(result);
+        if (result.status !== '200') return this.$message.error('error');
+        this.agreement_register01 = result.data.content;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     }
   }
 }

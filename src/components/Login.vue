@@ -26,7 +26,10 @@
           </el-form>
           <div class="other_login">
             <span>其他登录方式</span>
-            <img src="../assets/qq01.svg" alt="" />
+            <a href="javascript:;" @click='toLogin'>
+              <img class="avatar size-S" src="http://admin.qianlixunta.com/static/qq.jpg" title="QQ登录">
+            </a>
+            <!-- <img src="../assets/qq01.svg" alt="" /> -->
             <img src="../assets/weixin01.svg" alt="" />
             <img src="../assets/weibo01.svg" alt="" />
           </div>
@@ -98,6 +101,12 @@ export default {
           return false;
         }
       });
+    },
+    // QQ登录
+    toLogin() {
+      //以下为按钮点击事件的逻辑。注意这里要重新打开窗口
+      //否则后面跳转到QQ登录，授权页面时会直接缩小当前浏览器的窗口，而不是打开新窗口
+      var A = window.open("http://admin.qianlixunta.com/wpapi/register/qq_login","TencentLogin","width=450,height=320,menubar=0,scrollbars=1, top=100,left=50,resizable=1,status=1,titlebar=0,toolbar=0,location=1");
     }
   }
 }
