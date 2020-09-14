@@ -1026,6 +1026,15 @@ export default {
     },
     // 提交头像和生活照
     post_images_sure() {
+      if (!this.mine_head_portrait) {
+        this.mine_head_portrait = this.come_news.head_portrait;
+      }
+      // console.log(!this.life_image_url.length);
+      // return false;
+      // if (!this.life_image_url.length) {
+      //   this.mine_life_imgs = this.life_image_url;
+      // }
+
       this.$axios.post('/wpapi/me/picture_form', {
         users_id: localStorage.getItem('users_id'),
         token: localStorage.getItem('token'),

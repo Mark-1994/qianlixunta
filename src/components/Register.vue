@@ -189,6 +189,8 @@
 </template>
 
 <script>
+import allCityList from "@/assets/cityList.json"
+
 export default {
   data() {
     return {
@@ -304,6 +306,8 @@ export default {
   },
   created() {
     this.$emit('header', true);
+
+    this.cityList = allCityList;
   },
   methods: {
     free_register(formName) {

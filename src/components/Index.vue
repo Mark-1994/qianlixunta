@@ -510,27 +510,14 @@
 </template>
 
 <script>
+import allCityList from "@/assets/cityList.json"
+
 export default {
   data() {
     return {
       // 情感交流
       affective_interaction: [],
-      cityList: [{
-        value: '湖北省',
-        label: '湖北省',
-        children: [
-          {
-            value: '武汉市',
-            label: '武汉市',
-            children: [
-              {
-                value: '武昌区',
-                label: '武昌区'
-              }
-            ]
-          }
-        ]
-      }],
+      cityList: '',
       // 禁用大于今天的日期
       pickerOptions: {
         disabledDate(time) {
@@ -625,6 +612,8 @@ export default {
   },
   created: function() {
     this.$emit('header', true);
+
+    this.cityList = allCityList;
 
     this.$axios.get('/wpapi/article/category', {})
     .then((response) => {
