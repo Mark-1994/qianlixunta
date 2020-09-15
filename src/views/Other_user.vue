@@ -1,7 +1,7 @@
 <template>
   <div class="login_container login_container01">
     <el-container>
-      
+
       <el-main>
         <div class="mine_info_show_change">
           <div class="mine_info">
@@ -74,7 +74,7 @@
           <div class="other_user_main">
             <div class="other_user_main_left">
               <div class="other_user_main_left_big_img">
-                <img src="../assets/touxinag01.png" alt="" />
+                <img :src="'http://admin.qianlixunta.com'+select_users_info.head_portrait" alt="" />
               </div>
               <div class="other_user_main_left_small_img">
                 <ul>
@@ -89,7 +89,7 @@
             </div>
             <div class="other_user_main_right">
               <div class="nickname_info">
-                <h4>林俊杰<img src="../assets/zuanshi03.png" alt="" /><span>v3</span></h4>
+                <h4>{{select_users_info.nickname}}<img src="../assets/zuanshi03.png" alt="" /><span>v3</span></h4>
               </div>
               <div class="user_info">
                 <img src="../assets/shouji01.png" alt="">
@@ -97,20 +97,20 @@
                 <img src="../assets/shimingrenzheng03.png" alt="">
               </div>
               <div class="user_age_sex_marrage">
-                <span>27岁</span>
-                <span>男</span>
-                <span>未婚</span>
+                <span>{{select_users_info.users_year - new Date().getFullYear()}}岁</span>
+                <span>{{select_users_info.sex ? '男' : '女'}}</span>
+                <span>{{select_users_info.marital_status}}</span>
               </div>
               <div class="ither_user_info_list">
                 <ul>
-                  <li><span>现居：</span>湖北 武汉市</li>
-                  <li><span>籍贯：</span>太阳系 冥王星</li>
-                  <li><span>星座：</span>天蝎座</li>
-                  <li><span>生肖：</span>麒麟</li>
-                  <li><span>身高：</span>178CM</li>
-                  <li><span>体重：</span>45公斤</li>
-                  <li><span>职业：</span>前端开发工程师</li>
-                  <li><span>收入：</span>10RMB</li>
+                  <li><span>现居：</span>{{select_users_info.address}}</li>
+                  <li><span>籍贯：</span>{{select_users_info.native_place}}</li>
+                  <li><span>星座：</span>{{select_users_info.constellation}}</li>
+                  <li><span>生肖：</span>{{select_users_info.the_chinese_zodiac}}</li>
+                  <li><span>身高：</span>{{select_users_info.height}}CM</li>
+                  <li><span>体重：</span><span v-if="select_users_info.weight">{{select_users_info.weight}}公斤</span></li>
+                  <li><span>职业：</span>{{select_users_info.job}}</li>
+                  <li><span>收入：</span>{{select_users_info.monthly_salary}}元</li>
                 </ul>
               </div>
             </div>
@@ -211,6 +211,10 @@ export default {
       // 个人信息数据
       come_news: {
         head_portrait: '/upload/admin/article/thumbnail/20200807/nv.png'
+      },
+      // 当前用户信息
+      select_users_info: {
+        head_portrait: '/upload/admin/article/thumbnail/20200807/nv.png'
       }
     }
   },
@@ -222,6 +226,20 @@ export default {
       this.$message.error('您还没有登录，请您先登陆！');
       this.$router.push('/login');
     }
+
+    // 用户信息展示页
+    this.$axios.post('/wpapi/me/select_users_info', {
+      users_id: localStorage.getItem('users_id'),
+      token: localStorage.getItem('token'),
+      bei_users_id: this.$route.params.bei_users_id
+    })
+    .then((result) => {
+      console.log(result);
+      this.select_users_info = result.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 
     // 个人信息初始化
     this.$axios.post('/wpapi/member/come_news', {users_id: localStorage.getItem('users_id')})

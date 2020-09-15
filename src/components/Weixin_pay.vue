@@ -40,7 +40,22 @@
         </div>
       </div>
     </div>
-    
+
+    <!-- 支付成功的弹窗 -->
+    <el-dialog
+      :lock-scroll="false"
+      :show-close="false"
+      :close-on-click-modal="false"
+      title=""
+      :visible.sync="dialogVisible"
+      width="30%">
+      <div class="dialog_content_center">
+        <p>恭喜，付款成功</p>
+        <p>快来寻找你的另一半吧</p>
+        <p class="three_seconds">三秒后自动开启寻TA之旅</p>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -56,7 +71,9 @@ export default {
       title: '',
       // 微信支付二维码
       code_img: '',
-      nickname: ''
+      nickname: '',
+      // 支付成功的弹窗
+      dialogVisible: false
     }
   },
   created: function() {
@@ -64,6 +81,7 @@ export default {
 
     this.nickname = localStorage.getItem('nickname');
 
+    // type=1,168会员, type=2,168会员续费, type=3,红娘一对一, type=4,约吧走起活动
     // 168会员微信支付展示页面
     if (this.$route.params.type == 1) {
       this.$axios.get('/wpapi/member/wx_pay', {params:{users_id:localStorage.getItem('users_id'),order_id:this.$route.params.order_id,type:this.$route.params.type}})
@@ -75,28 +93,24 @@ export default {
         this.code_img = result.data.code_img;
 
         // 检测当前订单是否支付成功
-        // clearInterval(timer);
-        // let timer = setInterval(() => {
-        //   this.$axios.post('/wpapi/member/super_status_check', {
-        //     order_son: this.order_son
-        //   })
-        //   .then((result) => {
-        //     console.log(result);
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
-        // }, 2000);
-
-        this.$axios.post('/wpapi/member/vip_status_check', {
-          order_osn: this.order_son
-        })
-        .then((result) => {
-          console.log(result);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        let timer = setInterval(() => {
+          this.$axios.post('/wpapi/member/vip_status_check', {
+            order_osn: this.order_son
+          })
+          .then((result) => {
+            console.log(result);
+            if (result.data == 1) {
+              this.dialogVisible = true;
+              setTimeout(() => {
+                this.$router.push('/index');
+              }, 3000);
+              clearInterval(timer);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        }, 2000);
 
       })
       .catch((error) => {
@@ -110,30 +124,26 @@ export default {
         this.order_price = result.data.order_price;
         this.title = result.data.title;
         this.code_img = result.data.code_img;
-        
-        // 检测当前订单是否支付成功
-        // clearInterval(timer);
-        // let timer = setInterval(() => {
-        //   this.$axios.post('/wpapi/member/vip_status_check', {
-        //     order_son: this.order_son
-        //   })
-        //   .then((result) => {
-        //     console.log(result);
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
-        // }, 2000);
 
-        this.$axios.post('/wpapi/member/vip_status_check', {
-          order_osn: this.order_son
-        })
-        .then((result) => {
-          console.log(result);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        // 检测当前订单是否支付成功
+        let timer = setInterval(() => {
+          this.$axios.post('/wpapi/member/vip_status_check', {
+            order_osn: this.order_son
+          })
+          .then((result) => {
+            console.log(result);
+            if (result.data == 1) {
+              this.dialogVisible = true;
+              setTimeout(() => {
+                this.$router.push('/index');
+              }, 3000);
+              clearInterval(timer);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        }, 2000);
 
       })
       .catch((error) => {
@@ -236,5 +246,17 @@ export default {
   }
   .center_erweima_two img {
     width: 200px;
+  }
+  .dialog_content_center {
+    text-align: center;
+    font-size: 16px;
+  }
+  .dialog_content_center p {
+    color: #000;
+  }
+  .dialog_content_center .three_seconds {
+    color: #E64980;
+    margin: 40px auto;
+    font-size: 14px;
   }
 </style>

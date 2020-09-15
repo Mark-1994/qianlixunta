@@ -100,18 +100,25 @@
               <el-col :span="6" v-for="item in find_friend" :key="item.id">
                 <div class="item_list_info">
                   <div class="item_left_img">
-                    <!-- <img src="../assets/user_img01.png" alt=""> -->
 
                     <div class="item_left_img_big_img">
-                      <img :src="'http://admin.qianlixunta.com'+item.head_portrait" alt="">
+                      <router-link :to="'/other_user/'+item.id">
+                        <img :src="'http://admin.qianlixunta.com'+item.head_portrait" alt="">
+                      </router-link>
                     </div>
                     <div class="item_left_img_small_img">
-                      <img v-for="(item01, index) in item.life_imgs ? JSON.parse(item.life_imgs) : []" :key="index" :src="'http://admin.qianlixunta.com'+item01" alt="" />
+                      <router-link :to="'/other_user/'+item.id">
+                        <img v-for="(item01, index) in item.life_imgs ? JSON.parse(item.life_imgs) : []" :key="index" :src="'http://admin.qianlixunta.com'+item01" alt="" />
+                      </router-link>
                     </div>
 
                   </div>
                   <div class="item_right_info">
-                    <h4>{{item.nickname}}</h4>
+                    <h4>
+                      <router-link :to="'/other_user/'+item.id">
+                      {{item.nickname}}
+                      </router-link>
+                    </h4>
                     <div class="person_info">
                       <span>18岁</span>
                       <span>{{item.height}}cm</span>
@@ -211,6 +218,19 @@ export default {
   },
   created() {
     this.$emit('header', true);
+
+    // 查看用户信息
+    this.$axios.post('/wpapi/me/select_users_info', {
+      users_id: localStorage.getItem('users_id'),
+      token: localStorage.getItem('token'),
+      bei_users_id: 56
+    })
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
     
     this.$axios.post('/wpapi/member/find_friend', { page: 1 })
     .then((result) => {
@@ -357,6 +377,9 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  .item_right_info h4 a {
+    color: #000;
   }
   .person_info {
     margin-bottom: 10px;

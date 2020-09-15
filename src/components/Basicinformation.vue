@@ -75,7 +75,7 @@
               资料完善度 <span>{{percentage}}%</span>
               <el-progress :percentage="percentage" :color="customColor"></el-progress>
             </p>
-            <el-tabs>
+            <el-tabs  @tab-click="handleClickRow">
               <el-tab-pane label="完善资料">
                 <el-tabs tab-position="left" @tab-click="handleClick">
                   <el-tab-pane label="基本资料">
@@ -173,19 +173,19 @@
                       </el-form-item>
                     </el-form>
                   </el-tab-pane>
-                  <el-tab-pane label="择偶条件">
+                  <el-tab-pane label="择偶条件" name="1">
                     <p>您的择偶条件</p>
                     <el-row>
-                      <el-col :span="6">性别：女</el-col>
-                      <el-col :span="6">年龄：20-30岁</el-col>
+                      <el-col :span="6">性别：{{set_choose_form_pre.sex ? set_choose_form_pre.sex : '不限'}}</el-col>
+                      <el-col :span="6">年龄：{{set_choose_form_pre.age_low}}-{{set_choose_form_pre.age_height}}岁</el-col>
                     </el-row>
                     <el-row>
-                      <el-col :span="6">所在地：湖北武汉</el-col>
-                      <el-col :span="6">身高：155-170CM</el-col>
+                      <el-col :span="6">所在地：{{set_choose_form_pre.address ? set_choose_form_pre.address : '不限'}}</el-col>
+                      <el-col :span="6">身高：{{set_choose_form_pre.stature_low}}-{{set_choose_form_pre.stature_height}}CM</el-col>
                     </el-row>
                     <el-row>
-                      <el-col :span="6">民族：不限</el-col>
-                      <el-col :span="6">学历：不限</el-col>
+                      <el-col :span="6">民族：{{set_choose_form_pre.nation ? set_choose_form_pre.nation : '不限'}}</el-col>
+                      <el-col :span="6">学历：{{set_choose_form_pre.education ? set_choose_form_pre.education : '不限'}}</el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="6">婚姻状况：未婚</el-col>
@@ -263,7 +263,7 @@
                       </el-form-item>
                     </el-form>
                   </el-tab-pane>
-                  <el-tab-pane label="内心独白">
+                  <el-tab-pane label="内心独白" name="2">
                     <el-row>
                       <el-col>内心独白</el-col>
                     </el-row>
@@ -318,7 +318,7 @@
                       <el-button type="primary" @click="post_images_sure">确认提交头像和生活照</el-button>
                     </el-row>
                   </el-tab-pane>
-                  <el-tab-pane label="详细资料">
+                  <el-tab-pane label="详细资料" name="4">
                     <el-collapse v-model="activeNames">
                       <el-collapse-item title="工作与教育经历" name="1">
                         <el-form :inline="true" ref="job_form" :model="job_form" label-width="130px">
@@ -549,7 +549,7 @@
                 </el-tabs>
               </el-tab-pane>
               <el-tab-pane label="我的账号">我的账号</el-tab-pane>
-              <el-tab-pane label="实名认证">
+              <el-tab-pane label="实名认证" name="2">
                 <h4>实名认证</h4>
                 <p>为保证资料真实有效，请如实填写</p>
                 <el-form ref="real_name_form" :model="real_name_form" label-width="100px">
@@ -601,6 +601,8 @@
 </template>
 
 <script>
+import all_nav_adress from '@/assets/cityList.json'
+
 export default {
   data() {
     return {
@@ -684,6 +686,8 @@ export default {
         // nation: '',
         // address: ''
       },
+      // 择偶条件预览
+      set_choose_form_pre: {},
       beforeage_options: [
         { value: '20', label: '20', id: 1},
         { value: '30', label: '30', id: 2}
@@ -838,6 +842,9 @@ export default {
       this.$router.push('/login');
     }
 
+    // 所在地区
+    this.nav_adress = all_nav_adress;
+
     // 个人信息初始化
     this.$axios.post('/wpapi/member/come_news', {users_id: localStorage.getItem('users_id')})
     .then((result) => {
@@ -848,9 +855,70 @@ export default {
       console.log(error);
     });
 
+    // 完善资料数据初始化
+    this.$axios.post('/wpapi/me/improve_users_init', {
+      users_id: localStorage.getItem('users_id'),
+      token: localStorage.getItem('token')
+    })
+    .then((result) => {
+      console.log(result);
+      this.mine_data_form = result.data;
+      this.mine_data_form.improve_sex = this.mine_data_form.improve_sex ? '男' : '女';
+      this.mine_data_form.is_children = this.mine_data_form.is_children ? '有' : '无';
+      this.mine_data_form.car_type = this.mine_data_form.car_type ? '有' : '无';
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
   },
   methods: {
+    handleClickRow(tab, event) {
+      // 实名认证
+      if (tab.name == 2) {
+        this.$axios.post('/wpapi/me/real_name_init', {
+          users_id: localStorage.getItem('users_id'),
+          token: localStorage.getItem('token')
+        })
+        .then((result) => {
+          console.log(result);
+          this.real_name_form = result.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
+    },
     handleClick(tab, event) {
+      // 择偶条件
+      if (tab.name == 1) {
+        this.$axios.post('/wpapi/me/mate_selection_init', {
+          users_id: localStorage.getItem('users_id'),
+          token: localStorage.getItem('token')
+        })
+        .then((result) => {
+          console.log(result);
+          this.set_choose_form = result.data;
+          this.set_choose_form_pre = result.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
+      // 内心独白
+      if (tab.name == 2) {
+        this.$axios.post('/wpapi/me/inner_monologue_init', {
+          users_id: localStorage.getItem('users_id'),
+          token: localStorage.getItem('token')
+        })
+        .then((result) => {
+          console.log(result);
+          this.neixindubai = result.data.content;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
       // 判断当前栏目是否是我的照片
       if (tab.name == 3) {
         this.$axios.post('/wpapi/register/picture_init', {
@@ -862,6 +930,19 @@ export default {
             this.imageUrl = 'http://admin.qianlixunta.com'+result.data.head_portrait;
           }
           this.life_image_url = JSON.parse(result.data.life_imgs);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
+      // 详细资料
+      if (tab.name == 4) {
+        this.$axios.post('/wpapi/me/users_detail_init', {
+          users_id: localStorage.getItem('users_id'),
+          token: localStorage.getItem('token')
+        })
+        .then((result) => {
+          console.log(result);
         })
         .catch((error) => {
           console.log(error);
