@@ -4,7 +4,7 @@
       <div class="header_content_center">
         <a href="/#/index">
           <!-- <img src="../assets/logo01.png" alt="" /> -->
-          <span>LOGO</span>
+          <span>千里寻TA</span>
           <el-divider direction="vertical"></el-divider>
           <span>红娘一对一</span>
         </a>

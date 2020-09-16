@@ -4,7 +4,7 @@
       <div class="header_content_center">
         <a href="/#/index">
           <!-- <img src="../assets/logo01.png" alt="" /> -->
-          <span>LOGO</span>
+          <span>千里寻TA</span>
           <el-divider direction="vertical"></el-divider>
           <span>红娘一对一</span>
         </a>
@@ -160,28 +160,24 @@ export default {
         this.code_img = result.data.code_img;
 
         // 检测当前订单是否支付成功
-        // clearInterval(timer);
-        // let timer = setInterval(() => {
-        //   this.$axios.post('/wpapi/member/super_status_check', {
-        //     order_son: this.order_son
-        //   })
-        //   .then((result) => {
-        //     console.log(result);
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
-        // }, 2000);
-
-        this.$axios.post('/wpapi/member/super_status_check', {
-          order_osn: this.order_son
-        })
-        .then((result) => {
-          console.log(result);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        let timer = setInterval(() => {
+          this.$axios.post('/wpapi/member/super_status_check', {
+            order_osn: this.order_son
+          })
+          .then((result) => {
+            console.log(result);
+            if (result.data == 1) {
+              this.dialogVisible = true;
+              setTimeout(() => {
+                this.$router.push('/hongniang_list');
+              }, 3000);
+              clearInterval(timer);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        }, 2000);
 
       })
       .catch((error) => {

@@ -84,14 +84,14 @@
                   <div class="text item item_fabuneirong">
                     <p>{{item.content}}</p>
                     <!-- <img src="../assets/fabu01.png" alt=""> -->
-                    <img :src="'http://'+item.send_img" alt="">
+                    <img :src="'http://admin.qianlixunta.com'+item.send_img" alt="">
                   </div>
                   <div class="dianzan_pinglun_num">
                     <el-link><i class="iconfont-qianlixunta icon-qianlixuntadianzan"></i> {{item.zan_num}}</el-link>
                     <el-link><i class="iconfont-qianlixunta icon-qianlixuntapinglun"></i> {{item.message_num}}</el-link>
                   </div>
                   <div class="bottom clearfix click_three_items">
-                    <el-button type="text" class="button"><i class="iconfont-qianlixunta icon-qianlixuntadianzan"></i> 点赞</el-button>
+                    <el-button type="text" class="button" @click="send_fabulous(item.send_circle_id)"><i class="iconfont-qianlixunta icon-qianlixuntadianzan"></i> 点赞</el-button>
                     <el-button type="text" class="button"><i class="iconfont-qianlixunta icon-qianlixuntapinglun"></i> 评论</el-button>
                     <el-button type="text" class="button"><i class="iconfont-qianlixunta icon-qianlixuntaguanzhu"></i> 关注</el-button>
                   </div>
@@ -125,6 +125,8 @@
                             class="upload-demo01"
                             action="http://admin.qianlixunta.com/wpapi/member/send_image"
                             :on-preview="handlePreview"
+                            :on-change="updata_img_change"
+                            :on-success="updata_img_success"
                             :on-remove="handleRemove"
                             :file-list="fileList"
                             list-type="picture"
@@ -135,7 +137,7 @@
                           </el-upload>
                         </div>
                         <div class="fabu_anniu">
-                          <a href="javascript:;">发布</a>
+                          <a href="javascript:;" @click="send_circle">发布</a>
                         </div>
                       </div>
                     </div>
@@ -231,6 +233,95 @@ export default {
     // 点击上传图片文件列表中已上传的文件时的钩子
     handlePreview() {
       console.log('点击上传图片文件列表中已上传的文件时的钩子');
+    },
+    // 上传图片成功的回调
+    updata_img_success(response, file, fileList) {
+      console.log(response, file, fileList);
+      fileList.forEach((item, index) => {
+        this.fileList[index] = item.response.path;
+      });
+      console.log(this.fileList);
+    },
+    // 上传图片文件状态改变
+    updata_img_change(file, fileList) {
+      // fileList.forEach(item => {
+      //   if (item.response) {
+      //     console.log(item);
+      //   }
+      // });
+      // console.log(fileList);
+    },
+    // 发朋友圈
+    send_circle() {
+      if (!this.fabuxinxi_text) return false;
+      console.log(this.fabuxinxi_text);
+      console.log(this.fileList);
+      this.$axios.post('/wpapi/me/send_circle', {
+        users_id: localStorage.getItem('users_id'),
+        token: localStorage.getItem('token'),
+        content: this.fabuxinxi_text,
+        send_img: this.fileList
+      })
+      .then((result) => {
+        console.log(result);
+        if (result.status !== '200') return this.$message.error('发布失败！');
+        this.$message.success('发布成功！');
+        this.fabuxinxi_text = '';
+        this.fileList = [];
+
+        // 发布成功更新朋友圈列表数据
+        this.$axios.post('/wpapi/me/circle_list', {token:localStorage.getItem('token'),users_id: localStorage.getItem('users_id')})
+        .then((result) => {
+          console.log(result);
+          this.circle_list = result.data;
+          console.log(JSON.parse(result.data[0].send_img)[0]);
+          this.circle_list.forEach(element => {
+            if (element.send_img) {
+              element.send_img = JSON.parse(element.send_img)[0];
+              // console.log(element.send_img);
+            }
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    },
+    // 点赞
+    send_fabulous(send_circle_id) {
+      this.$axios.post('/wpapi/me/send_fabulous', {
+        users_id: localStorage.getItem('users_id'),
+        token: localStorage.getItem('token'),
+        zan_users_id: localStorage.getItem('users_id'),
+        send_circle_id: send_circle_id
+      })
+      .then((result) => {
+        console.log(result);
+        if (result.status !== '200') return this.$message.error('点赞失败！');
+        this.$message.success(result.msg);
+
+        // 更新朋友圈列表数据
+        this.$axios.post('/wpapi/me/circle_list', {token:localStorage.getItem('token'),users_id: localStorage.getItem('users_id')})
+        .then((result) => {
+          this.circle_list = result.data;
+          this.circle_list.forEach(element => {
+            if (element.send_img) {
+              element.send_img = JSON.parse(element.send_img)[0];
+            }
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     }
   }
 }
@@ -380,6 +471,7 @@ export default {
   }
   .item_fabuneirong img {
     max-width: 100%;
+    max-height: 600px;
   }
   .header_title_info_show {
     display: flex;

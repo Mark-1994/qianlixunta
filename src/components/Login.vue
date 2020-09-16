@@ -30,7 +30,7 @@
               <img class="avatar size-S" src="http://admin.qianlixunta.com/static/qq.jpg" title="QQ登录">
             </a>
             <!-- <img src="../assets/qq01.svg" alt="" /> -->
-            <a href="http://admin.qianlixunta.com//wpapi/register/wx_login" target="_blank">
+            <a href="http://admin.qianlixunta.com/wpapi/register/wx_login" target="_blank">
               <img src="../assets/weixin01.svg" alt="" />
             </a>
             <img src="../assets/weibo01.svg" alt="" />

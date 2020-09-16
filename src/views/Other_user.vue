@@ -16,7 +16,7 @@
                     <h4>{{come_news.nickname}}<img src="../assets/zuanshi03.png" alt="" /><span>v3</span></h4>
                     <div class="three_images_status">
                       <img src="../assets/shouji01.png" alt="">
-                      <img src="../assets/shimingrenzheng01.png" alt="">
+                      <img src="../assets/faxiaoxi01.png" alt="">
                       <img src="../assets/shimingrenzheng01.png" alt="">
                     </div>
                     <a href="javascript:;"><el-badge is-dot>完善个人信息</el-badge></a>
@@ -78,12 +78,8 @@
               </div>
               <div class="other_user_main_left_small_img">
                 <ul>
-                  <li><img src="../assets/touxiang_small01.png" alt=""></li>
-                  <li><img src="../assets/touxiang_small02.png" alt=""></li>
-                  <li><img src="../assets/touxiang_small03.png" alt=""></li>
-                  <li><img src="../assets/touxiang_small01.png" alt=""></li>
-                  <li><img src="../assets/touxiang_small02.png" alt=""></li>
-                  <li><img src="../assets/touxiang_small03.png" alt=""></li>
+                  <li v-for="(item, index) in select_users_info.life_imgs" :key="index"><img :src="'http://admin.qianlixunta.com'+item" alt=""></li>
+                  <!-- <li><img src="../assets/touxiang_small02.png" alt=""></li> -->
                 </ul>
               </div>
             </div>
@@ -93,11 +89,11 @@
               </div>
               <div class="user_info">
                 <img src="../assets/shouji01.png" alt="">
-                <img src="../assets/shimingrenzheng01.png" alt="">
+                <img src="../assets/faxiaoxi01.png" alt="">
                 <img src="../assets/shimingrenzheng03.png" alt="">
               </div>
               <div class="user_age_sex_marrage">
-                <span>{{select_users_info.users_year - new Date().getFullYear()}}岁</span>
+                <span>{{new Date().getFullYear() - select_users_info.users_year}}岁</span>
                 <span>{{select_users_info.sex ? '男' : '女'}}</span>
                 <span>{{select_users_info.marital_status}}</span>
               </div>
@@ -117,18 +113,18 @@
             <!-- 右上角三个按钮 -->
             <div class="greet_msg_like">
               <el-button type="primary">打招呼</el-button>
-              <el-button type="info">发消息</el-button>
+              <el-button type="info" @click="send_message">发消息</el-button>
               <el-button type="danger">喜欢</el-button>
             </div>
           </div>
           <!-- 自我介绍 -->
           <div class="other_user_introduce_myself">
-            <h4><img src="../assets/ziwojieshao01.png" alt="" />自我介绍</h4>
-            <p>我是一个多变的女孩，动如脱兔，静如处子，可谓动静皆宜。生活中的我，不仅喜欢旅游、聚会，也喜欢独自读《红楼梦》、看韩剧美剧，当然家务能力也是不错的。期待自己的另一半是一个可以理解自己，有生活情趣和共同语言的男士，我是世纪佳缘手机版用户，我在这里等着你哦！</p>
+            <h4><img src="../assets/ziwojieshao01.png" alt="" /> 自我介绍</h4>
+            <p>{{select_users_info.introduce_oneself}}</p>
           </div>
           <!-- 人物速写DNA -->
           <div class="other_user_unedited_biographies">
-            <h4><img src="../assets/dna01.png" alt="" />人物速写DNA</h4>
+            <h4><img src="../assets/dna01.png" alt="" /> 人物速写DNA</h4>
             <div class="hobbies_personality_label">
               <div class="hobbies_personality_label_left">
                 她的兴趣爱好：
@@ -154,53 +150,155 @@
           </div>
           <!-- TA的理想型 -->
           <div class="other_user_ideal_type">
-            <h4><img src="../assets/tadelixiangxing01.png" alt="" />TA的理想型</h4>
+            <h4><img src="../assets/tadelixiangxing01.png" alt="" /> TA的理想型</h4>
             <ul>
               <li><span>年龄：</span>20-30岁之间</li>
               <li><span>民族：</span>不限</li>
-              <li><span>身高：</span>不限</li>
+              <li><span>身高：</span>{{select_users_info.imp_height}}CM</li>
               <li><span>居住地：</span>湖北武汉</li>
-              <li><span>学历：</span>不限</li>
-              <li><span>婚姻状况：</span>不限</li>
+              <li><span>学历：</span>{{select_users_info.imp_education}}</li>
+              <li><span>婚姻状况：</span>{{select_users_info.imp_marital_status}}</li>
             </ul>
           </div>
           <!-- 生活方式 -->
           <div class="other_user_life_style">
-            <h4><img src="../assets/shenghuofangshi01.png" alt="" />生活方式</h4>
+            <h4><img src="../assets/shenghuofangshi01.png" alt="" /> 生活方式</h4>
             <ul>
               <li><span>吸烟：</span>不抽烟也讨厌他人抽烟</li>
-              <li><span>饮酒：</span>不喝酒</li>
-              <li><span>饮食习惯：</span>湖北武汉</li>
-              <li><span>宗教信仰：</span>无</li>
+              <li><span>饮酒：</span>{{select_users_info.drink_wine}}</li>
+              <li><span>饮食习惯：</span>{{select_users_info.eating_habits}}</li>
+              <li><span>宗教信仰：</span>{{select_users_info.religious_belief}}</li>
               <li><span>作息时间：</span>偶尔懒散一下</li>
-              <li><span>交际圈子：</span>经常和朋友见面</li>
-              <li><span>锻炼习惯：</span>不限</li>
-              <li><span>逛街购物：</span>偶尔逛街</li>
-              <li><span>最大消费：</span>购置服装</li>
-              <li><span>家务：</span>会一些</li>
-              <li><span>宠物：</span>不喜欢</li>
+              <li><span>交际圈子：</span>{{select_users_info.social_circle}}</li>
+              <li><span>锻炼习惯：</span>{{select_users_info.exercise_habits}}</li>
+              <li><span>逛街购物：</span>{{select_users_info.shopping_habits}}</li>
+              <li><span>最大消费：</span>{{select_users_info.maximum_consumption}}</li>
+              <li><span>家务：</span>{{select_users_info.household_distribution}}</li>
+              <li><span>宠物：</span>{{select_users_info.pet_rearing}}</li>
             </ul>
           </div>
           <!-- 婚姻观念 -->
           <div class="other_user_marriage_concept">
-            <h4><img src="../assets/hunyinguannian01.png" alt="" />婚姻观念</h4>
+            <h4><img src="../assets/hunyinguannian01.png" alt="" /> 婚姻观念</h4>
+            <ul>
+              <li><span>籍贯：</span>{{select_users_info.native_place}}</li>
+              <li><span>国籍：</span>{{select_users_info.nationality}}</li>
+              <li><span>性格：</span>{{select_users_info.personality}}</li>
+              <li><span>幽默感：</span>{{select_users_info.sense_of_humor}}</li>
+              <li><span>脾气：</span>{{select_users_info.bad_temper}}</li>
+              <li><span>是否投入看真实情况：</span>{{select_users_info.treat_feelings}}</li>
+              <li><span>是否愿意要孩子：</span>{{select_users_info.about_children}}</li>
+              <li><span>结婚：</span>{{select_users_info.get_married}}</li>
+              <li><span>长时间异地恋：</span>{{select_users_info.long_distance_love}}</li>
+              <li><span>理想婚姻：</span>{{select_users_info.ideal_marriage}}</li>
+              <li><span>赡养老人：</span>{{select_users_info.household_distribution}}</li>
+              <li><span>是否是独生子女：</span>{{select_users_info.home_ranking}}</li>
+              <li><span>兄妹还是姐弟：</span>{{select_users_info.brothers_and_sisters}}</li>
+              <li><span>父母健康情况：</span>{{select_users_info.parents}}</li>
+              <li><span>父亲工作：</span>{{select_users_info.father_job}}</li>
+              <li><span>母亲工作：</span>{{select_users_info.mother_job}}</li>
+              <li><span>父母是否有退休金：</span>{{select_users_info.parent_economy}}</li>
+              <li><span>父母是否有医疗保险：</span>{{select_users_info.parents_medical_insurance}}</li>
+            </ul>
           </div>
           <!-- 经济实力 -->
           <div class="other_user_economic_power">
-            <h4><img src="../assets/jingjishili01.png" alt="" />经济实力</h4>
+            <h4><img src="../assets/jingjishili01.png" alt="" /> 经济实力</h4>
+            <ul>
+              <li><span>投资理财：</span>{{select_users_info.investment_and_financing}}</li>
+              <li><span>外债贷款：</span></li>
+              <li><span>经济观念：</span>{{select_users_info.economic_concept}}</li>
+            </ul>
           </div>
           <!-- 体型外貌 -->
           <div class="other_user_body_image">
-            <h4><img src="../assets/tixingwaimao01.png" alt="" />体型外貌</h4>
+            <h4><img src="../assets/tixingwaimao01.png" alt="" /> 体型外貌</h4>
+            <ul>
+              <li><span>体重：</span>{{select_users_info.weight}}KG</li>
+              <li><span>体型：</span>{{select_users_info.shape}}</li>
+              <li><span>脸型：</span>{{select_users_info.face_shape}}</li>
+              <li><span>眼睛：</span>{{select_users_info.eye}}</li>
+              <li><span>头发：</span>{{select_users_info.hair}}</li>
+              <li><span>皮肤：</span>{{select_users_info.skin}}</li>
+              <li><span>肌肉：</span>{{select_users_info.muscle}}</li>
+              <li><span>穿衣风格：</span>{{select_users_info.dressing_style}}</li>
+            </ul>
           </div>
           <!-- 兴趣爱好 -->
           <div class="other_user_hobbies_interests">
-            <h4><img src="../assets/xingquaihao01.png" alt="" />兴趣爱好</h4>
+            <h4><img src="../assets/xingquaihao01.png" alt="" /> 兴趣爱好</h4>
+            <ul>
+              <li><span>旅游：</span>{{select_users_info.travel_play}}</li>
+              <li><span>饮食：</span>{{select_users_info.food}}</li>
+              <li><span>书籍：</span>{{select_users_info.book}}</li>
+              <li><span>电影：</span>{{select_users_info.film}}</li>
+              <li><span>节目：</span>{{select_users_info.program}}</li>
+              <li><span>娱乐休闲：</span>{{select_users_info.entertainment_leisure}}</li>
+              <li><span>业余爱好：</span>{{select_users_info.avocation}}</li>
+            </ul>
           </div>
         </div>
       </el-main>
       
     </el-container>
+
+    <!-- 发消息弹窗 -->
+    <el-dialog
+      title=""
+      :visible.sync="dialogVisible"
+      width="660px">
+      <el-row>
+        <div class="dialog_send_message">
+          <el-col :span="7">
+          <div class="dialog_send_message_left">
+            <el-image
+            style="width: 100%; height: 150px;border-radio: 20px;"
+            :src="'http://admin.qianlixunta.com'+select_users_info.head_portrait"
+            fit="fit"></el-image>
+            <h4>{{select_users_info.nickname}}<img src="../assets/zuanshi03.png" alt="" /><span>v3</span></h4>
+            <div class="img_status_list">
+              <img src="../assets/shouji01.png" alt="">
+              <img src="../assets/faxiaoxi01.png" alt="">
+              <img src="../assets/shimingrenzheng01.png" alt="">
+            </div>
+            <ul class="user_list_info">
+              <li>{{new Date().getFullYear() - select_users_info.users_year}}岁</li>
+              <li>{{select_users_info.marital_status}}</li>
+              <li>{{select_users_info.height}}CM</li>
+            </ul>
+            <h4 class="common_tag_title">你们的共同标签</h4>
+            <ul class="common_tag">
+              <li>90后</li>
+              <li>健身</li>
+              <li>游戏</li>
+            </ul>
+            <el-button style="background: linear-gradient(360deg,#fc2c89 11%, #ff97c6 99%);color: #fff;outline: none;border: 0;display:block;margin: 0 auto;" size="mini">关注TA</el-button>
+          </div>
+          </el-col>
+          <el-col :span="17">
+          <div class="dialog_send_message_right">
+            <div class="show_message_list">
+              <ul>
+                <li v-for="(item, index) in msg_list" :key="index">{{item}}</li>
+                <!-- <li>今天的天气</li>
+                <li>晚上一起吃饭吗</li> -->
+              </ul>
+            </div>
+            <el-input
+              type="textarea"
+              :rows="2"
+              placeholder="请输入内容"
+              v-model="send_message_content" style="margin: 15px 0px 10px;">
+            </el-input>
+            <div class="send_msg_btn">
+              <img src="../assets/biaoqing01.png" alt="">
+              <el-button style="background: linear-gradient(0deg,#5ac2ff, #c3e9ff);color: #fff;outline: none;border: 0;" @click="send_btn">发送</el-button>
+            </div>
+          </div>
+          </el-col>
+        </div>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
@@ -215,11 +313,30 @@ export default {
       // 当前用户信息
       select_users_info: {
         head_portrait: '/upload/admin/article/thumbnail/20200807/nv.png'
-      }
+      },
+      // 发消息弹窗显示隐藏
+      dialogVisible: false,
+      // 发送消息内容
+      send_message_content: '',
+      // 消息列表
+      msg_list: []
     }
   },
   created: function() {
     this.$emit('header', true);
+
+    // 聊天页面信息展示
+    // this.$axios.post('/wpapi/me/chat_show', {
+    //   users_id: localStorage.getItem('users_id'),
+    //   token: localStorage.getItem('token'),
+    //   bei_users_id: this.$route.params.bei_users_id
+    // })
+    // .then((result) => {
+    //   console.log(result);
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
 
     // 判断用户是否登录，如果没有登录就跳转到登录页面
     if (!(window.localStorage.getItem('token') && window.localStorage.getItem('users_id'))) {
@@ -236,6 +353,7 @@ export default {
     .then((result) => {
       console.log(result);
       this.select_users_info = result.data;
+      this.select_users_info.life_imgs = JSON.parse(this.select_users_info.life_imgs);
     })
     .catch((error) => {
       console.log(error);
@@ -256,7 +374,28 @@ export default {
     
   },
   methods: {
-    
+    // 发消息弹窗
+    send_message() {
+      this.dialogVisible = true;
+    },
+    // 发送消息按钮
+    send_btn() {
+      this.$axios.post('/wpapi/me/chat_start', {
+        users_id: localStorage.getItem('users_id'),
+        token: localStorage.getItem('token'),
+        bei_users_id: this.$route.params.bei_users_id,
+        content: this.send_message_content
+      })
+      .then((result) => {
+        console.log(result);
+        if (result.status !== '200') return this.$message.error('留言消息发送失败！');
+        this.send_message_content = '';
+        this.$message.success('留言消息发送成功！');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
   }
 }
 </script>
@@ -466,15 +605,33 @@ export default {
     margin-top: 26px;
     padding: 21px 47px;
   }
-  .other_user_life_style ul {
+  .other_user_life_style ul,
+  .other_user_marriage_concept ul,
+  .other_user_economic_power ul,
+  .other_user_body_image ul,
+  .other_user_hobbies_interests ul {
     display: flex;
     flex-wrap: wrap;
   }
-  .other_user_life_style ul li {
+  .other_user_life_style ul li,
+  .other_user_economic_power ul li {
+    width: 25%;
+    line-height: 40px;
+  }
+  .other_user_marriage_concept ul li {
+    width: 30%;
+    line-height: 40px;
+  }
+  .other_user_body_image ul li,
+  .other_user_hobbies_interests ul li {
     width: 20%;
     line-height: 40px;
   }
-  .other_user_life_style ul li span {
+  .other_user_life_style ul li span,
+  .other_user_marriage_concept ul li span,
+  .other_user_economic_power ul li span,
+  .other_user_body_image ul li span,
+  .other_user_hobbies_interests ul li span {
     color: #989898;
   }
   .other_user_marriage_concept {
@@ -592,5 +749,50 @@ export default {
     justify-content: center;
     color: #989898;
   }
-  
+  .dialog_send_message_left {
+    padding-right: 12px;
+  }
+  .dialog_send_message_left h4 {
+    text-align: center;
+    font-size: 18px;
+    margin: 15px auto;
+  }
+  .dialog_send_message_left h4 img {
+    vertical-align: bottom;
+    margin: 0 2px 0 5px;
+  }
+  .dialog_send_message_left h4 span {
+    color: rgba(250,176,5,1);
+    font-size: 12px;
+    vertical-align: bottom;
+  }
+  .img_status_list {
+    text-align: center;
+  }
+  .img_status_list img {
+    margin: 0 6px;
+    vertical-align: bottom;
+  }
+  .user_list_info {
+    display: flex;
+    justify-content: space-around;
+    color: #989898;
+    margin: 12px auto;
+  }
+  h4.common_tag_title {
+    color: #E64980;
+    font-size: 14px;
+  }
+  .show_message_list ul {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 2px #ddd;
+    height: 300px;
+  }
+  .send_msg_btn {
+    text-align: right;
+  }
+  .send_msg_btn img {
+    margin: 0 10px;
+  }
 </style>
