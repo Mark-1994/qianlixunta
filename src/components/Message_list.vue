@@ -111,6 +111,8 @@
                     </el-tab-pane>
                   </el-tabs>
                   <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
                     :page-sizes="[10, 20, 30, 40]"
                     :page-size="10"
                     layout="total, sizes, prev, pager, next, jumper"
@@ -154,22 +156,15 @@
 export default {
   data() {
     return {
-      cityInfo: [
-        { id: 1, name: '北京' },
-        { id: 2, name: '上海' },
-        { id: 3, name: '广州' },
-        { id: 4, name: '武汉' },
-        { id: 5, name: '成都' },
-        { id: 6, name: '天津' },
-        { id: 7, name: '重庆' }
-      ],
       activeName: 'first',
       // 个人信息数据
       come_news: {
         head_portrait: '/upload/admin/article/thumbnail/20200807/nv.png'
       },
       // 消息列表
-      general_message_list: {}
+      general_message_list: {},
+      // 当前消息类型
+      message_type: 0
     }
   },
   created() {
@@ -182,7 +177,9 @@ export default {
     }
 
     // 个人信息初始化
-    this.$axios.post('/wpapi/member/come_news', {users_id: localStorage.getItem('users_id')})
+    this.$axios.post('/wpapi/member/come_news', {
+      users_id: localStorage.getItem('users_id')
+    })
     .then((result) => {
       console.log(result);
       this.come_news = result.data;
@@ -192,7 +189,10 @@ export default {
     });
 
     // 未读消息
-    this.$axios.post('/wpapi/member/is_read_message', {users_id: localStorage.getItem('users_id'),page: 1})
+    this.$axios.post('/wpapi/member/is_read_message', {
+      users_id: localStorage.getItem('users_id'),
+      page: 1
+    })
     .then((result) => {
       console.log(result);
       this.general_message_list = result.data;
@@ -207,6 +207,7 @@ export default {
       // console.log(tab, event);
       if (tab.name == 'first') {
         // 未读消息
+        this.message_type = 0;
         this.$axios.post('/wpapi/member/is_read_message', {users_id:localStorage.getItem('users_id'),page:1})
         .then((result) => {
           console.log(result);
@@ -217,6 +218,7 @@ export default {
         });
       } else if (tab.name == 'second') {
         // 已读消息
+        this.message_type = 1;
         this.$axios.post('/wpapi/member/had_read_message', {users_id:localStorage.getItem('users_id'),page:1})
         .then((result) => {
           console.log(result);
@@ -227,6 +229,7 @@ export default {
         });
       } else if (tab.name == 'third') {
         // 系统消息
+        this.message_type = 2;
         this.$axios.post('/wpapi/member/system_message', {users_id:localStorage.getItem('users_id'),page:1})
         .then((result) => {
           console.log(result);
@@ -235,6 +238,29 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+      }
+    },
+    // 分页事件
+    handleSizeChange(val) {
+      console.log(`每页${val}条`);
+      // 判断当前是哪一种消息
+      if (this.message_type == 0) {
+        console.log('未读消息');
+      } else if (this.message_type == 1) {
+        console.log('已读消息');
+      } else if (this.message_type == 2) {
+        console.log('系统消息');
+      }
+    },
+    handleCurrentChange(val) {
+      console.log(`下一页${val}`);
+      // 判断当前是哪一种消息
+      if (this.message_type == 0) {
+        console.log('未读消息');
+      } else if (this.message_type == 1) {
+        console.log('已读消息');
+      } else if (this.message_type == 2) {
+        console.log('系统消息');
       }
     }
   }

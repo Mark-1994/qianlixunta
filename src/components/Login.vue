@@ -33,7 +33,9 @@
             <a href="http://admin.qianlixunta.com/wpapi/register/wx_login" target="_blank">
               <img src="../assets/weixin01.svg" alt="" />
             </a>
-            <img src="../assets/weibo01.svg" alt="" />
+            <a href="javascript:;" @click="weibo_login">
+              <img src="../assets/weibo01.svg" alt="" />
+            </a>
           </div>
         </div>
       </el-main>
@@ -46,15 +48,6 @@
 export default {
   data() {
     return {
-      cityInfo: [
-        { id: 1, name: '北京' },
-        { id: 2, name: '上海' },
-        { id: 3, name: '广州' },
-        { id: 4, name: '武汉' },
-        { id: 5, name: '成都' },
-        { id: 6, name: '天津' },
-        { id: 7, name: '重庆' }
-      ],
       login_form: {
         phone: '',
         password: ''
@@ -75,15 +68,45 @@ export default {
   },
   created: function() {
     this.$emit('header', true);
+
+    // 是否记住密码
+    this.remember_password();
   },
   methods: {
-    handleCommand(command) {
-      this.$message('click on item ' + command);
+    // 初始化记住密码
+    remember_password() {
+      for (let i = 0; i < window.document.cookie.split(';').length; i++) {
+        let arr = window.document.cookie.split(';')[i].split('=');
+        if (arr[0].trim() == 'phone') {
+          // console.log(arr[1]);
+          this.login_form.phone = arr[1];
+        } else if (arr[0].trim() == 'password') {
+          // console.log(arr[1]);
+          this.login_form.password = arr[1];
+        } else if (arr[0].trim() == 'remember') {
+          this.checked = Boolean(arr[1]);
+        }
+      }
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.login_form);
+          if (this.checked) {
+            let date = new Date();
+            date.setDate(date.getDate() + 7); // 有效期 7 天
+            // 设置cookie
+            document.cookie = 'phone=' + this.login_form.phone + ';expires=' + date;
+            document.cookie = 'password=' + this.login_form.password + ';expires=' + date;
+            document.cookie = 'remember=' + this.checked + ';expires=' + date;
+          }else {
+            let date = new Date();
+            date.setDate(date.getDate() - 1);
+            // 删除cookie
+            document.cookie = 'phone=' + '' + ';expires=' + date;
+            document.cookie = 'password=' + '' + ';expires=' + date;
+            document.cookie = 'remember=' + this.checked + ';expires=' + date;
+          }
           this.$axios.post('/wpapi/register/login', this.login_form)
           .then((result) => {
             console.log(result);
@@ -109,6 +132,17 @@ export default {
       //以下为按钮点击事件的逻辑。注意这里要重新打开窗口
       //否则后面跳转到QQ登录，授权页面时会直接缩小当前浏览器的窗口，而不是打开新窗口
       var A = window.open("http://admin.qianlixunta.com/wpapi/register/qq_login","TencentLogin","width=450,height=320,menubar=0,scrollbars=1, top=100,left=50,resizable=1,status=1,titlebar=0,toolbar=0,location=1");
+    },
+    // 新浪微博
+    weibo_login() {
+      this.$axios.post('/wpapi/register/weibo_login', {})
+      .then((result) => {
+        console.log(result);
+        window.open(result.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     }
   }
 }

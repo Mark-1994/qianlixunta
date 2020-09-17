@@ -183,6 +183,51 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+    } else if (this.$route.params.type == 4) {
+      // 约吧走起微信支付展示页面
+      console.log(this.$route.params.order_id);
+      console.log(this.$route.params.type);
+      console.log(this.$route.params.super_vip_id);
+      this.$axios.get('/wpapi/member/wx_pay', {
+        params: {
+          users_id: localStorage.getItem('users_id'),
+          let_go_id: this.$route.params.order_id,
+          phone: localStorage.getItem('phone'),
+          pay_price: this.$route.params.super_vip_id,
+          type: this.$route.params.type
+        }
+      })
+      .then((result) => {
+        console.log(result);
+        this.order_son = result.data.order_son;
+        this.order_price = result.data.order_price;
+        this.title = result.data.title;
+        this.code_img = result.data.code_img;
+
+        // 检测当前订单是否支付成功
+        let timer = setInterval(() => {
+          this.$axios.post('/wpapi/member/let_status_check', {
+            order_osn: this.order_son
+          })
+          .then((result) => {
+            console.log(result);
+            if (result.data == 1) {
+              this.dialogVisible = true;
+              setTimeout(() => {
+                this.$router.push('/index');
+              }, 3000);
+              clearInterval(timer);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        }, 2000);
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     };
   },
   methods: {

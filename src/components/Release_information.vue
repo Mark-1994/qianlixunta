@@ -84,7 +84,9 @@
                   <div class="text item item_fabuneirong">
                     <p>{{item.content}}</p>
                     <!-- <img src="../assets/fabu01.png" alt=""> -->
-                    <img :src="'http://admin.qianlixunta.com'+item.send_img" alt="">
+                    <a :href="'http://admin.qianlixunta.com'+item.send_img" target="_blank">
+                      <img v-if="item.send_img" :src="'http://admin.qianlixunta.com'+item.send_img" alt="">
+                    </a>
                   </div>
                   <div class="dianzan_pinglun_num">
                     <el-link><i class="iconfont-qianlixunta icon-qianlixuntadianzan"></i> {{item.zan_num}}</el-link>
@@ -92,7 +94,7 @@
                   </div>
                   <div class="bottom clearfix click_three_items">
                     <el-button type="text" class="button" @click="send_fabulous(item.send_circle_id)"><i class="iconfont-qianlixunta icon-qianlixuntadianzan"></i> 点赞</el-button>
-                    <el-button type="text" class="button"><i class="iconfont-qianlixunta icon-qianlixuntapinglun"></i> 评论</el-button>
+                    <el-button type="text" class="button" @click="comment(item.send_circle_id)"><i class="iconfont-qianlixunta icon-qianlixuntapinglun"></i> 评论</el-button>
                     <el-button type="text" class="button"><i class="iconfont-qianlixunta icon-qianlixuntaguanzhu"></i> 关注</el-button>
                   </div>
                 </el-card>
@@ -212,7 +214,7 @@ export default {
     .then((result) => {
       console.log(result);
       this.circle_list = result.data;
-      console.log(JSON.parse(result.data[0].send_img)[0]);
+      // console.log(JSON.parse(result.data[0].send_img)[0]);
       this.circle_list.forEach(element => {
         if (element.send_img) {
           element.send_img = JSON.parse(element.send_img)[0];
@@ -322,6 +324,24 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+    },
+    // 评论
+    comment(send_circle_id) {
+      console.log(send_circle_id);
+      // this.$axios.post('/wpapi/me/send_comment', {
+      //   users_id: localStorage.getItem('users_id'),
+      //   token: localStorage.getItem('token'),
+      //   fa_users_id: localStorage.getItem('users_id'),
+      //   pl_users_id: 48,
+      //   content: '这一条评论',
+      //   send_circle_id: send_circle_id
+      // })
+      // .then((result) => {
+      //   console.log(result);
+      // })
+      // .catch((error) => {
+      //   console.log(error);
+      // });
     }
   }
 }

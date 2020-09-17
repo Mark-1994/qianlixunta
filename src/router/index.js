@@ -79,6 +79,10 @@ Vue.use(VueRouter)
     {
       path: '/other_user/:bei_users_id',
       component: () => import('@/views/Other_user')
+    },
+    {
+      path: '/wx_login',
+      component: () => import('@/views/Wx_login')
     }
 ]
 

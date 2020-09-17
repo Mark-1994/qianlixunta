@@ -8,7 +8,7 @@
               <div class="activity_list_all">
                 <el-card class="activity_list_item" v-for="item in yuebazouqi_list.data" :key="item.id" :body-style="{ padding: '20px' }">
                   <div class="activity_list_item_top">
-                    <span>{{item.pay_price}}元</span>
+                    <span>{{item.pay_price ? '最新' : '免费'}}</span>
                     <h4>{{item.title}}</h4>
                   </div>
                   <div class="activity_list_item_middle">
@@ -215,15 +215,22 @@ export default {
       // 判断当前是否登录
       if (!(localStorage.getItem('users_id') && localStorage.getItem('token'))) return this.$router.push('/login');
 
-      this.dialogFormVisible = true;
       this.activityForm.id = let_go_id;
-      console.log(let_go_id);
       this.$axios.post('/wpapi/member/let_go_show', {
-        let_go_id: let_go_id
+        let_go_id: let_go_id,
+        user_id: localStorage.getItem('users_id')
       })
       .then((result) => {
         console.log(result);
-        this.let_go_show_info = result.data[0];
+
+        if (result.data.free_status) {
+          return this.$message.success('亲，您已经报名了哦~');
+        }
+        
+        this.let_go_show_info = result.data;
+
+        this.dialogFormVisible = true;
+
       })
       .catch((error) => {
         console.log(error);
@@ -237,27 +244,41 @@ export default {
       if (!Number(this.activityForm.payment_method)) {
         // 支付宝支付
         this.$axios.get('/wpapi/member/let_go_zfb_pay', {
-          params: {users_id:localStorage.getItem('users_id'),let_go_id:let_go_id,phone:this.activityForm.phone,pay_price:this.let_go_show_info.pay_price}
+          params: {
+            users_id: localStorage.getItem('users_id'),
+            let_go_id: let_go_id,
+            phone: this.activityForm.phone,
+            pay_price: this.let_go_show_info.pay_price,
+            type: 4
+          }
         })
         .then((result) => {
           console.log(result);
           const div = document.createElement('div');
           div.innerHTML = result;
           document.body.appendChild(div);
-          document.forms[0].submit();
+          document.forms[1].submit();
         })
         .catch((error) => {
           console.log(error);
         });
       } else {
-        // 微信支付
-        this.$axios.get('/wpapi/member/let_go_zfb_pay', {params:{users_id:localStorage.getItem('users_id'),let_go_id:let_go_id,phone:this.activityForm.phone,pay_price:this.let_go_show_info.pay_price,type:4}})
+        // 微信支付（不能重复支付）
+        this.$axios.get('/wpapi/member/wx_pay', {
+          params: {
+            users_id: localStorage.getItem('users_id'),
+            let_go_id: let_go_id,
+            phone: this.activityForm.phone,
+            pay_price: this.let_go_show_info.pay_price,
+            type: 4
+          }
+        })
         .then((result) => {
           console.log(result);
-          const div = document.createElement('div');
-          div.innerHTML = result;
-          document.body.appendChild(div);
-          document.forms[0].submit();
+          // 跳转到微信支付
+          // 缓存电话号码
+          localStorage.setItem('phone', this.activityForm.phone);
+          this.$router.push('/weixin_pay/'+let_go_id+'/4/'+this.let_go_show_info.pay_price);
         })
         .catch((error) => {
           console.log(error);
