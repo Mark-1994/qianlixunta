@@ -291,7 +291,20 @@
               v-model="send_message_content" style="margin: 15px 0px 10px;">
             </el-input>
             <div class="send_msg_btn">
-              <img src="../assets/biaoqing01.png" alt="">
+
+              <el-popover
+                placement="bottom-start"
+                width="250"
+                trigger="click"
+                class="emoBox">
+
+                <div class="emotionList">
+                  <a href="javascript:;" @click="getEmo(index)" v-for="(item, index) in faceList" :key="index" class="emotionItem">{{item}}</a>
+                </div>
+
+                <img slot="reference" src="../assets/biaoqing01.png" alt="">
+              </el-popover>
+
               <el-button style="background: linear-gradient(0deg,#5ac2ff, #c3e9ff);color: #fff;outline: none;border: 0;" @click="send_btn">发送</el-button>
             </div>
           </div>
@@ -303,6 +316,8 @@
 </template>
 
 <script>
+import emoji from '@/assets/emoji.json'
+
 export default {
   data() {
     return {
@@ -319,7 +334,9 @@ export default {
       // 发送消息内容
       send_message_content: '',
       // 消息列表
-      msg_list: []
+      msg_list: [],
+      // 表情列表
+      faceList: []
     }
   },
   created: function() {
@@ -371,7 +388,9 @@ export default {
 
   },
   mounted: function() {
-    
+    for (let i in emoji) {
+      this.faceList.push(emoji[i].char);
+    }
   },
   methods: {
     // 发消息弹窗
@@ -395,6 +414,11 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+    },
+    // 点击表情列表
+    getEmo(index) {
+      console.log(this.faceList[index]);
+      this.send_message_content = this.send_message_content + this.faceList[index];
     }
   }
 }

@@ -267,9 +267,9 @@
                     <el-row>
                       <el-col>内心独白</el-col>
                     </el-row>
-                    <el-form ref="soliloquy_form" :model="soliloquy_form" label-width="">
-                      <el-form-item label="">
-                        <el-input type="textarea" maxlength="1000" placeholder="请输入内容" :autosize="{ minRows: 6, maxRows: 8}" v-model="neixindubai" show-word-limit></el-input>
+                    <el-form ref="soliloquy_form" :model="soliloquy_form" label-width="" :rules="neixindubai_rules">
+                      <el-form-item label="" prop="neixindubai">
+                        <el-input type="textarea" maxlength="1000" placeholder="请输入内容" :autosize="{ minRows: 6, maxRows: 8}" v-model="soliloquy_form.neixindubai" show-word-limit></el-input>
                       </el-form-item>
                       <ul>
                         <li>温馨提示：</li>
@@ -277,7 +277,7 @@
                         <li>2、点击保存后，在我们未审核的24小时内不能再次修改，请认真检查。</li>
                       </ul>
                       <el-form-item>
-                        <el-button type="primary" @click="save_neixindubai">保存</el-button>
+                        <el-button type="primary" @click="save_neixindubai('soliloquy_form')">保存</el-button>
                       </el-form-item>
                     </el-form>
                   </el-tab-pane>
@@ -734,8 +734,9 @@ export default {
         }]
       }],
       set_choose_condition: '1',
-      soliloquy_form: {},
-      neixindubai: '',
+      soliloquy_form: {
+        neixindubai: '',
+      },
       imageUrl: '',
       // 生活照
       life_image_url: [],
@@ -831,7 +832,13 @@ export default {
       // 将要上传的我的头像
       mine_head_portrait: '',
       // 将要上传的我的生活照
-      mine_life_imgs: []
+      mine_life_imgs: [],
+      // 内心独白表单验证规则
+      neixindubai_rules: {
+        neixindubai: [
+          { required: true, message: '请输入内容', trigger: 'blur' }
+        ]
+      }
     }
   },
   created: function() {
@@ -913,7 +920,7 @@ export default {
         })
         .then((result) => {
           console.log(result);
-          this.neixindubai = result.data.content;
+          this.soliloquy_form.neixindubai = result.data.content;
         })
         .catch((error) => {
           console.log(error);
@@ -961,7 +968,7 @@ export default {
     // 基本资料保存按钮
     save_info() {
       if (this.mine_data_form.birth_day) {
-        this.mine_data_form.birth_day = new Date(this.mine_data_form.birth_day).getFullYear() + '.' + new Date(this.mine_data_form.birth_day).getMonth() + '.' + new Date(this.mine_data_form.birth_day).getDate();
+        this.mine_data_form.birth_day = new Date(this.mine_data_form.birth_day).getFullYear() + '.' + (new Date(this.mine_data_form.birth_day).getMonth() + 1) + '.' + new Date(this.mine_data_form.birth_day).getDate();
       }
       console.log(this.mine_data_form);
       this.mine_data_form.users_id = localStorage.getItem('users_id');
@@ -999,8 +1006,25 @@ export default {
       });
     },
     // 保存内心独白
-    save_neixindubai() {
-      console.log('保存内心独白');
+    save_neixindubai(formName) {
+      console.log(this.soliloquy_form.neixindubai);
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$axios.post('/wpapi/me/inner_monologue', {
+            users_id: localStorage.getItem('users_id'),
+            token: localStorage.getItem('token'),
+            content: this.soliloquy_form.neixindubai
+          })
+          .then((result) => {
+            console.log(result);
+            if (result.status !== '200') return this.$message.error('保存失败！');
+            this.$message.success('保存成功');
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        }
+      });
     },
     // 保存详细资料-工作与教育经历
     save_job_form() {

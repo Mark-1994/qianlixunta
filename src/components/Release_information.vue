@@ -94,9 +94,41 @@
                   </div>
                   <div class="bottom clearfix click_three_items">
                     <el-button type="text" class="button" @click="send_fabulous(item.send_circle_id)"><i class="iconfont-qianlixunta icon-qianlixuntadianzan"></i> 点赞</el-button>
-                    <el-button type="text" class="button" @click="comment(item.send_circle_id)"><i class="iconfont-qianlixunta icon-qianlixuntapinglun"></i> 评论</el-button>
+                    <el-button type="text" class="button" @click="comment(item.send_circle_id, item.users_id)"><i class="iconfont-qianlixunta icon-qianlixuntapinglun"></i> 评论</el-button>
                     <el-button type="text" class="button"><i class="iconfont-qianlixunta icon-qianlixuntaguanzhu"></i> 关注</el-button>
                   </div>
+
+                  <div class="msg_comment_list">
+                    <ul class="comment_list_one">
+                      <li v-for="item01 in item.comment_info" :key="item01.id">
+                        <div class="left_fa_users_head_portrait">
+                          <img :src="'http://admin.qianlixunta.com' + item01.fa_users_head_portrait" alt="">
+                        </div>
+                        <div class="right_content">
+                          <div class="right_nickname">
+                            <router-link to="/index">二百五</router-link>&nbsp;:
+                            {{item01.content}}
+                          </div>
+                          <div class="right_time">
+                            <span>{{item01.create_time}}</span>
+                            <a href="javascript:;">回复</a>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="msg_enter_box">
+                    <el-form @submit.native.prevent>
+                      <el-form-item>
+                        <el-input type="textarea" :rows="enter_box_row" placeholder="评论" @focus="get_blur_input" @blur="lose_blur_input"></el-input>
+                      </el-form-item>
+                      <el-form-item style="text-align: right;">
+                        <el-button>发表</el-button>
+                      </el-form-item>
+                    </el-form>
+                  </div>
+
                 </el-card>
               </el-col>
               <el-col :span="7">
@@ -121,7 +153,19 @@
                       <div class="fabuxinxi_items_top_bottom">
                         <div class="two_btn_text_send">
                           <span>
-                            <img src="../assets/meirong01.png" alt="">
+                            <el-popover
+                              placement="bottom-start"
+                              width="250"
+                              trigger="click"
+                              class="emoBox">
+
+                              <div class="emotionList">
+                                <a href="javascript:;" @click="getEmo(index)" v-for="(item, index) in faceList" :key="index" class="emotionItem">{{item}}</a>
+                              </div>
+
+                              <img slot="reference" src="../assets/meirong01.png" alt="">
+                            </el-popover>
+                            <!-- <img src="../assets/meirong01.png" alt=""> -->
                           </span>
                           <el-upload
                             class="upload-demo01"
@@ -172,7 +216,14 @@
 </template>
 
 <script>
+import emoji from '@/assets/emoji.json'
+
 export default {
+  mounted() {
+    for (let i in emoji) {
+      this.faceList.push(emoji[i].char);
+    }
+  },
   data() {
     return {
       // 上传的文件列表
@@ -187,7 +238,11 @@ export default {
       // 朋友圈列表数据初始化
       circle_list: {},
       // 登陆后保存的 token
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      // 表情列表
+      faceList: [],
+      // 回复框的行数
+      enter_box_row: 1
     }
   },
   created: function() {
@@ -326,14 +381,13 @@ export default {
       });
     },
     // 评论
-    comment(send_circle_id) {
-      console.log(send_circle_id);
+    comment(send_circle_id, pl_users_id) {
       // this.$axios.post('/wpapi/me/send_comment', {
       //   users_id: localStorage.getItem('users_id'),
       //   token: localStorage.getItem('token'),
       //   fa_users_id: localStorage.getItem('users_id'),
-      //   pl_users_id: 48,
-      //   content: '这一条评论',
+      //   pl_users_id: pl_users_id,
+      //   content: '编辑内容',
       //   send_circle_id: send_circle_id
       // })
       // .then((result) => {
@@ -342,6 +396,20 @@ export default {
       // .catch((error) => {
       //   console.log(error);
       // });
+    },
+    // 点击表情列表
+    getEmo(index) {
+      console.log(this.faceList[index]);
+      this.fabuxinxi_text = this.fabuxinxi_text + this.faceList[index];
+    },
+    // 输入框获取焦点事件
+    get_blur_input() {
+      console.log(this);
+      this.enter_box_row = 3;
+    },
+    // 输入框失去焦点事件
+    lose_blur_input() {
+      this.enter_box_row = 1;
     }
   }
 }
@@ -595,5 +663,35 @@ export default {
   }
   .upload-demo01 {
     display: inline-block;
+  }
+  .left_fa_users_head_portrait img {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+  }
+  .comment_list_one li:after {
+    content: '.';
+    display: block;
+    height: 0;
+    visibility: hidden;
+    clear: both;
+  }
+  .comment_list_one li {
+    *zoom: 1;
+    padding: 10px 0;
+  }
+  .comment_list_one li .left_fa_users_head_portrait {
+    float: left;
+  }
+  .comment_list_one li .right_content {
+    float: left;
+    margin-left: 10px;
+  }
+  .right_time {
+    margin-top: 2px;
+  }
+  .right_time span {
+    margin-right: 10px;
   }
 </style>
