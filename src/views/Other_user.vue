@@ -77,10 +77,13 @@
                 <img :src="'http://admin.qianlixunta.com'+select_users_info.head_portrait" alt="" />
               </div>
               <div class="other_user_main_left_small_img">
+                <a href="javascript:;" class="img_left_move" @click="img_left_move">&lt;</a>
                 <ul>
                   <li v-for="(item, index) in select_users_info.life_imgs" :key="index"><img :src="'http://admin.qianlixunta.com'+item" alt=""></li>
-                  <!-- <li><img src="../assets/touxiang_small02.png" alt=""></li> -->
+                  <li><img src="../assets/touxiang_small02.png" alt=""></li>
+                  <li><img src="../assets/touxiang_small02.png" alt=""></li>
                 </ul>
+                <a href="javascript:;" class="img_right_move" @click="img_right_move">&gt;</a>
               </div>
             </div>
             <div class="other_user_main_right">
@@ -252,7 +255,7 @@
           <el-col :span="7">
           <div class="dialog_send_message_left">
             <el-image
-            style="width: 100%; height: 150px;border-radio: 20px;"
+            style="width: 100%; height: 150px; border-radius: 10px; box-shadow: 3px 3px 9px #888;"
             :src="'http://admin.qianlixunta.com'+select_users_info.head_portrait"
             fit="fit"></el-image>
             <h4>{{select_users_info.nickname}}<img src="../assets/zuanshi03.png" alt="" /><span>v3</span></h4>
@@ -279,9 +282,8 @@
           <div class="dialog_send_message_right">
             <div class="show_message_list">
               <ul>
-                <li v-for="(item, index) in msg_list" :key="index">{{item}}</li>
-                <!-- <li>今天的天气</li>
-                <li>晚上一起吃饭吗</li> -->
+                <li v-for="(item, index) in msg_list" :class="item.fromid == users_id ? 'msg_right' : 'msg_left'" :key="index"><span v-if="item.fromid != users_id" class="msg_fromname">{{item.fromname}}：</span><span class="msg_content">{{item.content}}</span><span v-if="item.fromid == users_id" class="msg_fromname">：{{item.fromname}}</span></li>
+                <!-- <li>今天一起吃晚饭吗</li> -->
               </ul>
             </div>
             <el-input
@@ -336,7 +338,9 @@ export default {
       // 消息列表
       msg_list: [],
       // 表情列表
-      faceList: []
+      faceList: [],
+      // users_id
+      users_id: localStorage.getItem('users_id')
     }
   },
   created: function() {
@@ -396,6 +400,20 @@ export default {
     // 发消息弹窗
     send_message() {
       this.dialogVisible = true;
+
+      this.$axios.post('/wpapi/me/chat_start_init', {
+        users_id: localStorage.getItem('users_id'),
+        token: localStorage.getItem('token'),
+        fromid: localStorage.getItem('users_id'),
+        toid: this.$route.params.bei_users_id
+      })
+      .then((result) => {
+        console.log(result);
+        this.msg_list = result.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     },
     // 发送消息按钮
     send_btn() {
@@ -409,6 +427,22 @@ export default {
         console.log(result);
         if (result.status !== '200') return this.$message.error('留言消息发送失败！');
         this.send_message_content = '';
+
+        // 更新发消息列表
+        this.$axios.post('/wpapi/me/chat_start_init', {
+          users_id: localStorage.getItem('users_id'),
+          token: localStorage.getItem('token'),
+          fromid: localStorage.getItem('users_id'),
+          toid: this.$route.params.bei_users_id
+        })
+        .then((result) => {
+          console.log(result);
+          this.msg_list = result.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
         this.$message.success('留言消息发送成功！');
       })
       .catch((error) => {
@@ -419,6 +453,14 @@ export default {
     getEmo(index) {
       console.log(this.faceList[index]);
       this.send_message_content = this.send_message_content + this.faceList[index];
+    },
+    // 图片左移
+    img_left_move() {
+      console.log('图片左移');
+    },
+    // 图片右移
+    img_right_move() {
+      console.log('图片右移');
     }
   }
 }
@@ -688,10 +730,12 @@ export default {
   }
   .other_user_main_left_big_img {
     text-align: center;
+    margin-bottom: 6px;
   }
   .other_user_main_left_big_img img {
     width: 222px;
     height: 235px;
+    border-radius: 10px;
   }
   .other_user_main_left_small_img {
     position: relative;
@@ -702,13 +746,14 @@ export default {
     overflow: hidden;
     margin: 0 auto;
   }
-  .other_user_main_left_small_img::before,
+  /* .other_user_main_left_small_img::before,
   .other_user_main_left_small_img::after {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     border: 1px solid gray;
     height: 100%;
+    line-height: 72px;
   }
   .other_user_main_left_small_img::before {
     content: '<';
@@ -717,6 +762,24 @@ export default {
   .other_user_main_left_small_img::after {
     content: '>';
     right: 5px;
+  } */
+  .img_left_move,
+  .img_right_move {
+    position: absolute;
+    border: 2px solid #a9a9a9;
+    top: 50%;
+    transform: translateY(-50%);
+    line-height: 66px;
+    color: #a9a9a9;
+    font-weight: bold;
+  }
+  .img_left_move {
+    left: 0;
+    border-radius: 4px 0 0 4px;
+  }
+  .img_right_move {
+    right: 0;
+    border-radius: 0 4px 4px 0;
   }
   .other_user_main_left_small_img ul li img {
     width: 74px;
@@ -811,12 +874,86 @@ export default {
     border: 1px solid #ddd;
     border-radius: 5px;
     box-shadow: 0px 0px 5px 2px #ddd;
-    height: 300px;
+    height: 340px;
+    padding: 10px;
+    overflow: auto;
+  }
+  .show_message_list ul::-webkit-scrollbar {
+    width: 8px;
+    background-color: #ddd;
+    border-radius: 8px;
+  }
+  .show_message_list ul::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 8px;
+  }
+  .show_message_list ul li {
+    line-height: 32px;
   }
   .send_msg_btn {
     text-align: right;
   }
   .send_msg_btn img {
     margin: 0 10px;
+  }
+  .msg_right {
+    text-align: right;
+  }
+  .msg_fromname {
+    font-weight: bold;
+  }
+  .msg_content {
+    text-align: left;
+    display: inline-block;
+    max-width: 70%;
+  }
+  .msg_fromname {
+    text-align: right;
+    display: inline-block;
+    max-width: 30%;
+    vertical-align: top;
+  }
+  .common_tag {
+    position: relative;
+    height: 140px;
+  }
+  .common_tag li:nth-child(1) {
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    background: linear-gradient(354deg,#ff2a86 5%, #ffef9e 95%);
+    box-shadow: 4px 6px 16px 0px #ff9a94;
+    color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    left: 20px;
+    top: 0;
+  }
+  .common_tag li:nth-child(2) {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background: linear-gradient(170deg,#ffefca 5%, #ff9e2e 93%, #ccff00 93%);
+    box-shadow: 4px 6px 16px 0px #ffcb84;
+    color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    right: 20px;
+    top: 40px;
+  }
+  .common_tag li:nth-child(3) {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background: linear-gradient(345deg,#da5aff 9%, #bae6ff 88%);
+    box-shadow: 4px 6px 16px 0px #cb9cff;
+    color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    right: 60px;
+    top: 70px;
   }
 </style>

@@ -73,13 +73,23 @@
           <div class="mine_message_list">
             <el-row>
               <el-col :span="17">
+
+                <!-- 无数据的情况 -->
+                <el-card v-if="!circle_list.length">
+                  <p style="text-align: center;">无数据</p>
+                </el-card>
+
                 <el-card class="box-card" style="border-radius: 30px;margin-bottom: 23px;" v-for="(item, index) in circle_list" :key="index">
+
+                  <div class="item_msg_box">
+
                   <div slot="header" class="clearfix header_title_info_show">
                     <el-avatar :size="60" :src="'http://admin.qianlixunta.com'+item.head_portrait"></el-avatar>
                     <div class="item_name_time">
                       <span class="item_name_info">{{item.nickname}}</span>
                       <span class="month_day_item">{{item.create_time}}</span>
                     </div>
+                    <el-button v-if="item.users_id == users_id" style="margin-left: auto;" type="text" icon="el-icon-close" @click="del_item(item.send_circle_id)"></el-button>
                   </div>
                   <div class="text item item_fabuneirong">
                     <p>{{item.content}}</p>
@@ -101,17 +111,35 @@
                   <div class="msg_comment_list">
                     <ul class="comment_list_one">
                       <li v-for="item01 in item.comment_info" :key="item01.id">
-                        <div class="left_fa_users_head_portrait">
-                          <img :src="'http://admin.qianlixunta.com' + item01.fa_users_head_portrait" alt="">
-                        </div>
-                        <div class="right_content">
-                          <div class="right_nickname">
-                            <router-link to="/index">二百五</router-link>&nbsp;:
-                            {{item01.content}}
+                        <div class="huifu_first">
+                          <div class="left_fa_users_head_portrait">
+                            <img :src="'http://admin.qianlixunta.com' + item01.fa_users_head_portrait" alt="">
                           </div>
-                          <div class="right_time">
-                            <span>{{item01.create_time}}</span>
-                            <a href="javascript:;">回复</a>
+                          <div class="right_content">
+                            <div class="right_nickname">
+                              <router-link to="/index">{{item01.fa_nickname ? item01.fa_nickname : '匿名'}}</router-link>&nbsp;:
+                              {{item01.content}}
+                            </div>
+                            <div class="right_time">
+                              <span>{{item01.create_time}}</span>
+                              <a href="javascript:;" @click="reply_content(item.send_circle_id, item01.id)">回复</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="huifu_second" v-for="item02 in item01.comment_info_by" :key="item02.id">
+                          <div class="huifu_second_left_headimg">
+                            <img src="http://admin.qianlixunta.com/upload/admin/article/thumbnail/20200807/nv.png" alt="">
+                            <!-- <img :src="'http://admin.qianlixunta.com' + item02.fa_users_head_portrait ? '/upload/admin/article/thumbnail/20200807/nv.png' : '/upload/admin/article/thumbnail/20200807/nv.png'" alt=""> -->
+                          </div>
+                          <div class="huifu_second_right_info">
+                            <div class="huifu_second_nickname">
+                              <a href="javascript:;">{{item02.fa_nickname ? item02.fa_nickname : '匿名'}}</a>&nbsp;回复<a href="javascript:;">{{item01.fa_nickname}}</a>&nbsp;:
+                              {{item02.by_content}}
+                            </div>
+                            <div class="huifu_second_time">
+                              <span>{{item02.create_time}}</span>
+                              <a href="javascript:;">回复</a>
+                            </div>
                           </div>
                         </div>
                       </li>
@@ -127,6 +155,8 @@
                         <el-button>发表</el-button>
                       </el-form-item>
                     </el-form>
+                  </div>
+
                   </div>
 
                 </el-card>
@@ -212,6 +242,7 @@
       </el-main>
       
     </el-container>
+
   </div>
 </template>
 
@@ -242,7 +273,9 @@ export default {
       // 表情列表
       faceList: [],
       // 回复框的行数
-      enter_box_row: 1
+      enter_box_row: 1,
+      // users_id
+      users_id: localStorage.getItem('users_id')
     }
   },
   created: function() {
@@ -410,6 +443,69 @@ export default {
     // 输入框失去焦点事件
     lose_blur_input() {
       this.enter_box_row = 1;
+    },
+    // 回复消息
+    reply_content(send_circle_id, send_comment_id) {
+      console.log(send_circle_id, send_comment_id);
+      // this.$axios.post('/wpapi/me/by_send_comment', {
+      //   users_id: localStorage.getItem('users_id'),
+      //   token: localStorage.getItem('token'),
+      //   send_circle_id: send_circle_id,
+      //   send_comment_id: send_comment_id,
+      //   by_content: '子消息02'
+      // })
+      // .then((result) => {
+      //   console.log(result);
+      // })
+      // .catch((error) => {
+      //   console.log(error);
+      // });
+    },
+    // 删除自己的朋友圈
+    del_item(send_circle_id) {
+      console.log(send_circle_id);
+      this.$confirm('此操作将删除该朋友圈，是否继续？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      })
+      .then(() => {
+        this.$axios.post('/wpapi/member/send_image', {
+          send_circle_id: send_circle_id
+        })
+        .then((result) => {
+          if (result !== '200') return this.$message.error('删除失败');
+
+          // 更新朋友圈列表数据
+          this.$axios.post('/wpapi/me/circle_list', {token:localStorage.getItem('token'),users_id: localStorage.getItem('users_id')})
+          .then((result) => {
+            this.circle_list = result.data;
+            this.circle_list.forEach(element => {
+              if (element.send_img) {
+                element.send_img = JSON.parse(element.send_img)[0];
+              }
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+          this.$message({
+            type: 'success',
+            message: '删除成功！'
+          })
+        })
+        .catch((error) => {
+          this.$message({
+            type: 'error',
+            message: '删除失败！'
+          })
+        });
+      })
+      .catch(() => {
+        this.$message.info('已取消删除');
+      });
     }
   }
 }
@@ -664,21 +760,30 @@ export default {
   .upload-demo01 {
     display: inline-block;
   }
-  .left_fa_users_head_portrait img {
+  .left_fa_users_head_portrait img,
+  .huifu_second_left_headimg img {
     width: 42px;
     height: 42px;
     border-radius: 50%;
     border: 1px solid #ddd;
   }
-  .comment_list_one li:after {
+  .huifu_first:after {
     content: '.';
     display: block;
     height: 0;
     visibility: hidden;
     clear: both;
   }
-  .comment_list_one li {
+  .huifu_first {
     *zoom: 1;
+  }
+  .huifu_first {
+    padding: 10px 0;
+  }
+  .huifu_second {
+    padding: 10px 0 10px 54px;
+  }
+  .comment_list_one li {
     padding: 10px 0;
   }
   .comment_list_one li .left_fa_users_head_portrait {
@@ -692,6 +797,31 @@ export default {
     margin-top: 2px;
   }
   .right_time span {
+    margin-right: 10px;
+  }
+  .huifu_second_left_headimg {
+    float: left;
+  }
+  .huifu_second_right_info {
+    float: left;
+  }
+  .huifu_second:after {
+    content: '.';
+    display: block;
+    visibility: hidden;
+    clear: both;
+    height: 0;
+  }
+  .huifu_second {
+    *zoom: 1;
+  }
+  .huifu_second_right_info {
+    margin-left: 10px;
+  }
+  .huifu_second_time {
+    margin-top: 3px;
+  }
+  .huifu_second_time span {
     margin-right: 10px;
   }
 </style>

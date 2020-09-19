@@ -87,14 +87,18 @@
                   <h4>最佳匹配</h4>
                   <el-row class="zuijiapipei01_img_info">
                     <el-col :span="14" class="zuijiapipei01_left_img">
-                      <el-image
+                      <!-- <el-image
                         style="width: 100%; height: 250px"
                         :src="require('@/assets/banner01.png')"
+                        fit="fit"></el-image> -->
+                        <el-image
+                        style="width: 100%; height: 180px"
+                        :src="'http://admin.qianlixunta.com'+agreement_join_shuffle.head_portrait"
                         fit="fit"></el-image>
                     </el-col>
                     <el-col :span="10" class="zuijiapipei01_right_info">
-                      <h5>ANNA</h5>
-                      <p>容貌一般，不吓人，性格温和，bai脾气好，人品善良，真诚，du正直，吸烟，滴酒不沾。喜欢做家务，做饭菜，懂生活。体贴，温柔...</p>
+                      <h5>{{agreement_join_shuffle.nickname}}</h5>
+                      <p>{{agreement_join_shuffle.introduce_oneself}}</p>
                       <div class="tag_all">
                         <el-tag size="mini">90后</el-tag>
                         <el-tag size="mini">开朗</el-tag>
@@ -133,13 +137,28 @@ export default {
       // 上一篇文章id
       article_info_up_id: '',
       // 下一篇文章id
-      article_info_down_id: ''
+      article_info_down_id: '',
+      // 侧边栏中的最佳匹配
+      agreement_join_shuffle: {
+        head_portrait: '/upload/admin/article/thumbnail/20200807/nan.png'
+      }
     }
   },
   created: function() {
     this.$emit('header', true);
     
-    console.log(this.$route.params.id);
+    // 侧边栏中的最佳匹配
+    this.$axios.get('/wpapi/register/agreement_join_shuffle', {
+      params: {}
+    })
+    .then((result) => {
+      console.log(result);
+      this.agreement_join_shuffle = result.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
     this.$axios.get('/wpapi/article/category_detail', {params:{id: this.$route.params.id}})
     .then((result) => {
       console.log(result);
@@ -339,10 +358,18 @@ export default {
   .zuijiapipei01_right_info h5 {
     margin: 10px 0;
     font-size: 24px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: normal;
   }
   .zuijiapipei01_right_info p {
     font-size: 12px;
     margin: 0 0 9px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
   }
   .tag_all span {
     margin: 3px;

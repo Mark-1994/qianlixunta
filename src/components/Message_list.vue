@@ -420,7 +420,7 @@ export default {
   }
   .name_age_adress_time h4 {
     margin: 0;
-    font-size: 20px;
+    font-size: 18px;
   }
   .name_age_adress_time {
     line-height: 40px;
@@ -438,6 +438,7 @@ export default {
     border-radius: 8px;
     color: #fff;
     padding: 8px 22px;
+    display: inline-block;
   }
   .day_time_message_list {
     color: rgba(152,152,152,1);

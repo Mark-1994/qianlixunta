@@ -102,13 +102,17 @@
                           </el-select>
                         </el-form-item>
                         <el-form-item label="城市">
-                          <el-select v-model="search_form.workplace" placeholder="请选择">
+                          <!-- <el-select v-model="search_form.workplace" placeholder="请选择">
                             <el-option label="武汉" value="武汉"></el-option>
                             <el-option label="上海" value="上海"></el-option>
-                          </el-select>
+                          </el-select> -->
+                          <el-cascader
+                            :options="cityList"
+                            :props="{ multiple: false, checkStrictly: true }"
+                            clearable style="width: 140px;" v-model="search_form.workplace"></el-cascader>
                         </el-form-item>
                         <el-form-item>
-                          <el-button type="primary" @click="search_onSubmit">搜索<i class="el-icon-search el-icon--right"></i></el-button>
+                          <el-button type="primary" @click="search_onSubmit" style="background-color: #F03E3E;border: 1px solid #F03E3E;">搜索<i class="el-icon-search el-icon--right"></i></el-button>
                         </el-form-item>
                       </el-row>
                     </el-form>
@@ -716,6 +720,7 @@ export default {
         this.search_form.age_low = this.age.split('-')[0];
         this.search_form.age_height = this.age.split('-')[1];
       }
+      this.search_form.workplace = this.search_form.workplace[this.search_form.workplace.length - 1];
       this.$axios.post('/wpapi/member/recommend_friend', this.search_form)
       .then((result) => {
         console.log(result);
