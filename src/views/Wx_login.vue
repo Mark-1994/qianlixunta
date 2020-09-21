@@ -6,9 +6,9 @@
           <img src="../assets/card-icon-42.png" alt="">
         </p>
         <p class="card-portrait">
-          <img src="https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLzFWa6lzhuWxXkg08xU56YDg8ib71xn8BfIO72EIYa58Pr59lvkU7r3dic3Aib6D5YOicJxOHBu50zGw/132" alt="">
+          <img :src="login_info.headimgurl" alt="">
         </p>
-        <p class="card-username">微信用户名</p>
+        <p class="card-username">{{login_info.nickname}}</p>
       </div>
       <div class="login_window_right">
         <div class="login_window_right_content">
@@ -47,19 +47,43 @@
 export default {
   data() {
     return {
-      phone: ''
+      phone: '',
+      login_info: {
+        // openid: 'oVyMC6PtPjlziEaEH7Sj8tY0jgwc',
+        // nickname: '樊俊贤',
+        // headimgurl: 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKc5nNF2TPU1yJGia84U143oYL1WiaR6EW7zibibgG7yJNQHVlDjymQXxcJLtyXD5BUKSVBYL3uLqOu2w/132'
+      }
+    }
+  },
+  created() {
+    if (location.href.indexOf('code=') > -1) {
+      let codeVal = location.href.slice(location.href.indexOf('code=') + 5, location.href.indexOf('&state='));
+
+      // 获取用户信息
+      this.$axios.get('/wpapi/register/oauth_callback', {
+        params: {
+          code: codeVal,
+          state: 'STATE'
+        }
+      })
+      .then((result) => {
+        console.log(result);
+        this.login_info = result.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     }
   },
   methods: {
     agree_bind() {
-      console.log(this.phone);
-
       // 同意协议并绑定
-      this.$axios.post('/wpapi/register/wx_login_is_user_bind', {
-        openid: '',
-        nickname: '',
-        headimgurl: '',
-        phone: ''
+      this.$axios.post('/wpapi/register/wx_login_bind', {
+        openid: this.login_info.openid,
+        nickname: this.login_info.nickname,
+        headimgurl: this.login_info.headimgurl,
+        phone: this.phone
       })
       .then((result) => {
         console.log(result);
