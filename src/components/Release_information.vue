@@ -104,7 +104,29 @@
                   </div>
                   <div class="bottom clearfix click_three_items">
                     <el-button type="text" class="button" @click="send_fabulous(item.send_circle_id)"><i class="iconfont-qianlixunta icon-qianlixuntadianzan"></i> 点赞</el-button>
-                    <el-button type="text" class="button" @click="comment(item.send_circle_id, item.users_id)"><i class="iconfont-qianlixunta icon-qianlixuntapinglun"></i> 评论</el-button>
+
+                    <el-popover
+                      placement="bottom"
+                      width="400"
+                      trigger="click"
+                      @show="clearInput">
+                      
+                      <div class="msg_enter_box">
+                        <el-form @submit.native.prevent v-if="true">
+                          <el-form-item>
+                            <el-input type="textarea" :rows="enter_box_row" placeholder="评论" v-model="item_msg_comment"
+                            :autosize="{ minRows: 1, maxRows: 2}"></el-input>
+                          </el-form-item>
+                          <el-form-item style="text-align: right;">
+                            <el-button @click="send_comment(item.send_circle_id)">发表</el-button>
+                          </el-form-item>
+                        </el-form>
+                      </div>
+
+                      <el-button type="text" class="button" slot="reference"><i class="iconfont-qianlixunta icon-qianlixuntapinglun"></i> 评论</el-button>
+                      <!-- <el-button type="text" class="button" @click="comment(item.send_circle_id, item.users_id, index)"><i class="iconfont-qianlixunta icon-qianlixuntapinglun"></i> 评论</el-button> -->
+                    </el-popover>
+
                     <el-button type="text" class="button"><i class="iconfont-qianlixunta icon-qianlixuntaguanzhu"></i> 关注</el-button>
                   </div>
 
@@ -122,40 +144,63 @@
                             </div>
                             <div class="right_time">
                               <span>{{item01.create_time}}</span>
-                              <a href="javascript:;" @click="reply_content(item.send_circle_id, item01.id)">回复</a>
+
+                              <el-popover
+                                placement="bottom"
+                                width="400"
+                                trigger="click"
+                                @show="clearInput">
+
+                                <div class="msg_enter_box">
+                                  <el-form @submit.native.prevent>
+                                    <el-form-item>
+                                      <el-input type="textarea" :rows="enter_box_row" placeholder="评论" v-model="item_msg_comment"
+                                      :autosize="{ minRows: 1, maxRows: 2}"></el-input>
+                                    </el-form-item>
+                                    <el-form-item style="text-align: right;">
+                                      <el-button @click="reply_content(item01.id)">发表</el-button>
+                                    </el-form-item>
+                                  </el-form>
+                                </div>
+
+                                <!-- <a href="javascript:;" @click="reply_content(item.send_circle_id, item01.id)">回复</a> -->
+                                <a href="javascript:;" slot="reference">回复</a>
+                              </el-popover>
+
                             </div>
                           </div>
                         </div>
-                        <div class="huifu_second" v-for="item02 in item01.comment_info_by" :key="item02.id">
+
+                        <!-- <div class="huifu_second" v-for="item02 in item01.comment_info_by" :key="item02.id">
                           <div class="huifu_second_left_headimg">
                             <img src="http://admin.qianlixunta.com/upload/admin/article/thumbnail/20200807/nv.png" alt="">
-                            <!-- <img :src="'http://admin.qianlixunta.com' + item02.fa_users_head_portrait ? '/upload/admin/article/thumbnail/20200807/nv.png' : '/upload/admin/article/thumbnail/20200807/nv.png'" alt=""> -->
                           </div>
                           <div class="huifu_second_right_info">
                             <div class="huifu_second_nickname">
                               <a href="javascript:;">{{item02.fa_nickname ? item02.fa_nickname : '匿名'}}</a>&nbsp;回复<a href="javascript:;">{{item01.fa_nickname}}</a>&nbsp;:
-                              {{item02.by_content}}
+                              {{item02.content}}
                             </div>
                             <div class="huifu_second_time">
                               <span>{{item02.create_time}}</span>
                               <a href="javascript:;">回复</a>
                             </div>
                           </div>
-                        </div>
+                        </div> -->
+
                       </li>
                     </ul>
                   </div>
 
-                  <div class="msg_enter_box">
-                    <el-form @submit.native.prevent>
+                  <!-- <div class="msg_enter_box">
+                    <el-form @submit.native.prevent v-if="false">
                       <el-form-item>
-                        <el-input type="textarea" :rows="enter_box_row" placeholder="评论" @focus="get_blur_input" @blur="lose_blur_input"></el-input>
+                        <el-input type="textarea" :rows="enter_box_row" placeholder="评论"></el-input>
                       </el-form-item>
                       <el-form-item style="text-align: right;">
-                        <el-button>发表</el-button>
+                        <el-button @click="send_comment()">发表</el-button>
                       </el-form-item>
                     </el-form>
-                  </div>
+                  </div> -->
 
                   </div>
 
@@ -257,6 +302,8 @@ export default {
   },
   data() {
     return {
+      // 评论框
+      item_msg_comment: '',
       // 上传的文件列表
       fileList: [],
       activeName: 'first',
@@ -414,7 +461,9 @@ export default {
       });
     },
     // 评论
-    comment(send_circle_id, pl_users_id) {
+    comment(send_circle_id, pl_users_id,index,item) {
+      console.log(send_circle_id,pl_users_id,index);
+
       // this.$axios.post('/wpapi/me/send_comment', {
       //   users_id: localStorage.getItem('users_id'),
       //   token: localStorage.getItem('token'),
@@ -435,31 +484,41 @@ export default {
       console.log(this.faceList[index]);
       this.fabuxinxi_text = this.fabuxinxi_text + this.faceList[index];
     },
-    // 输入框获取焦点事件
-    get_blur_input() {
-      console.log(this);
-      this.enter_box_row = 3;
-    },
-    // 输入框失去焦点事件
-    lose_blur_input() {
-      this.enter_box_row = 1;
-    },
     // 回复消息
-    reply_content(send_circle_id, send_comment_id) {
-      console.log(send_circle_id, send_comment_id);
-      // this.$axios.post('/wpapi/me/by_send_comment', {
-      //   users_id: localStorage.getItem('users_id'),
-      //   token: localStorage.getItem('token'),
-      //   send_circle_id: send_circle_id,
-      //   send_comment_id: send_comment_id,
-      //   by_content: '子消息02'
-      // })
-      // .then((result) => {
-      //   console.log(result);
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      // });
+    reply_content(send_comment_id) {
+      if (!this.item_msg_comment) return false;
+      this.$axios.post('/wpapi/me/by_send_comment', {
+        users_id: localStorage.getItem('users_id'),
+        token: localStorage.getItem('token'),
+        send_comment_id: send_comment_id,
+        by_content: this.item_msg_comment
+      })
+      .then((result) => {
+        console.log(result);
+        
+        if (result.status != '200') return this.$message.error(result.msg);
+
+        // 更新朋友圈列表数据
+        this.$axios.post('/wpapi/me/circle_list', {token:localStorage.getItem('token'),users_id: localStorage.getItem('users_id')})
+        .then((result) => {
+          this.circle_list = result.data;
+          this.circle_list.forEach(element => {
+            if (element.send_img) {
+              element.send_img = JSON.parse(element.send_img)[0];
+            }
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+        this.item_msg_comment = '';
+        this.$message.success(result.msg);
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     },
     // 删除自己的朋友圈
     del_item(send_circle_id) {
@@ -506,6 +565,44 @@ export default {
       .catch(() => {
         this.$message.info('已取消删除');
       });
+    },
+    // 发表评论
+    send_comment(send_circle_id) {
+      if (!this.item_msg_comment) return false;
+      this.$axios.post('/wpapi/me/send_comment', {
+        users_id: localStorage.getItem('users_id'),
+        token: localStorage.getItem('token'),
+        content: this.item_msg_comment,
+        send_circle_id: send_circle_id
+      })
+      .then((result) => {
+        console.log(result);
+        if (result.status != '200') return this.$message.error(result.msg);
+
+        // 更新朋友圈列表数据
+        this.$axios.post('/wpapi/me/circle_list', {token:localStorage.getItem('token'),users_id: localStorage.getItem('users_id')})
+        .then((result) => {
+          this.circle_list = result.data;
+          this.circle_list.forEach(element => {
+            if (element.send_img) {
+              element.send_img = JSON.parse(element.send_img)[0];
+            }
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+        this.item_msg_comment = '';
+        this.$message.success(result.msg);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    },
+    // 清空输入框
+    clearInput() {
+      this.item_msg_comment = '';
     }
   }
 }

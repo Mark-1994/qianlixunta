@@ -515,6 +515,7 @@
 
 <script>
 import allCityList from "@/assets/cityList.json"
+import wx from "weixin-js-sdk"
 
 export default {
   data() {
@@ -687,6 +688,46 @@ export default {
     .catch((error) => {
       console.log(error);
     });
+  },
+  mounted: function() {
+    console.log(wx);
+    console.log(location.href);
+
+    if (wx) {
+      this.$axios.post('http://wxshare.qianlixunta.com/wxJssdk/getJssdk', {url: location.href}).then((response) => {
+        // var data = response.data
+
+        wx.config({
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: response.appId, // 必填，公众号的唯一标识
+          timestamp: response.timestamp, // 必填，生成签名的时间戳
+          nonceStr: response.nonceStr, // 必填，生成签名的随机串
+          signature: response.signature,// 必填，签名，见附录1
+          jsApiList: ['updateTimelineShareData', 'updateAppMessageShareData'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+
+        wx.ready(function () {
+          wx.updateTimelineShareData({
+              title: '千里寻他官网',
+              desc: '千里寻他',
+              link: 'http://www.qianlixunta.com/',
+              imgUrl: 'http://www.qianlixunta.com/images/wx_share01.jpg'
+            });
+    
+            wx.updateAppMessageShareData({
+              title: '千里寻他官网',
+              desc: '千里寻他',
+              link: 'http://www.qianlixunta.com/',
+              imgUrl: 'http://www.qianlixunta.com/images/wx_share01.jpg'
+            });
+        })
+    
+        wx.error(function (res) {
+            // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+        })
+      })
+    }
+
   },
   methods: {
     free_register(formName) {

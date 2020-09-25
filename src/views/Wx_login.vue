@@ -69,6 +69,15 @@ export default {
       .then((result) => {
         console.log(result);
         this.login_info = result.data;
+
+        if (result.data.wx_is_status == 1) {
+          window.localStorage.setItem('token', result.data.token);
+          window.localStorage.setItem('users_id', result.data.users_id);
+          window.localStorage.setItem('nickname', result.data.nickname);
+          this.$message.success('登陆成功');
+          this.$router.push('/index');
+        }
+
       })
       .catch((error) => {
         console.log(error);
@@ -78,6 +87,10 @@ export default {
   },
   methods: {
     agree_bind() {
+      // 手机号判断
+      if (!this.phone.trim()) return this.$message.error('手机号不能为空！');
+      if(!(/^1[3456789]\d{9}$/.test(this.phone))) return this.$message.error('请填写正确的手机号！');
+
       // 同意协议并绑定
       this.$axios.post('/wpapi/register/wx_login_bind', {
         openid: this.login_info.openid,
@@ -88,7 +101,12 @@ export default {
       .then((result) => {
         console.log(result);
         if (result.status !== '200') return this.$message.error('绑定失败！');
-        this.$message.success('绑定成功！');
+
+        window.localStorage.setItem('token', result.data.token);
+        window.localStorage.setItem('users_id', result.data.users_id);
+        window.localStorage.setItem('nickname', result.data.nickname);
+
+        this.$message.success('绑定成功');
         this.$router.push('/index');
       })
       .catch((error) => {

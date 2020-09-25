@@ -6,6 +6,7 @@ import axios from 'axios'
 import 'element-ui/lib/theme-chalk/index.css'
 // 引入阿里字体图标文件
 import '@/assets/icon/iconfont.css'
+import wx from 'weixin-js-sdk'
 
 // 配置全局axios默认值
 axios.defaults.baseURL = 'http://admin.qianlixunta.com'
@@ -24,6 +25,7 @@ axios.interceptors.response.use(function(res) {
   return err;
 });
 
+Vue.use(wx)
 Vue.use(ElementUI);
 
 Vue.config.productionTip = false
