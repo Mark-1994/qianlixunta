@@ -115,8 +115,9 @@
             </div>
             <!-- 右上角三个按钮 -->
             <div class="greet_msg_like">
-              <el-button type="primary">打招呼</el-button>
-              <el-button type="info" @click="send_message">发消息</el-button>
+              <!-- <el-button type="primary">打招呼</el-button> -->
+              <el-button type="primary" @click="send_message">发消息</el-button>
+              <!-- <el-button type="info" @click="send_message">发消息</el-button> -->
               <el-button type="danger">喜欢</el-button>
             </div>
           </div>

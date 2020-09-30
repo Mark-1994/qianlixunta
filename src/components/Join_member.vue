@@ -2,7 +2,7 @@
   <div class="login_container login_container01">
     <el-container>
       <el-main>
-        <div class="banner_top_img">
+        <div class="banner_top_img" style="text-align: center;">
           <el-image
             :src="require('@/assets/huiyuan_banner01.png')"
             fit="contain"></el-image>

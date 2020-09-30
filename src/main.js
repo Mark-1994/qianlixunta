@@ -14,6 +14,7 @@ axios.defaults.baseURL = 'http://admin.qianlixunta.com'
 // 请求拦截器
 axios.interceptors.request.use(function(config) {
   // console.log(config.headers.mytoken = 'abc');  // 配置请求头
+  // config.headers['content-type'] = 'application/x-www-form-urlencoded'
   return config;
 }, function(error) {
   return error;

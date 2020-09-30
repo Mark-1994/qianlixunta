@@ -3,8 +3,20 @@
     <el-container>
 
       <el-main>
+
+        <template>
+          <div class="block">
+            <el-carousel trigger="click" height="500px">
+              <el-carousel-item v-for="item in banner_img" :key="item.id">
+                <el-image :src="item.src"
+                fit="fill" style="width: 100%;height: 100%;"></el-image>
+              </el-carousel-item>
+            </el-carousel>
+          </div>
+        </template>
+
         <div class="main_center_module">
-          <div class="home_banner">
+          <!-- <div class="home_banner">
             <div class="home_banner_signup_form">
               <h3>一分钟注册</h3>
               <el-form ref="minute_form" :model="minute_form" label-width="82px"
@@ -21,32 +33,6 @@
                     type="date"
                     placeholder="选择日期" :picker-options="pickerOptions">
                   </el-date-picker>
-                  <!--<el-select v-model="birthday_year" placeholder="请选择" class="register_form_birthday">
-                    <el-option label="1991" value="1991"></el-option>
-                    <el-option label="1992" value="1992"></el-option>
-                    <el-option label="1993" value="1992"></el-option>
-                    <el-option label="1994" value="1992"></el-option>
-                  </el-select>
-                  年
-                  <el-select v-model="birthday_month" placeholder="请选择" class="register_form_birthday">
-                    <el-option label="01" value="01"></el-option>
-                    <el-option label="02" value="02"></el-option>
-                    <el-option label="03" value="03"></el-option>
-                    <el-option label="04" value="04"></el-option>
-                    <el-option label="05" value="05"></el-option>
-                    <el-option label="06" value="06"></el-option>
-                    <el-option label="07" value="07"></el-option>
-                    <el-option label="08" value="08"></el-option>
-                    <el-option label="09" value="09"></el-option>
-                    <el-option label="10" value="10"></el-option>
-                    <el-option label="11" value="11"></el-option>
-                    <el-option label="12" value="12"></el-option>
-                  </el-select>
-                  月
-                  <el-select v-model="birthday_day" placeholder="请选择" class="register_form_birthday">
-                    <el-option v-for="item in afterage_options" :key="item.id" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                  日-->
                 </el-form-item>
                 <el-form-item label="现居住地" prop="address">
                   <el-cascader
@@ -68,7 +54,7 @@
                 </el-form-item>
               </el-form>
             </div>
-          </div>
+          </div> -->
           <div class="main_center_bottom_two">
             <el-row>
               <el-col :span="17">
@@ -79,7 +65,7 @@
                       <h3>推荐会员</h3>
                       <a href="javascript:;" @click="btn_change_friend">换一批</a>
                     </div>
-                    <el-form ref="search_form" :model="search_form" class="search_form">
+                    <!-- <el-form ref="search_form" :model="search_form" class="search_form">
                       <el-form-item label="">
                         <el-radio-group v-model="search_form.year_type">
                           <el-radio label="同城"></el-radio>
@@ -102,10 +88,6 @@
                           </el-select>
                         </el-form-item>
                         <el-form-item label="城市">
-                          <!-- <el-select v-model="search_form.workplace" placeholder="请选择">
-                            <el-option label="武汉" value="武汉"></el-option>
-                            <el-option label="上海" value="上海"></el-option>
-                          </el-select> -->
                           <el-cascader
                             :options="cityList"
                             :props="{ multiple: false, checkStrictly: true }"
@@ -115,7 +97,8 @@
                           <el-button type="primary" @click="search_onSubmit" style="background-color: #F03E3E;border: 1px solid #F03E3E;">搜索<i class="el-icon-search el-icon--right"></i></el-button>
                         </el-form-item>
                       </el-row>
-                    </el-form>
+                    </el-form> -->
+
                     <!-- <el-row :gutter="20" class="top_bottom_margin_25">
                       <el-col :span="8">
                         <div class="grid-content bg-purple">
@@ -314,16 +297,18 @@
                     </el-row> -->
 
                     <ul class="default_recommend_member_list">
-                      <li v-for="item in default_recommend_member_list" :key="item.id">
+                      <li v-for="item in default_recommend_member_list" :key="item.id" style="border-radius: 10px;">
                         <div class="default_recommend_member_left">
                           <div class="default_recommend_member_left_big_img">
-                            <img :src="'http://admin.qianlixunta.com'+item.head_portrait" alt="" />
+                            <router-link :to="'other_user/'+item.id">
+                            <img :src="'http://admin.qianlixunta.com'+item.head_portrait" alt="" style="border-radius: 10px 0 0 0;" />
+                            </router-link>
                           </div>
                           <div class="default_recommend_member_left_small_img">
-                            <img v-for="(item01, index) in JSON.parse(item.life_imgs)" :key="index" :src="'http://admin.qianlixunta.com'+item01" alt="" />
+                            <img v-for="(item01, index) in JSON.parse(item.life_imgs ? item.life_imgs : '[]')" :key="index" :src="'http://admin.qianlixunta.com'+item01" alt="" />
                           </div>
                         </div>
-                        <div class="default_recommend_member_right">
+                        <div class="default_recommend_member_right" style="border-radius: 0 10px 10px 0;">
                           <h4>{{item.nickname ? item.nickname : '无数据'}}</h4>
                           <div class="default_recommend_member_left_info">
                             <span>{{now_year-item.users_year == now_year ? '无数据' : now_year-item.users_year}}岁</span>
@@ -334,13 +319,19 @@
                           <p>{{item.introduce_oneself ? item.introduce_oneself : '无数据'}}</p>
                           <div class="default_recommend_member_right_click">
                             <div>
+                              <router-link :to="'other_user/'+item.id">
                               <img src="../assets/dazhaohu01.png" alt="" />
+                              </router-link>
                             </div>
                             <div>
+                              <router-link :to="'other_user/'+item.id">
                               <img src="../assets/youxiang01.png" alt="" />
+                              </router-link>
                             </div>
                             <div>
+                              <router-link :to="'other_user/'+item.id">
                               <img src="../assets/aixin01.png" alt="" />
+                              </router-link>
                             </div>
                           </div>
                         </div>
@@ -384,6 +375,7 @@
                         <router-link to="/yueba">查看更多活动&gt;</router-link>
                         <!-- <a href="javascript:;">查看更多活动&gt;</a> -->
                       </div>
+                      <router-link to="yueba">
                       <div class="yuebazouqi_content_main">
                         <div class="event_left">
                           <img :src="'http://admin.qianlixunta.com'+qixi_festival_first.img" alt="">
@@ -400,6 +392,7 @@
                           <img :src="'http://admin.qianlixunta.com'+qixi_festival_third.img" alt="" class="active_banner_img03">
                         </div>
                       </div>
+                      </router-link>
                     </div>
                   </div>
                   <!-- 约吧走起end -->
@@ -415,6 +408,7 @@
                         <router-link to="/article_list">查看更多&gt;</router-link>
                       </div>
                       <div class="qingganjiaoliu_news_list">
+                        <router-link to="article_list">
                         <el-row>
                           <el-col :span="8">
                             <div class="qingganjiaoliu_news_item">
@@ -456,6 +450,7 @@
                             </div>
                           </el-col>
                         </el-row>
+                        </router-link>
                       </div>
                     </div>
                   </div>
@@ -487,7 +482,7 @@
                     </router-link>
                     <p>一年只交168元更快找到TA，无任何额外费用</p>
                   </div>
-                  <div class="zuijiapipei">
+                  <!-- <div class="zuijiapipei">
                     <h4>最佳匹配</h4>
                     <div class="zuijiapipei_info">
                       <img :src="'http://admin.qianlixunta.com'+agreement_join_shuffle.head_portrait" alt="">
@@ -501,7 +496,7 @@
                         </el-row>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </el-col>
             </el-row>
@@ -520,6 +515,17 @@ import wx from "weixin-js-sdk"
 export default {
   data() {
     return {
+      // banner 图片
+      banner_img: [{
+        id: 1,
+        src: require('@/assets/banner01.jpg')
+      }, {
+        id: 2,
+        src: require('@/assets/banner02.jpg')
+      }, {
+        id: 3,
+        src: require('@/assets/banner03.jpg')
+      }],
       // 情感交流
       affective_interaction: [],
       cityList: '',
@@ -866,7 +872,7 @@ export default {
   .tuijianhuiyuan_title {
     display: flex;
     align-items: center;
-    margin: 32px 0;
+    margin: 32px 0 22px;
   }
   .tuijianhuiyuan_title h3 {
     font-size: 33px;
@@ -1260,6 +1266,8 @@ export default {
   .default_recommend_member_left_small_img {
     display: flex;
     flex: 1;
+    border-radius: 0 0 0 10px;
+    overflow: hidden;
   }
   .default_recommend_member_left_small_img img {
     width: 50%;

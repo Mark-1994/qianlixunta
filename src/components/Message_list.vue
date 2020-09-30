@@ -86,27 +86,33 @@
                             <div class="name_age_adress_time">
                               <h4>{{item.fromname}}</h4>
                               <div>
-                                <span>27岁</span>
-                                <span class="message_adress_item">武汉</span>
+                                <span>年龄</span>
+                                <span class="message_adress_item">地址</span>
                               </div>
                               <div class="day_time_message_list">{{item.time}}</div>
                             </div>
                             <div class="message_info_item">{{item.content}}</div>
                           </div>
                           <div class="right_lijihuifu">
-                            <a href="javascript:;">立即回复</a>
+                            <a :href="'/#/other_user/'+item.fromid">立即回复</a>
                           </div>
                         </li>
                       </ul>
                     </el-tab-pane>
                     <el-tab-pane label="已读消息" name="second">
                       <ul>
-                        <li v-for="item in general_message_list.data" :key="item.id">已读消息</li>
+                        <li v-for="item in general_message_list.data" :key="item.id">已读消息{{item.title}}</li>
                       </ul>
                     </el-tab-pane>
                     <el-tab-pane label="系统消息" name="third">
-                      <ul>
-                        <li v-for="item in general_message_list.data" :key="item.id">系统消息</li>
+                      <ul class="system_list">
+                        <li v-for="item in general_message_list" :key="item.id" style="border-bottom: 2px dashed rgba(103,103,103,0.15);padding: 20px;">
+                          <p style="font-weight: bold;">{{item.title}}</p>
+                          <p>{{item.content}}</p>
+                          <p>{{item.order_osn}}</p>
+                          <p>{{item.pay_time}}</p>
+                          <p>{{item.vip_price}}</p>
+                        </li>
                       </ul>
                     </el-tab-pane>
                   </el-tabs>
@@ -162,7 +168,8 @@ export default {
         head_portrait: '/upload/admin/article/thumbnail/20200807/nv.png'
       },
       // 消息列表
-      general_message_list: {},
+      // general_message_list: {},
+      general_message_list: [],
       // 当前消息类型
       message_type: 0
     }
@@ -233,7 +240,8 @@ export default {
         this.$axios.post('/wpapi/member/system_message', {users_id:localStorage.getItem('users_id'),page:1})
         .then((result) => {
           console.log(result);
-          this.general_message_list = result.data;
+          this.general_message_list = result.data.message_info;
+          this.general_message_list.total = result.data.page_count;
         })
         .catch((error) => {
           console.log(error);
@@ -502,5 +510,8 @@ export default {
     width: 80%;
     height: 80%;
     border-radius: 50%;
+  }
+  .system_list li:last-child {
+    border: none !important;
   }
 </style>

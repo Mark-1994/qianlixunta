@@ -397,7 +397,7 @@ export default {
         users_id: localStorage.getItem('users_id'),
         token: localStorage.getItem('token'),
         content: this.fabuxinxi_text,
-        send_img: this.fileList
+        send_img: this.fileList.length ? this.fileList : ''
       })
       .then((result) => {
         console.log(result);
@@ -411,7 +411,7 @@ export default {
         .then((result) => {
           console.log(result);
           this.circle_list = result.data;
-          console.log(JSON.parse(result.data[0].send_img)[0]);
+          // console.log(JSON.parse(result.data[0].send_img)[0]);
           this.circle_list.forEach(element => {
             if (element.send_img) {
               element.send_img = JSON.parse(element.send_img)[0];

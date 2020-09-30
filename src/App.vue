@@ -139,6 +139,7 @@ export default {
     margin: 0 auto;
     padding: 0 60px;
     box-sizing: border-box;
+    text-align: center;
   }
   .footer_num {
     width: 1180px;

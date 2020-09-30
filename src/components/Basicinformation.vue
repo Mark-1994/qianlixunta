@@ -71,10 +71,10 @@
             </el-row>
           </div>
           <div class="mine_info_form">
-            <p class="information_progress">
+            <!-- <p class="information_progress">
               资料完善度 <span>{{percentage}}%</span>
               <el-progress :percentage="percentage" :color="customColor"></el-progress>
-            </p>
+            </p> -->
             <el-tabs  @tab-click="handleClickRow">
               <el-tab-pane label="完善资料">
                 <el-tabs tab-position="left" @tab-click="handleClick">
@@ -439,9 +439,6 @@
                           <el-form-item label="结婚">
                             <el-input v-model="marriage_form.get_married"></el-input>
                           </el-form-item>
-                          <el-form-item label="结婚">
-                            <el-input v-model="marriage_form.get_married"></el-input>
-                          </el-form-item>
                           <el-form-item label="长时间异地恋">
                             <el-input v-model="marriage_form.long_distance_love"></el-input>
                           </el-form-item>
@@ -548,7 +545,7 @@
                   </el-tab-pane>
                 </el-tabs>
               </el-tab-pane>
-              <el-tab-pane label="我的账号">我的账号</el-tab-pane>
+              <!-- <el-tab-pane label="我的账号">我的账号</el-tab-pane> -->
               <el-tab-pane label="实名认证" name="2">
                 <h4>实名认证</h4>
                 <p>为保证资料真实有效，请如实填写</p>
@@ -743,83 +740,83 @@ export default {
       activeNames: ['1'],
       // 工作与教育经历表单
       job_form: {
-        // job: '',
-        // company_industry: '',
-        // company_type: '',
-        // move_job: '',
-        // work_status: '',
-        // overseas_work: '',
-        // fringe_benefits: '',
-        // work_home: '',
-        // graduate_school: '',
-        // major_type: '',
-        // language: ''
+        job: '',
+        company_industry: '',
+        company_type: '',
+        move_job: '',
+        work_status: '',
+        overseas_work: '',
+        fringe_benefits: '',
+        work_home: '',
+        graduate_school: '',
+        major_type: '',
+        language: ''
       },
       checkList: [],
       token: localStorage.getItem('token'),
       // 生活方式表单
       life_form: {
-        // smoke: '',
-        // drink_wine: '',
-        // exercise_habits: '',
-        // shopping_habits: '',
-        // eating_habits: '',
-        // religious_belief: '',
-        // time_table: '',
-        // social_circle: '',
-        // maximum_consumption: '',
-        // housework_level: '',
-        // household_distribution: '',
-        // liking_degree: '',
-        // pet_rearing: ''
+        smoke: '',
+        drink_wine: '',
+        exercise_habits: '',
+        shopping_habits: '',
+        eating_habits: '',
+        religious_belief: '',
+        time_table: '',
+        social_circle: '',
+        maximum_consumption: '',
+        housework_level: '',
+        household_distribution: '',
+        liking_degree: '',
+        pet_rearing: ''
       },
       // 婚姻观念表单
       marriage_form: {
-        // native_place: '',
-        // nationality: '',
-        // personality: '',
-        // sense_of_humor: '',
-        // bad_temper: '',
-        // treat_feelings: '',
-        // about_children: '',
-        // get_married: '',
-        // long_distance_love: '',
-        // ideal_marriage: '',
-        // parents_live_together: '',
-        // home_ranking: '',
-        // brothers_and_sisters: '',
-        // parents: '',
-        // father_job: '',
-        // mother_job: '',
-        // parent_economy: '',
-        // parents_medical_insurance: ''
+        native_place: '',
+        nationality: '',
+        personality: '',
+        sense_of_humor: '',
+        bad_temper: '',
+        treat_feelings: '',
+        about_children: '',
+        get_married: '',
+        long_distance_love: '',
+        ideal_marriage: '',
+        parents_live_together: '',
+        home_ranking: '',
+        brothers_and_sisters: '',
+        parents: '',
+        father_job: '',
+        mother_job: '',
+        parent_economy: '',
+        parents_medical_insurance: ''
       },
       // 经济实力表单
       economic_form: {
-        // investment_and_financing: '',
-        // foreign_debt_loan: '',
-        // economic_concept: ''
+        investment_and_financing: '',
+        foreign_debt_loan: '',
+        economic_concept: ''
       },
       // 外貌体型表单
       appearance_form: {
-        // weight: '',
-        // shape: '',
-        // face_shape: '',
-        // eye: '',
-        // hair: '',
-        // skin: '',
-        // muscle: '',
-        // dressing_style: ''
+        weight: '',
+        shape: '',
+        face_shape: '',
+        eye: '',
+        hair: '',
+        skin: '',
+        muscle: '',
+        dressing_style: ''
       },
       // 兴趣爱好表单
       hobby_form: {
-        // travel_play: '',
-        // food: '',
-        // book: '',
-        // film: '',
-        // program: '',
-        // entertainment_leisure: '',
-        // avocation: ''
+        travel_play: '',
+        food: '',
+        book: '',
+        film: '',
+        program: '',
+        entertainment_leisure: '',
+        avocation: ''
       },
       // 个人信息数据
       come_news: {
@@ -950,6 +947,79 @@ export default {
         })
         .then((result) => {
           console.log(result);
+
+          // 工作与教育经历
+          this.job_form.job = result.data.user_detail_info.job
+          this.job_form.company_industry = result.data.user_detail_info.company_industry
+          this.job_form.company_type = result.data.user_detail_info.company_type
+          this.job_form.move_job = result.data.user_detail_info.move_job
+          this.job_form.work_status = result.data.user_detail_info.work_status
+          this.job_form.overseas_work = result.data.user_detail_info.overseas_work
+          this.job_form.fringe_benefits = result.data.user_detail_info.fringe_benefits
+          this.job_form.work_home = result.data.user_detail_info.work_home
+          this.job_form.graduate_school = result.data.user_detail_info.graduate_school
+          this.job_form.major_type = result.data.user_detail_info.major_type
+          this.job_form.language = result.data.user_detail_info.language
+          this.checkList = result.data.user_detail_info.language.split(',')
+
+          // 生活方式
+          this.life_form.smoke = result.data.user_detail_info.smoke
+          this.life_form.drink_wine = result.data.user_detail_info.drink_wine
+          this.life_form.exercise_habits = result.data.user_detail_info.exercise_habits
+          this.life_form.shopping_habits = result.data.user_detail_info.shopping_habits
+          this.life_form.eating_habits = result.data.user_detail_info.eating_habits
+          this.life_form.religious_belief = result.data.user_detail_info.religious_belief
+          this.life_form.time_table = result.data.user_detail_info.time_table
+          this.life_form.social_circle = result.data.user_detail_info.social_circle
+          this.life_form.maximum_consumption = result.data.user_detail_info.maximum_consumption
+          this.life_form.housework_level = result.data.user_detail_info.housework_level
+          this.life_form.household_distribution = result.data.user_detail_info.household_distribution
+          this.life_form.liking_degree = result.data.user_detail_info.liking_degree
+          this.life_form.pet_rearing = result.data.user_detail_info.pet_rearing
+
+          // 婚姻观念
+          this.marriage_form.native_place = result.data.user_detail_info.native_place
+          this.marriage_form.nationality = result.data.user_detail_info.nationality
+          this.marriage_form.personality = result.data.user_detail_info.personality
+          this.marriage_form.sense_of_humor = result.data.user_detail_info.sense_of_humor
+          this.marriage_form.bad_temper = result.data.user_detail_info.bad_temper
+          this.marriage_form.treat_feelings = result.data.user_detail_info.treat_feelings
+          this.marriage_form.about_children = result.data.user_detail_info.about_children
+          this.marriage_form.get_married = result.data.user_detail_info.get_married
+          this.marriage_form.long_distance_love = result.data.user_detail_info.long_distance_love
+          this.marriage_form.ideal_marriage = result.data.user_detail_info.ideal_marriage
+          this.marriage_form.parents_live_together = result.data.user_detail_info.parents_live_together
+          this.marriage_form.home_ranking = result.data.user_detail_info.home_ranking
+          this.marriage_form.brothers_and_sisters = result.data.user_detail_info.brothers_and_sisters
+          this.marriage_form.parents = result.data.user_detail_info.parents
+          this.marriage_form.father_job = result.data.user_detail_info.father_job
+          this.marriage_form.mother_job = result.data.user_detail_info.mother_job
+          this.marriage_form.parent_economy = result.data.user_detail_info.parent_economy
+          this.marriage_form.parents_medical_insurance = result.data.user_detail_info.parents_medical_insurance
+
+          // 经济实力
+          this.economic_form.investment_and_financing = result.data.user_detail_info.investment_and_financing
+          this.economic_form.foreign_debt_loan = result.data.user_detail_info.foreign_debt_loan
+          this.economic_form.economic_concept = result.data.user_detail_info.economic_concept
+
+          // 外貌体型
+          this.appearance_form.weight = result.data.user_detail_info.weight
+          this.appearance_form.shape = result.data.user_detail_info.shape
+          this.appearance_form.face_shape = result.data.user_detail_info.face_shape
+          this.appearance_form.eye = result.data.user_detail_info.eye
+          this.appearance_form.hair = result.data.user_detail_info.hair
+          this.appearance_form.skin = result.data.user_detail_info.skin
+          this.appearance_form.muscle = result.data.user_detail_info.muscle
+          this.appearance_form.dressing_style = result.data.user_detail_info.dressing_style
+          
+          // 兴趣爱好
+          this.hobby_form.travel_play = result.data.user_detail_info.travel_play
+          this.hobby_form.food = result.data.user_detail_info.food
+          this.hobby_form.book = result.data.user_detail_info.book
+          this.hobby_form.film = result.data.user_detail_info.film
+          this.hobby_form.program = result.data.user_detail_info.program
+          this.hobby_form.entertainment_leisure = result.data.user_detail_info.entertainment_leisure
+          this.hobby_form.avocation = result.data.user_detail_info.avocation
         })
         .catch((error) => {
           console.log(error);

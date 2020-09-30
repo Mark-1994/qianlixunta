@@ -127,15 +127,15 @@
                     </div>
                     <p>{{item.introduce_oneself}}</p>
                     <div class="hi_email_like">
-                      <a href="javascript:;">
+                      <router-link :to="'/other_user/'+item.id">
                         <img src="../assets/dazhaohu01.png" alt="">
-                      </a>
-                      <a href="javascript:;">
+                      </router-link>
+                      <router-link :to="'/other_user/'+item.id">
                         <img src="../assets/youxiang01.png" alt="">
-                      </a>
-                      <a href="javascript:;">
+                      </router-link>
+                      <router-link :to="'/other_user/'+item.id">
                         <img src="../assets/aixin01.png" alt="">
-                      </a>
+                      </router-link>
                     </div>
                   </div>
                 </div>

@@ -92,11 +92,15 @@ export default {
       if(!(/^1[3456789]\d{9}$/.test(this.phone))) return this.$message.error('请填写正确的手机号！');
 
       // 同意协议并绑定
-      this.$axios.post('/wpapi/register/wx_login_bind', {
-        openid: this.login_info.openid,
-        nickname: this.login_info.nickname,
-        headimgurl: this.login_info.headimgurl,
-        phone: this.phone
+      var data = new URLSearchParams()
+      data.append('openid', this.login_info.openid)
+      data.append('nickname', this.login_info.nickname)
+      data.append('headimgurl', this.login_info.headimgurl)
+      data.append('phone', this.phone)
+      this.$axios.post('/wpapi/register/wx_login_bind', data, {
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded'
+        }
       })
       .then((result) => {
         console.log(result);

@@ -1,12 +1,12 @@
 <template>
-  <div class="login_container">
+  <div class="login_container" style="box-shadow: 0px 3px 6px 0px rgba(255, 58, 58, .13);">
     <el-header style="height: auto;">
       <el-row class="header_left_right">
         <el-col :span="12" class="header_left_slogn">
           <router-link to="/index">
-            <img src="../assets/logo01.png" alt="" />
+            <img src="../assets/logo_currency01.png" alt="" width="60px" />
           </router-link>
-          <span>千里寻他</span>
+          <span style="margin-left: 10px;font-weight: bold;color: #000;">千里寻他</span>
         </el-col>
         <el-col :span="12" class="header_right_item">
           <img src="../assets/dibiao01.svg" alt="" />
@@ -37,7 +37,7 @@
           </el-dropdown>
         </el-col>
       </el-row>
-      <div class="nav_bg_color">
+      <div class="nav_bg_color" style="margin-bottom: 6px;">
         <div class="x-wrap">
           <el-menu
             class="el-menu-demo"
@@ -45,7 +45,8 @@
             text-color="#fff"
             active-text-color="#fff"
             router
-            background-color="rgba(0,0,0,0)">
+            background-color="rgba(0,0,0,0)"
+            style="display: flex;justify-content: space-around;">
             <el-menu-item v-for="item in navMenu" :key="item.id" :index="item.index">{{item.navName}}</el-menu-item>
           </el-menu>
         </div>
