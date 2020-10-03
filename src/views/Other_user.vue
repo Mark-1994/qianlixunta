@@ -13,13 +13,19 @@
                     <p>我的资料：80%</p>
                   </div>
                   <div class="name_phone_info">
-                    <h4>{{come_news.nickname}}<img src="../assets/zuanshi03.png" alt="" /><span>v3</span></h4>
+                    <h4>
+                      <span style="display:inline-block;max-width:95px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;font-size:18px;color:#000;">{{come_news.nickname}}</span>
+                      <img src="../assets/zuanshi03.png" alt="" />
+                      <span>v3</span>
+                    </h4>
                     <div class="three_images_status">
                       <img src="../assets/shouji01.png" alt="">
                       <img src="../assets/faxiaoxi01.png" alt="">
                       <img src="../assets/shimingrenzheng01.png" alt="">
                     </div>
-                    <a href="javascript:;"><el-badge is-dot>完善个人信息</el-badge></a>
+                    <router-link to="/basicinformation">
+                      <el-badge is-dot>完善个人信息</el-badge>
+                    </router-link>
                   </div>
                 </div>
               </el-col>
@@ -76,12 +82,12 @@
               <div class="other_user_main_left_big_img">
                 <img :src="'http://admin.qianlixunta.com'+select_users_info.head_portrait" alt="" />
               </div>
-              <div class="other_user_main_left_small_img">
+              <div class="other_user_main_left_small_img" v-if="select_users_info.life_imgs">
                 <a href="javascript:;" class="img_left_move" @click="img_left_move">&lt;</a>
                 <ul>
                   <li v-for="(item, index) in select_users_info.life_imgs" :key="index"><img :src="'http://admin.qianlixunta.com'+item" alt=""></li>
-                  <li><img src="../assets/touxiang_small02.png" alt=""></li>
-                  <li><img src="../assets/touxiang_small02.png" alt=""></li>
+                  <!-- <li><img src="../assets/touxiang_small02.png" alt=""></li>
+                  <li><img src="../assets/touxiang_small02.png" alt=""></li> -->
                 </ul>
                 <a href="javascript:;" class="img_right_move" @click="img_right_move">&gt;</a>
               </div>
@@ -96,7 +102,7 @@
                 <img src="../assets/shimingrenzheng03.png" alt="">
               </div>
               <div class="user_age_sex_marrage">
-                <span>{{new Date().getFullYear() - select_users_info.users_year}}岁</span>
+                <span v-if="select_users_info.birth_day">{{new Date().getFullYear() - select_users_info.birth_day.split('.')[0]}}岁</span>
                 <span>{{select_users_info.sex ? '男' : '女'}}</span>
                 <span>{{select_users_info.marital_status}}</span>
               </div>
@@ -156,10 +162,10 @@
           <div class="other_user_ideal_type">
             <h4><img src="../assets/tadelixiangxing01.png" alt="" /> TA的理想型</h4>
             <ul>
-              <li><span>年龄：</span>20-30岁之间</li>
-              <li><span>民族：</span>不限</li>
-              <li><span>身高：</span>{{select_users_info.imp_height}}CM</li>
-              <li><span>居住地：</span>湖北武汉</li>
+              <li><span>年龄：</span>&nbsp;</li>
+              <li><span>民族：</span>&nbsp;</li>
+              <li><span>身高：</span><span v-if="select_users_info.imp_height" style="color:#000;">{{select_users_info.imp_height}}CM</span></li>
+              <li><span>居住地：</span>&nbsp;</li>
               <li><span>学历：</span>{{select_users_info.imp_education}}</li>
               <li><span>婚姻状况：</span>{{select_users_info.imp_marital_status}}</li>
             </ul>
@@ -168,11 +174,11 @@
           <div class="other_user_life_style">
             <h4><img src="../assets/shenghuofangshi01.png" alt="" /> 生活方式</h4>
             <ul>
-              <li><span>吸烟：</span>不抽烟也讨厌他人抽烟</li>
+              <li><span>吸烟：</span>{{select_users_info.smoke}}</li>
               <li><span>饮酒：</span>{{select_users_info.drink_wine}}</li>
               <li><span>饮食习惯：</span>{{select_users_info.eating_habits}}</li>
               <li><span>宗教信仰：</span>{{select_users_info.religious_belief}}</li>
-              <li><span>作息时间：</span>偶尔懒散一下</li>
+              <li><span>作息时间：</span>{{select_users_info.time_table}}</li>
               <li><span>交际圈子：</span>{{select_users_info.social_circle}}</li>
               <li><span>锻炼习惯：</span>{{select_users_info.exercise_habits}}</li>
               <li><span>逛街购物：</span>{{select_users_info.shopping_habits}}</li>
@@ -195,7 +201,7 @@
               <li><span>结婚：</span>{{select_users_info.get_married}}</li>
               <li><span>长时间异地恋：</span>{{select_users_info.long_distance_love}}</li>
               <li><span>理想婚姻：</span>{{select_users_info.ideal_marriage}}</li>
-              <li><span>赡养老人：</span>{{select_users_info.household_distribution}}</li>
+              <li><span>赡养老人：</span>{{select_users_info.parents_live_together}}</li>
               <li><span>是否是独生子女：</span>{{select_users_info.home_ranking}}</li>
               <li><span>兄妹还是姐弟：</span>{{select_users_info.brothers_and_sisters}}</li>
               <li><span>父母健康情况：</span>{{select_users_info.parents}}</li>
@@ -210,7 +216,7 @@
             <h4><img src="../assets/jingjishili01.png" alt="" /> 经济实力</h4>
             <ul>
               <li><span>投资理财：</span>{{select_users_info.investment_and_financing}}</li>
-              <li><span>外债贷款：</span></li>
+              <li><span>外债贷款：</span>{{select_users_info.foreign_debt_loan}}</li>
               <li><span>经济观念：</span>{{select_users_info.economic_concept}}</li>
             </ul>
           </div>
@@ -218,7 +224,7 @@
           <div class="other_user_body_image">
             <h4><img src="../assets/tixingwaimao01.png" alt="" /> 体型外貌</h4>
             <ul>
-              <li><span>体重：</span>{{select_users_info.weight}}KG</li>
+              <li><span>体重：</span><span v-if="select_users_info.weight" style="color:#000;">{{select_users_info.weight}}KG</span></li>
               <li><span>体型：</span>{{select_users_info.shape}}</li>
               <li><span>脸型：</span>{{select_users_info.face_shape}}</li>
               <li><span>眼睛：</span>{{select_users_info.eye}}</li>
@@ -266,7 +272,7 @@
               <img src="../assets/shimingrenzheng01.png" alt="">
             </div>
             <ul class="user_list_info">
-              <li>{{new Date().getFullYear() - select_users_info.users_year}}岁</li>
+              <li v-if="select_users_info.birth_day">{{new Date().getFullYear() - select_users_info.birth_day.split('.')[0]}}岁</li>
               <li>{{select_users_info.marital_status}}</li>
               <li>{{select_users_info.height}}CM</li>
             </ul>

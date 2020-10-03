@@ -309,7 +309,9 @@
                           </div>
                         </div>
                         <div class="default_recommend_member_right" style="border-radius: 0 10px 10px 0;">
-                          <h4>{{item.nickname ? item.nickname : '无数据'}}</h4>
+                          <router-link :to="'other_user/'+item.id">
+                          <h4 style="color:#000;">{{item.nickname ? item.nickname : '无数据'}}</h4>
+                          </router-link>
                           <div class="default_recommend_member_left_info">
                             <span>{{now_year-item.users_year == now_year ? '无数据' : now_year-item.users_year}}岁</span>
                             <span>{{item.height ? item.height : '无数据'}}cm</span>
@@ -482,12 +484,16 @@
                     </router-link>
                     <p>一年只交168元更快找到TA，无任何额外费用</p>
                   </div>
-                  <!-- <div class="zuijiapipei">
+                  <div class="zuijiapipei">
                     <h4>最佳匹配</h4>
                     <div class="zuijiapipei_info">
-                      <img :src="'http://admin.qianlixunta.com'+agreement_join_shuffle.head_portrait" alt="">
+                      <router-link :to="'other_user/'+agreement_join_shuffle.id">
+                        <img :src="'http://admin.qianlixunta.com'+agreement_join_shuffle.head_portrait" alt="">
+                      </router-link>
                       <div>
-                        <h4>{{agreement_join_shuffle.nickname}}</h4>
+                        <router-link :to="'other_user/'+agreement_join_shuffle.id">
+                          <h4 style="color:#000;">{{agreement_join_shuffle.nickname}}</h4>
+                        </router-link>
                         <p>{{agreement_join_shuffle.introduce_oneself}}</p>
                         <el-row>
                           <el-tag size="mini">90后</el-tag>
@@ -496,7 +502,7 @@
                         </el-row>
                       </div>
                     </div>
-                  </div> -->
+                  </div>
                 </div>
               </el-col>
             </el-row>

@@ -13,13 +13,19 @@
                     <p>我的资料：80%</p>
                   </div>
                   <div class="name_phone_info">
-                    <h4>{{come_news.nickname}}<img src="../assets/zuanshi03.png" alt="" /><span>v3</span></h4>
+                    <h4>
+                      <span style="display:inline-block;max-width:95px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;font-size:18px;color:#000;">{{come_news.nickname}}</span>
+                      <img src="../assets/zuanshi03.png" alt="" />
+                      <span>v3</span>
+                    </h4>
                     <div class="three_images_status">
                       <img src="../assets/shouji01.png" alt="">
                       <img src="../assets/faxiaoxi01.png" alt="">
                       <img src="../assets/shimingrenzheng03.png" alt="">
                     </div>
-                    <a href="javascript:;"><el-badge is-dot>完善个人信息</el-badge></a>
+                    <router-link to="basicinformation">
+                      <el-badge is-dot>完善个人信息</el-badge>
+                    </router-link>
                   </div>
                 </div>
               </el-col>
@@ -160,13 +166,19 @@
                         <el-input v-model="mine_data_form.address" style="width: 220px;"></el-input>
                       </el-form-item>
                       <el-form-item label="有无子女">
-                        <el-input v-model="mine_data_form.is_children" style="width: 220px;"></el-input>
+                        <el-select v-model="mine_data_form.is_children" placeholder="请选择">
+                          <el-option label="有" value="1"></el-option>
+                          <el-option label="无" value="0"></el-option>
+                        </el-select>
                       </el-form-item>
                       <el-form-item label="血型">
                         <el-input v-model="mine_data_form.blood_type" style="width: 220px;"></el-input>
                       </el-form-item>
                       <el-form-item label="购车情况">
-                        <el-input v-model="mine_data_form.car_type" style="width: 220px;"></el-input>
+                        <el-select v-model="mine_data_form.car_type" placeholder="请选择">
+                          <el-option label="有" value="1"></el-option>
+                          <el-option label="无" value="0"></el-option>
+                        </el-select>
                       </el-form-item>
                       <el-form-item>
                         <el-button type="primary" @click="save_info">保存</el-button>
@@ -188,7 +200,7 @@
                       <el-col :span="6">学历：{{set_choose_form_pre.education ? set_choose_form_pre.education : '不限'}}</el-col>
                     </el-row>
                     <el-row>
-                      <el-col :span="6">婚姻状况：未婚</el-col>
+                      <el-col :span="6">婚姻状况：{{set_choose_form_pre.marital_status ? set_choose_form_pre.marital_status : '不限'}}</el-col>
                     </el-row>
                     <p>设置择偶条件</p>
                     <el-form ref="set_choose_form" :model="set_choose_form" label-width="80px">
@@ -310,12 +322,14 @@
                       class="upload-demo"
                       action="http://admin.qianlixunta.com/wpapi/register/up_life_imgs"
                       :on-remove="handleRemove"
-                      list-type="picture" :data="{token:token}" :on-success="up_mine_life_imgs">
-                      <el-button size="small" type="primary">点击上传生活照</el-button>
-                      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                      list-type="picture"
+                      :data="{token:token}"
+                      :on-success="up_mine_life_imgs"
+                      ref="upload">
+                      <el-button size="small" type="primary">上传生活照</el-button>
                     </el-upload>
                     <el-row>
-                      <el-button type="primary" @click="post_images_sure">确认提交头像和生活照</el-button>
+                      <el-button type="primary" @click="post_images_sure" style="margin-top:35px;">提交头像和生活照</el-button>
                     </el-row>
                   </el-tab-pane>
                   <el-tab-pane label="详细资料" name="4">
@@ -570,7 +584,8 @@
                       :before-upload="beforeAvatarUpload"
                       :data="{token:token}">
                       <img v-if="imageUrl01" :src="imageUrl01" class="id_card_avatar">
-                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                      <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
+                      <div v-else style="width:251px;color:#ccc;">（人像面照片）</div>
                     </el-upload>
                     <el-upload
                       class="id_card_uploader id_card_uploader01"
@@ -580,7 +595,8 @@
                       :before-upload="beforeAvatarUpload"
                       :data="{token:token}">
                       <img v-if="imageUrl02" :src="imageUrl02" class="id_card_avatar">
-                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                      <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
+                      <div v-else style="width:251px;color:#ccc;">（国徽面照片）</div>
                     </el-upload>
                   </el-form-item>
                   <el-form-item>
@@ -715,8 +731,287 @@ export default {
         { value: '丧偶', label: '丧偶', id: 3}
       ],
       nation_type_options: [
-        { value: '汉族', label: '汉族', id: 1},
-        { value: '傣族', label: '傣族', id: 2}
+        // { value: '汉族', label: '汉族', id: 1}
+        {
+          id: 1,
+          "label": "汉族",
+          "value": "汉族"
+        },
+        {
+          id: 2,
+          "label": "蒙古族",
+          "value": "蒙古族"
+        },
+        {
+          id: 3,
+          "label": "回族",
+          "value": "回族"
+        },
+        {
+          id: 4,
+          "label": "藏族",
+          "value": "藏族"
+        },
+        {
+          id: 5,
+          "label": "维吾尔族",
+          "value": "维吾尔族"
+        },
+        {
+          id: 6,
+          "label": "苗族",
+          "value": "苗族"
+        },
+        {
+          id: 7,
+          "label": "彝族",
+          "value": "彝族"
+        },
+        {
+          id: 8,
+          "label": "壮族",
+          "value": "壮族"
+        },
+        {
+          id: 9,
+          "label": "布依族",
+          "value": "布依族"
+        },
+        {
+          id: 10,
+          "label": "朝鲜族",
+          "value": "朝鲜族"
+        },
+        {
+          id: 11,
+          "label": "满族",
+          "value": "满族"
+        },
+        {
+          id: 12,
+          "label": "侗族",
+          "value": "侗族"
+        },
+        {
+          id: 13,
+          "label": "瑶族",
+          "value": "瑶族"
+        },
+        {
+          id: 14,
+          "label": "白族",
+          "value": "白族"
+        },
+        {
+          id: 15,
+          "label": "土家族",
+          "value": "土家族"
+        },
+        {
+          id: 16,
+          "label": "哈尼族",
+          "value": "哈尼族"
+        },
+        {
+          id: 17,
+          "label": "哈萨克族",
+          "value": "哈萨克族"
+        },
+        {
+          id: 18,
+          "label": "傣族",
+          "value": "傣族"
+        },
+        {
+          id: 19,
+          "label": "黎族",
+          "value": "黎族"
+        },
+        {
+          id: 20,
+          "label": "傈僳族",
+          "value": "傈僳族"
+        },
+        {
+          id: 21,
+          "label": "佤族",
+          "value": "佤族"
+        },
+        {
+          id: 22,
+          "label": "畲族",
+          "value": "畲族"
+        },
+        {
+          id: 23,
+          "label": "高山族",
+          "value": "高山族"
+        },
+        {
+          id: 24,
+          "label": "拉祜族",
+          "value": "拉祜族"
+        },
+        {
+          id: 25,
+          "label": "水族",
+          "value": "水族"
+        },
+        {
+          id: 26,
+          "label": "东乡族",
+          "value": "东乡族"
+        },
+        {
+          id: 27,
+          "label": "纳西族",
+          "value": "纳西族"
+        },
+        {
+          id: 28,
+          "label": "景颇族",
+          "value": "景颇族"
+        },
+        {
+          id: 29,
+          "label": "柯尔克孜族",
+          "value": "柯尔克孜族"
+        },
+        {
+          id: 30,
+          "label": "土族",
+          "value": "土族"
+        },
+        {
+          id: 31,
+          "label": "达斡尔族",
+          "value": "达斡尔族"
+        },
+        {
+          id: 32,
+          "label": "仫佬族",
+          "value": "仫佬族"
+        },
+        {
+          id: 33,
+          "label": "羌族",
+          "value": "羌族"
+        },
+        {
+          id: 34,
+          "label": "布朗族",
+          "value": "布朗族"
+        },
+        {
+          id: 35,
+          "label": "撒拉族",
+          "value": "撒拉族"
+        },
+        {
+          id: 36,
+          "label": "毛难族",
+          "value": "毛难族"
+        },
+        {
+          id: 37,
+          "label": "仡佬族",
+          "value": "仡佬族"
+        },
+        {
+          id: 38,
+          "label": "锡伯族",
+          "value": "锡伯族"
+        },
+        {
+          id: 39,
+          "label": "阿昌族",
+          "value": "阿昌族"
+        },
+        {
+          id: 40,
+          "label": "普米族",
+          "value": "普米族"
+        },
+        {
+          id: 41,
+          "label": "塔吉克族",
+          "value": "塔吉克族"
+        },
+        {
+          id: 42,
+          "label": "怒族",
+          "value": "怒族"
+        },
+        {
+          id: 43,
+          "label": "乌孜别克族",
+          "value": "乌孜别克族"
+        },
+        {
+          id: 44,
+          "label": "俄罗斯族",
+          "value": "俄罗斯族"
+        },
+        {
+          id: 45,
+          "label": "鄂温克族",
+          "value": "鄂温克族"
+        },
+        {
+          id: 46,
+          "label": "崩龙族",
+          "value": "崩龙族"
+        },
+        {
+          id: 47,
+          "label": "保安族",
+          "value": "保安族"
+        },
+        {
+          id: 48,
+          "label": "裕固族",
+          "value": "裕固族"
+        },
+        {
+          id: 49,
+          "label": "京族",
+          "value": "京族"
+        },
+        {
+          id: 50,
+          "label": "塔塔尔族",
+          "value": "塔塔尔族"
+        },
+        {
+          id: 51,
+          "label": "独龙族",
+          "value": "独龙族"
+        },
+        {
+          id: 52,
+          "label": "鄂伦春族",
+          "value": "鄂伦春族"
+        },
+        {
+          id: 53,
+          "label": "赫哲族",
+          "value": "赫哲族"
+        },
+        {
+          id: 54,
+          "label": "门巴族",
+          "value": "门巴族"
+        },
+        {
+          id: 55,
+          "label": "珞巴族",
+          "value": "珞巴族"
+        },
+        {
+          id: 56,
+          "label": "基诺族",
+          "value": "基诺族"
+        }
       ],
       nav_adress: [{
         value: '湖北省',
@@ -835,7 +1130,9 @@ export default {
         neixindubai: [
           { required: true, message: '请输入内容', trigger: 'blur' }
         ]
-      }
+      },
+      // 生活照回调之后提交之前的数据
+      life_imgs_after: []
     }
   },
   created: function() {
@@ -903,6 +1200,7 @@ export default {
         .then((result) => {
           console.log(result);
           this.set_choose_form = result.data;
+          // this.set_choose_form.address = ['北京市']
           this.set_choose_form_pre = result.data;
         })
         .catch((error) => {
@@ -933,7 +1231,10 @@ export default {
           if (result.data.head_portrait) {
             this.imageUrl = 'http://admin.qianlixunta.com'+result.data.head_portrait;
           }
-          this.life_image_url = JSON.parse(result.data.life_imgs);
+          if (result.data.life_imgs) {
+            this.life_image_url = JSON.parse(result.data.life_imgs)
+            this.mine_life_imgs = JSON.parse(result.data.life_imgs)
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -1188,7 +1489,8 @@ export default {
       fileList.forEach(item => {
         life_imgs_arr.push(item.response.path);
       });
-      this.mine_life_imgs = life_imgs_arr;
+      // this.mine_life_imgs = life_imgs_arr;
+      this.life_imgs_after = life_imgs_arr
     },
     // 删除生活照
     handleRemove(file, fileList) {
@@ -1197,10 +1499,19 @@ export default {
       fileList.forEach(item => {
         life_imgs_arr.push(item.response.path);
       });
-      this.mine_life_imgs = life_imgs_arr;
+      // this.mine_life_imgs = life_imgs_arr;
+      this.life_imgs_after = life_imgs_arr
     },
     // 提交头像和生活照
     post_images_sure() {
+      // 获取所有生活照
+      if (this.life_imgs_after.length) {
+        this.mine_life_imgs.push(...this.life_imgs_after)
+      }
+      console.log(this.life_imgs_after)
+      console.log(this.mine_life_imgs)
+      // return false;
+
       if (!this.mine_head_portrait) {
         this.mine_head_portrait = this.come_news.head_portrait;
       }
@@ -1220,6 +1531,10 @@ export default {
         console.log(result);
         if (result.status !== '200') return this.$message.error('提交失败');
         this.$message.success('提交成功');
+
+        // 清空已上传的文件列表
+        this.$refs.upload.clearFiles()
+        this.life_imgs_after = []
       })
       .catch((error) => {
         console.log(error);

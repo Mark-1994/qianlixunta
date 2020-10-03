@@ -120,13 +120,17 @@
                         style="width: 100%; height: 250px"
                         :src="require('@/assets/banner01.png')"
                         fit="fit"></el-image> -->
+                      <router-link :to="'other_user/'+agreement_join_shuffle.id">
                         <el-image
                         style="width: 100%; height: 180px"
                         :src="'http://admin.qianlixunta.com'+agreement_join_shuffle.head_portrait"
                         fit="fit"></el-image>
+                      </router-link>
                     </el-col>
                     <el-col :span="10" class="zuijiapipei01_right_info">
-                      <h5>{{agreement_join_shuffle.nickname}}</h5>
+                      <router-link :to="'other_user/'+agreement_join_shuffle.id">
+                        <h5 style="color:#000;">{{agreement_join_shuffle.nickname}}</h5>
+                      </router-link>
                       <p>{{agreement_join_shuffle.introduce_oneself}}</p>
                       <div class="tag_all">
                         <el-tag size="mini">90后</el-tag>

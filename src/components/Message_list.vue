@@ -13,13 +13,19 @@
                     <p>我的资料：80%</p>
                   </div>
                   <div class="name_phone_info">
-                    <h4>{{come_news.nickname}}<img src="../assets/zuanshi03.png" alt="" /><span>v3</span></h4>
+                    <h4>
+                      <span style="display:inline-block;max-width:95px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;font-size:18px;color:#000;">{{come_news.nickname}}</span>
+                      <img src="../assets/zuanshi03.png" alt="" />
+                      <span>v3</span>
+                    </h4>
                     <div class="three_images_status">
                       <img src="../assets/shouji01.png" alt="">
                       <img src="../assets/faxiaoxi01.png" alt="">
                       <img src="../assets/shimingrenzheng01.png" alt="">
                     </div>
-                    <a href="javascript:;"><el-badge is-dot>完善个人信息</el-badge></a>
+                    <router-link to="basicinformation">
+                      <el-badge is-dot>完善个人信息</el-badge>
+                    </router-link>
                   </div>
                 </div>
               </el-col>
