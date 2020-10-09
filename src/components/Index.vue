@@ -428,8 +428,8 @@
                           <el-col :span="8">
                             <div class="qingganjiaoliu_news_item">
                               <div class="qingganjiaoliu_news_item_img">
-                                <img src="../assets/news_eg01.png" alt="">
-                                <p>男女之间的交流技巧</p>
+                                <img src="../assets/news_eg02.jpg" alt="">
+                                <p>男女之间如何正确相处</p>
                               </div>
                               <ul>
                                 <li v-for="item in article_list_two" :key="item.id">
@@ -441,8 +441,8 @@
                           <el-col :span="8">
                             <div class="qingganjiaoliu_news_item">
                               <div class="qingganjiaoliu_news_item_img">
-                                <img src="../assets/news_eg01.png" alt="">
-                                <p>男女之间的交流技巧</p>
+                                <img src="../assets/news_eg03.jpg" alt="">
+                                <p>结婚后的生活小技巧</p>
                               </div>
                               <ul>
                                 <li v-for="item in article_list_three" :key="item.id">
