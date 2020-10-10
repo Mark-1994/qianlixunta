@@ -284,7 +284,7 @@ export default {
 <style scoped>
   .mine_info_show_change {
     width: 1180px;
-    margin: 69px auto 148px;
+    margin: 24px auto 148px;
   }
   .mine_info {
     background-color: #fff;
@@ -316,6 +316,7 @@ export default {
   }
   .mine_info_middle ul li .flag_name {
     font-size: 24px;
+    font-weight: bold;
   }
   .mine_info_middle ul li.shuikanguowo01,
   .mine_info_middle ul li.shuikanguowo01 .flag_num {

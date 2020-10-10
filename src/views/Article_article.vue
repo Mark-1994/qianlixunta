@@ -223,7 +223,7 @@ export default {
     padding: 36px 49px;
   }
   .article_article_top {
-    margin-top: 47px;
+    margin-top: 24px;
   }
   .article_article_bottom_dianzan {
     margin: 55px auto;

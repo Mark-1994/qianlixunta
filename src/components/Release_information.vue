@@ -85,7 +85,7 @@
                   <p style="text-align: center;">无数据</p>
                 </el-card>
 
-                <el-card class="box-card" style="border-radius: 30px;margin-bottom: 23px;" v-for="(item, index) in circle_list" :key="index">
+                <el-card class="box-card" style="border-radius: 30px;margin-bottom: 23px;" v-for="(item, index) in circle_list" :key="index" :body-style="{padding: '30px'}">
 
                   <div class="item_msg_box">
 
@@ -618,7 +618,7 @@ export default {
 <style scoped>
   .mine_info_show_change {
     width: 1180px;
-    margin: 69px auto 148px;
+    margin: 24px auto 148px;
   }
   .mine_info {
     background-color: #fff;
@@ -656,6 +656,7 @@ export default {
   }
   .mine_info_middle ul li .flag_name {
     font-size: 24px;
+    font-weight: bold;
   }
   .min_info_right_top {
     text-align: center;

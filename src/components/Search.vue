@@ -320,7 +320,7 @@ export default {
 <style scoped>
   .search_function_block {
     width: 65%;
-    margin: 59px auto 26px;
+    margin: 24px auto 26px;
   }
   .search_function_block .el-select {
     width: 120px;

@@ -24,7 +24,7 @@
                   </div>
                   <div class="activity_list_item_bottom">
                     <div class="item_bottom_left">
-                      倒计时 {{countTime(item.end_time)}}
+                      <!-- 倒计时 {{countTime(item.end_time)}} -->
                     </div>
                     <div class="item_bottom_right">
                       <a href="javascript:;" @click="let_go_show(item.id)">立即报名</a>
@@ -43,15 +43,15 @@
                     <img :src="'http://admin.qianlixunta.com'+activity_forecast.img" alt="">
                   </div>
                   <div class="activity_prediction_time_now">
-                    <div class="right_now_click">
+                    <!-- <div class="right_now_click">
                       <a href="javascript:;">立即预约</a>
-                    </div>
+                    </div> -->
                     <div class="item_apply_time">
                       报名时间：{{activity_forecast.start_time}} - {{activity_forecast.end_time}}
                     </div>
                   </div>
                 </div>
-                <div class="activity_recent_time">
+                <div class="activity_recent_time" :style="styleBefore">
                   <div class="activity_recent_time_title">
                     <h4>近期活动</h4>
                   </div>
@@ -160,7 +160,9 @@ export default {
         img: '/upload/admin/let_go/20200730/795a496fd0d47413976d4a6cc69a9f89.png'
       },
       // 近期活动
-      near_term_activities: []
+      near_term_activities: [],
+      // 右侧近期活动粘性布局
+      styleBefore: {}
     }
   },
   created() {
@@ -187,6 +189,21 @@ export default {
     .catch((error) => {
       console.log(error);
     });
+  },
+  mounted () {
+    window.addEventListener('scroll', () => {
+      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || 	document.body.scrollTop;
+      // console.log(scrollTop)
+      if (scrollTop > 570) {
+        this.styleBefore = {
+          position: 'fixed',
+          top: 0,
+          width: '290.16px'
+        }
+      } else {
+        this.styleBefore = {}
+      }
+    })
   },
   methods: {
     countTime: function(end_time) {
@@ -291,7 +308,7 @@ export default {
 
 <style scoped>
   .distance_top {
-    margin: 47px auto;
+    margin: 24px auto;
   }
   .activity_list_all {
     background-color: #fff;

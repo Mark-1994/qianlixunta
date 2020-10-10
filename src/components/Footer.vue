@@ -3,8 +3,14 @@
     <el-footer height="auto">
       <el-menu mode="horizontal" class="el-menu-demo01">
         <el-menu-item index="1">联系客服</el-menu-item>
-        <el-menu-item index="2">关于我们</el-menu-item>
-        <el-menu-item index="3">防骗必看</el-menu-item>
+        <el-menu-item index="2">
+          <!-- <router-link to="/article_article/12">关于我们</router-link> -->
+          <a href="/#/article_article/12">关于我们</a>
+        </el-menu-item>
+        <el-menu-item index="3">
+          <!-- <router-link to="/article_article/11">防骗必看</router-link> -->
+          <a href="/#/article_article/11">防骗必看</a>
+        </el-menu-item>
         <el-menu-item index="4">帮助中心</el-menu-item>
         <!-- <el-menu-item index="5">安全中心</el-menu-item>
         <el-menu-item index="6">意见反馈</el-menu-item> -->

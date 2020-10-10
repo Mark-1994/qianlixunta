@@ -109,7 +109,7 @@ export default {
           }
           this.$axios.post('/wpapi/register/login', this.login_form)
           .then((result) => {
-            console.log(result);
+            // console.log(result);
             if (result.status !== '200') return this.$message.error(result.msg);
             this.$message.success('登陆成功');
             window.localStorage.setItem('token', result.data.token);

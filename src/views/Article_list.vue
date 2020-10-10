@@ -228,7 +228,7 @@ export default {
     border-radius: 4px;
   }
   .article_article_top {
-    margin-top: 47px;
+    margin-top: 24px;
   }
   .previous_article_box,
   .previous_article_title {

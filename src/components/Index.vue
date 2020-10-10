@@ -632,6 +632,11 @@ export default {
 
     this.cityList = allCityList;
 
+    // 移动端跳转
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|opera mini|opera mobile|appleWebkit.*mobile|mobile/i.test(navigator.userAgent)) {
+      window.location.href = "http://m.qianlixunta.com/"
+    }
+
     this.$axios.get('/wpapi/article/category', {})
     .then((response) => {
       this.affective_interaction = response.data;
@@ -883,7 +888,7 @@ export default {
   .tuijianhuiyuan_title h3 {
     font-size: 33px;
     font-weight: 700;
-    text-shadow: 0px 3px 6px 0px rgba(42, 42, 42, .3);
+    text-shadow: 0px 3px 6px rgba(42, 42, 42, .3);
     margin: 0;
   }
   .tuijianhuiyuan_title a {
@@ -981,7 +986,7 @@ export default {
   }
   .yuebazouqi h3 {
     font-size: 33px;
-    color: rgba(0, 30, 82, 1);
+    /* color: rgba(0, 30, 82, 1); */
     font-weight: 700;
     text-shadow: 0px 3px 6px rgba(42,42,42,0.3);
     margin: 47px 0 22px;
@@ -1252,7 +1257,7 @@ export default {
   .default_recommend_member_list {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 20px;
+    margin-top: 25px;
   }
   .default_recommend_member_list li {
     background-color: #fff;
