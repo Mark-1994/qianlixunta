@@ -352,6 +352,9 @@ export default {
   .item_left_img_big_img {
     flex: 1.8;
   }
+  .item_left_img_big_img a img {
+    height: 135px;
+  }
   .item_left_img_small_img {
     flex: 1;
   }

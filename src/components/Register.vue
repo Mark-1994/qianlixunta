@@ -122,28 +122,13 @@
             <el-form-item label="自我介绍" prop="introduce_oneself">
               <el-input type="textarea" :rows="8" v-model="free_register_form.introduce_oneself" style="width: 350px;"></el-input>
             </el-form-item>
-            <el-form-item label="标签">
-              <el-tag
-                v-model="free_register_form.tag_id"
-                :key="tag"
-                v-for="tag in dynamicTags"
-                closable
-                :disable-transitions="false"
-                @close="handleClose(tag)">
-                {{tag}}
-              </el-tag>
-              <el-input
-                class="input-new-tag"
-                v-if="inputVisible"
-                v-model="inputValue"
-                ref="saveTagInput"
-                size="small"
-                @keyup.enter.native="handleInputConfirm"
-                @blur="handleInputConfirm"
-              >
-              </el-input>
-              <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+
+            <el-form-item label="个性标签" prop="tag_id">
+              <el-checkbox-group v-model="free_register_form.tag_id" size="small" :min="1" :max="5">
+                <el-checkbox v-for="item in free_register_form.tagIdCheckBox" :key="item.id" :label="item.id" name="type" border style="margin: 5px;min-width: 20%;">{{item.tag_name}}</el-checkbox>
+              </el-checkbox-group>
             </el-form-item>
+
             <el-form-item class="free_register_form_post">
               <el-button type="primary" @click="free_register('free_register_form')">免费注册</el-button>
             </el-form-item>
@@ -248,6 +233,9 @@ export default {
         ],
         introduce_oneself: [
           { required: true, message: '请填写自我介绍', trigger: 'blur' }
+        ],
+        tag_id: [
+          { required: true, message: '请选择个性标签', trigger: 'blur' }
         ]
       },
       // 禁用大于今天的日期
@@ -275,6 +263,7 @@ export default {
         nickname: '',
         introduce_oneself: '',
         tag_id: [],
+        tagIdCheckBox: [],
         checked: false
       },
       cityList: [{
@@ -293,9 +282,6 @@ export default {
           }
         ]
       }],
-      dynamicTags: ['90后', '靠谱', '开朗'],
-      inputVisible: false,
-      inputValue: '',
       // 控制短信发送按钮的显示隐藏
       message_btn: true,
       // 控制短信发送按钮倒计时的显示隐藏
@@ -308,24 +294,22 @@ export default {
     this.$emit('header', true);
 
     this.cityList = allCityList;
+
+    this.getTag()
   },
   methods: {
     free_register(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(this.free_register_form.checked);
-          if (!this.free_register_form.checked) return this.$message.error('请勾选注册条款');
-          console.log(this.free_register_form);
-          console.log(this.$refs.free_register_form);
+          if (!this.free_register_form.checked) return this.$message.error('请勾选注册条款')
           // this.free_register_form.birthday = this.birthday_year + '年' + this.birthday_month + '月' + this.birthday_day + '日';
-          this.free_register_form.birthday = new Date(this.free_register_form.birthday).getFullYear() + '.' + new Date(this.free_register_form.birthday).getMonth() + '.' + new Date(this.free_register_form.birthday).getDate();
+          this.free_register_form.birthday = new Date(this.free_register_form.birthday).getFullYear() + '.' + (new Date(this.free_register_form.birthday).getMonth() + 1) + '.' + new Date(this.free_register_form.birthday).getDate();
           let workplace = '';
           for (let i = 0; i < this.free_register_form.workplace.length; i++) {
             workplace += this.free_register_form.workplace[i];
           }
           this.free_register_form.workplace = workplace;
           this.free_register_form.monthly_salary = this.free_register_form.monthly_salary_start + '-' + this.free_register_form.monthly_salary_end;
-          this.free_register_form.tag_id = this.dynamicTags;
           this.$axios.post('/wpapi/register/form', this.free_register_form)
           .then((response) => {
             console.log(response);
@@ -352,23 +336,6 @@ export default {
     },
     handleCommand(clickThis) {
       this.$message(clickThis);
-    },
-    handleClose(tag) {
-      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
-    },
-    showInput() {
-      this.inputVisible = true;
-      this.$nextTick(_ => {
-        this.$refs.saveTagInput.$refs.input.focus();
-      });
-    },
-    handleInputConfirm() {
-      let inputValue = this.inputValue;
-      if (inputValue) {
-        this.dynamicTags.push(inputValue);
-      }
-      this.inputVisible = false;
-      this.inputValue = '';
     },
     // 手机验证发送验证码
     sendcode() {
@@ -428,6 +395,12 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+    },
+    // 获取注册要提交的标签
+    async getTag () {
+      const { data: res } = await this.$axios.get('/wpapi/register/get_tag')
+      if (!res.length) return this.$message.error('tag列表为空')
+      this.free_register_form.tagIdCheckBox = res
     }
   }
 }

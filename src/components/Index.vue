@@ -724,6 +724,7 @@ export default {
         });
 
         wx.ready(function () {
+          // 分享到朋友圈
           wx.updateTimelineShareData({
               title: '千里寻他官网',
               desc: '千里寻他',
@@ -731,6 +732,7 @@ export default {
               imgUrl: 'http://www.qianlixunta.com/images/wx_share01.jpg'
             });
     
+            // 分享给朋友
             wx.updateAppMessageShareData({
               title: '千里寻他官网',
               desc: '千里寻他',

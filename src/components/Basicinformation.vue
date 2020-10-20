@@ -1157,7 +1157,7 @@ export default {
     });
 
     // 完善资料数据初始化
-    this.$axios.post('/wpapi/me/improve_users_init', {
+    this.$axios.post('/wpapi/me/gzh_improve_users_init', {
       users_id: localStorage.getItem('users_id'),
       token: localStorage.getItem('token')
     })

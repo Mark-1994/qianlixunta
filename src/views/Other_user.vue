@@ -124,7 +124,7 @@
               <!-- <el-button type="primary">打招呼</el-button> -->
               <el-button type="primary" @click="send_message">发消息</el-button>
               <!-- <el-button type="info" @click="send_message">发消息</el-button> -->
-              <el-button type="danger">喜欢</el-button>
+              <el-button type="danger" @click="send_message">喜欢</el-button>
             </div>
           </div>
           <!-- 自我介绍 -->
@@ -143,17 +143,13 @@
                   <el-tag type="success">电影</el-tag>
                   <el-tag type="info">旅游</el-tag>
                   <el-tag type="warning">游泳</el-tag>
-                  <el-tag type="danger">游泳</el-tag>
+                  <el-tag type="danger">滑雪</el-tag>
                 </div>
               </div>
               <div class="hobbies_personality_label_right">
-                她的个性标签：
+                个性标签：
                 <div>
-                  <el-tag>外向</el-tag>
-                  <el-tag type="success">阳光</el-tag>
-                  <el-tag type="info">幽默</el-tag>
-                  <el-tag type="warning">幽默</el-tag>
-                  <el-tag type="danger">幽默</el-tag>
+                  <el-tag v-for="(item, index) in select_users_info.tag_arr" :key="index">{{item}}</el-tag>
                 </div>
               </div>
             </div>
@@ -382,6 +378,7 @@ export default {
       console.log(result);
       this.select_users_info = result.data;
       this.select_users_info.life_imgs = JSON.parse(this.select_users_info.life_imgs);
+      this.select_users_info.tag_arr = result.tag_arr
     })
     .catch((error) => {
       console.log(error);
