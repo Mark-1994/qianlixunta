@@ -306,8 +306,9 @@ export default {
           this.free_register_form.birthday = new Date(this.free_register_form.birthday).getFullYear() + '.' + (new Date(this.free_register_form.birthday).getMonth() + 1) + '.' + new Date(this.free_register_form.birthday).getDate();
           let workplace = '';
           for (let i = 0; i < this.free_register_form.workplace.length; i++) {
-            workplace += this.free_register_form.workplace[i];
+            workplace += this.free_register_form.workplace[i] + '/';
           }
+          workplace = workplace.slice(0, workplace.length - 1)
           this.free_register_form.workplace = workplace;
           this.free_register_form.monthly_salary = this.free_register_form.monthly_salary_start + '-' + this.free_register_form.monthly_salary_end;
           this.$axios.post('/wpapi/register/form', this.free_register_form)

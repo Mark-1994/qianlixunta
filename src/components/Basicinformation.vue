@@ -162,9 +162,16 @@
                         <el-input v-model="mine_data_form.imp_monthly_salary" style="width: 100px;"></el-input>&nbsp;元
                       </el-form-item>
                       <p class="danger_info_edit">以下信息，希望您依照实际情况谨慎修改。</p>
-                      <el-form-item label="所在地区">
+                      <!-- <el-form-item label="所在地区">
                         <el-input v-model="mine_data_form.address" style="width: 220px;"></el-input>
+                      </el-form-item> -->
+                      
+                      <el-form-item label="所在地区">
+                        <el-cascader v-model="mine_data_form.address" :options="nav_adress"
+                        :props="{ checkStrictly: true }"
+                        clearable></el-cascader>
                       </el-form-item>
+
                       <el-form-item label="有无子女">
                         <el-select v-model="mine_data_form.is_children" placeholder="请选择">
                           <el-option label="有" value="1"></el-option>
@@ -1341,6 +1348,14 @@ export default {
       if (this.mine_data_form.birth_day) {
         this.mine_data_form.birth_day = new Date(this.mine_data_form.birth_day).getFullYear() + '.' + (new Date(this.mine_data_form.birth_day).getMonth() + 1) + '.' + new Date(this.mine_data_form.birth_day).getDate();
       }
+      if (this.mine_data_form.address) {
+        let addressStr = ''
+        this.mine_data_form.address.forEach(item => {
+          addressStr += `${item}/`
+        })
+        addressStr = addressStr.slice(0, addressStr.length - 1)
+        this.mine_data_form.address = addressStr
+      }
       console.log(this.mine_data_form);
       this.mine_data_form.users_id = localStorage.getItem('users_id');
       this.mine_data_form.token = localStorage.getItem('token');
@@ -1359,8 +1374,9 @@ export default {
       if (this.set_choose_form.address) {
         let address = '';
         for (let i = 0; i < this.set_choose_form.address.length; i++) {
-          address+=this.set_choose_form.address[i];
+          address+=this.set_choose_form.address[i]+'/';
         }
+        address = address.slice(0, address.length - 1)
         this.set_choose_form.address = address;
       }
       console.log(this.set_choose_form);
