@@ -42,8 +42,8 @@
                 </el-form-item>
                 <el-form-item label="">
                   <el-select v-model="search_form.education" placeholder="学历" style="width: 120px;">
-                    <el-option label="博士研究生" value="博士研究生"></el-option>
-                    <el-option label="硕士研究生" value="硕士研究生"></el-option>
+                    <el-option label="博士" value="博士"></el-option>
+                    <el-option label="硕士" value="硕士"></el-option>
                     <el-option label="本科" value="本科"></el-option>
                     <el-option label="大专" value="大专"></el-option>
                     <el-option label="高职" value="高职"></el-option>

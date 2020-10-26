@@ -688,8 +688,8 @@ export default {
       ],
       education: '',
       education_options: [
-        { value: '博士研究生', label: '博士研究生', id: 1},
-        { value: '硕士研究生', label: '硕士研究生', id: 2},
+        { value: '博士', label: '博士', id: 1},
+        { value: '硕士', label: '硕士', id: 2},
         { value: '本科', label: '本科', id: 3},
         { value: '大专', label: '大专', id: 4},
         { value: '高职', label: '高职', id: 5},
@@ -725,8 +725,8 @@ export default {
         { value: '190', label: '190', id: 2}
       ],
       seteducation_options: [
-        { value: '博士研究生', label: '博士研究生', id: 1},
-        { value: '硕士研究生', label: '硕士研究生', id: 2},
+        { value: '博士', label: '博士', id: 1},
+        { value: '硕士', label: '硕士', id: 2},
         { value: '本科', label: '本科', id: 3},
         { value: '大专', label: '大专', id: 4},
         { value: '高职', label: '高职', id: 5},
