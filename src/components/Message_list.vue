@@ -136,22 +136,22 @@
                 <div class="right_recently_contact_person">
                   <h4>最近联系人</h4>
                   <ul class="new_recently_contact_person">
-                    <li>
+                    <li v-for="(item, index) in recentContactsList" :key="index">
+                      <div class="item_contact_person">
+                        <img :src="`http://admin.qianlixunta.com${item.head_portrait}`" alt="" style="border-radius: 50%;margin: 8px 0;box-shadow: 1px 1px 10px 1px #999;" />
+                        <span>在线</span>
+                      </div>
+                      <p class="contact_person_name">{{item.nickname}}</p>
+                      <span class="contact_person_time">{{item.time | dateFormat}}</span>
+                    </li>
+                    <!-- <li>
                       <div class="item_contact_person">
                         <img src="../assets/username01.png" alt="" />
                         <span>在线</span>
                       </div>
                       <p class="contact_person_name">林俊杰</p>
                       <span class="contact_person_time">2分钟前在线</span>
-                    </li>
-                    <li>
-                      <div class="item_contact_person">
-                        <img src="../assets/username01.png" alt="" />
-                        <span>在线</span>
-                      </div>
-                      <p class="contact_person_name">林俊杰</p>
-                      <span class="contact_person_time">2分钟前在线</span>
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
               </el-col>
@@ -177,7 +177,9 @@ export default {
       // general_message_list: {},
       general_message_list: [],
       // 当前消息类型
-      message_type: 0
+      message_type: 0,
+      // 最近联系人
+      recentContactsList: []
     }
   },
   created() {
@@ -213,6 +215,9 @@ export default {
     .catch((error) => {
       console.log(error);
     });
+
+    // 最近联系人
+    this.showRecentContactsList()
   },
   methods: {
     // tab栏 未读消息 已读消息 系统消息 切换时触发
@@ -276,6 +281,14 @@ export default {
       } else if (this.message_type == 2) {
         console.log('系统消息');
       }
+    },
+    // 最近联系人
+    async showRecentContactsList () {
+      const res = await this.$axios.post('/wpapi/member/recent_contacts_list', {
+        users_id: localStorage.getItem('users_id')
+      })
+      if (res.status !== '200') return this.$message.error(res.msg)
+      this.recentContactsList = res.data
     }
   }
 }
