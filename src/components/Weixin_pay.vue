@@ -73,7 +73,8 @@ export default {
       code_img: '',
       nickname: '',
       // 支付成功的弹窗
-      dialogVisible: false
+      dialogVisible: false,
+      timer: ''
     }
   },
   created: function() {
@@ -93,7 +94,7 @@ export default {
         this.code_img = result.data.code_img;
 
         // 检测当前订单是否支付成功
-        let timer = setInterval(() => {
+        this.timer = setInterval(() => {
           this.$axios.post('/wpapi/member/vip_status_check', {
             order_osn: this.order_son
           })
@@ -104,7 +105,7 @@ export default {
               setTimeout(() => {
                 this.$router.push('/index');
               }, 3000);
-              clearInterval(timer);
+              clearInterval(this.timer);
             }
           })
           .catch((error) => {
@@ -126,7 +127,7 @@ export default {
         this.code_img = result.data.code_img;
 
         // 检测当前订单是否支付成功
-        let timer = setInterval(() => {
+        this.timer = setInterval(() => {
           this.$axios.post('/wpapi/member/vip_status_check', {
             order_osn: this.order_son
           })
@@ -137,7 +138,7 @@ export default {
               setTimeout(() => {
                 this.$router.push('/index');
               }, 3000);
-              clearInterval(timer);
+              clearInterval(this.timer);
             }
           })
           .catch((error) => {
@@ -160,7 +161,7 @@ export default {
         this.code_img = result.data.code_img;
 
         // 检测当前订单是否支付成功
-        let timer = setInterval(() => {
+        this.timer = setInterval(() => {
           this.$axios.post('/wpapi/member/super_status_check', {
             order_osn: this.order_son
           })
@@ -171,7 +172,7 @@ export default {
               setTimeout(() => {
                 this.$router.push('/hongniang_list');
               }, 3000);
-              clearInterval(timer);
+              clearInterval(this.timer);
             }
           })
           .catch((error) => {
@@ -205,7 +206,7 @@ export default {
         this.code_img = result.data.code_img;
 
         // 检测当前订单是否支付成功
-        let timer = setInterval(() => {
+        this.timer = setInterval(() => {
           this.$axios.post('/wpapi/member/let_status_check', {
             order_osn: this.order_son
           })
@@ -216,7 +217,7 @@ export default {
               setTimeout(() => {
                 this.$router.push('/index');
               }, 3000);
-              clearInterval(timer);
+              clearInterval(this.timer);
             }
           })
           .catch((error) => {
@@ -229,6 +230,9 @@ export default {
         console.log(error);
       });
     };
+  },
+  destroyed() {
+    clearInterval(this.timer)
   },
   methods: {
     safe_withdrawing() {

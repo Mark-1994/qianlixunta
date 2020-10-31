@@ -105,55 +105,145 @@
               <el-col :span="17">
                 <template>
                   <el-tabs v-model="activeName" style="background-color: #fff;border-radius: 30px;padding: 20px;" @tab-click="handleClick">
-                    <el-tab-pane label="未读消息" name="first">
+                    <el-tab-pane label="谁看过我" name="first">
                       <ul class="unread_message_list">
-                        <li v-for="item in general_message_list.data" :key="item.id">
+                        <li v-for="(item, index) in seen" :key="index">
                           <div class="left_img_name_des">
                             <div class="user_img">
-                              <!-- <img src="../assets/username01.png" alt=""> -->
                               <img :src="'http://admin.qianlixunta.com'+item.head_portrait" alt="">
                             </div>
                             <div class="name_age_adress_time">
-                              <h4>{{item.fromname}}</h4>
+                              <h4>{{item.nickname}}</h4>
                               <div>
                                 <span>年龄</span>
                                 <span class="message_adress_item">地址</span>
                               </div>
-                              <div class="day_time_message_list">{{item.time}}</div>
+                              <div class="day_time_message_list">&nbsp;</div>
                             </div>
-                            <div class="message_info_item">{{item.content}}</div>
+                            <div class="message_info_item">&nbsp;</div>
                           </div>
                           <div class="right_lijihuifu">
-                            <a :href="'/#/other_user/'+item.fromid">立即回复</a>
+                            <a href="javascript:;">关注</a>
                           </div>
                         </li>
                       </ul>
                     </el-tab-pane>
-                    <el-tab-pane label="已读消息" name="second">
-                      <ul>
-                        <li v-for="item in general_message_list.data" :key="item.id">已读消息{{item.title}}</li>
+                    <el-tab-pane label="新增关注" name="second">
+                      <ul class="unread_message_list">
+                        <li v-for="(item, index) in newlyAdded" :key="index">
+                          <div class="left_img_name_des">
+                            <div class="user_img">
+                              <img :src="'http://admin.qianlixunta.com'+item.head_portrait" alt="">
+                            </div>
+                            <div class="name_age_adress_time">
+                              <h4>{{item.nickname}}</h4>
+                              <div>
+                                <span>年龄</span>
+                                <span class="message_adress_item">地址</span>
+                              </div>
+                              <div class="day_time_message_list">&nbsp;</div>
+                            </div>
+                            <div class="message_info_item">&nbsp;</div>
+                          </div>
+                          <div class="right_lijihuifu">
+                            <a href="javascript:;">关注</a>
+                          </div>
+                        </li>
                       </ul>
                     </el-tab-pane>
-                    <el-tab-pane label="系统消息" name="third">
-                      <ul class="system_list">
-                        <li v-for="item in general_message_list" :key="item.id" style="border-bottom: 2px dashed rgba(103,103,103,0.15);padding: 20px;">
-                          <p style="font-weight: bold;">{{item.title}}</p>
-                          <p>{{item.content}}</p>
-                          <p>{{item.order_osn}}</p>
-                          <p>{{item.pay_time}}</p>
-                          <p>{{item.vip_price}}</p>
+                    <el-tab-pane label="关注我的" name="third">
+                      <ul class="unread_message_list">
+                        <li v-for="(item, index) in follow" :key="index">
+                          <div class="left_img_name_des">
+                            <div class="user_img">
+                              <img :src="'http://admin.qianlixunta.com'+item.head_portrait" alt="">
+                            </div>
+                            <div class="name_age_adress_time">
+                              <h4>{{item.nickname}}</h4>
+                              <div>
+                                <span>年龄</span>
+                                <span class="message_adress_item">地址</span>
+                              </div>
+                              <div class="day_time_message_list">&nbsp;</div>
+                            </div>
+                            <div class="message_info_item">&nbsp;</div>
+                          </div>
+                          <div class="right_lijihuifu">
+                            <a href="javascript:;">关注</a>
+                          </div>
+                        </li>
+                      </ul>
+                    </el-tab-pane>
+                    <el-tab-pane label="我看过的" name="fourthly">
+                      <ul class="unread_message_list">
+                        <li v-for="(item, index) in iSeen" :key="index">
+                          <div class="left_img_name_des">
+                            <div class="user_img">
+                              <img :src="'http://admin.qianlixunta.com'+item.head_portrait" alt="">
+                            </div>
+                            <div class="name_age_adress_time">
+                              <h4>{{item.nickname}}</h4>
+                              <div>
+                                <span>年龄</span>
+                                <span class="message_adress_item">地址</span>
+                              </div>
+                              <div class="day_time_message_list">&nbsp;</div>
+                            </div>
+                            <div class="message_info_item">&nbsp;</div>
+                          </div>
+                          <div class="right_lijihuifu">
+                            <a href="javascript:;">关注</a>
+                          </div>
+                        </li>
+                      </ul>
+                    </el-tab-pane>
+                    <el-tab-pane label="好友" name="fifth">
+                      <ul class="unread_message_list">
+                        <li v-for="(item, index) in myFriend" :key="index">
+                          <div class="left_img_name_des">
+                            <div class="user_img">
+                              <img :src="'http://admin.qianlixunta.com'+item.head_portrait" alt="">
+                            </div>
+                            <div class="name_age_adress_time">
+                              <h4>{{item.nickname}}</h4>
+                              <div>
+                                <span>年龄</span>
+                                <span class="message_adress_item">地址</span>
+                              </div>
+                              <div class="day_time_message_list">&nbsp;</div>
+                            </div>
+                            <div class="message_info_item">&nbsp;</div>
+                          </div>
+                          <div class="right_lijihuifu">
+                            <a href="javascript:;">关注</a>
+                          </div>
+                        </li>
+                      </ul>
+                    </el-tab-pane>
+                    <el-tab-pane label="赞过我" name="sixth">
+                      <ul class="unread_message_list">
+                        <li v-for="(item, index) in star" :key="index">
+                          <div class="left_img_name_des">
+                            <div class="user_img">
+                              <img :src="'http://admin.qianlixunta.com'+item.head_portrait" alt="">
+                            </div>
+                            <div class="name_age_adress_time">
+                              <h4>{{item.nickname}}</h4>
+                              <div>
+                                <span>年龄</span>
+                                <span class="message_adress_item">地址</span>
+                              </div>
+                              <div class="day_time_message_list">&nbsp;</div>
+                            </div>
+                            <div class="message_info_item">&nbsp;</div>
+                          </div>
+                          <div class="right_lijihuifu">
+                            <a href="javascript:;">关注</a>
+                          </div>
                         </li>
                       </ul>
                     </el-tab-pane>
                   </el-tabs>
-                  <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :page-sizes="[10, 20, 30, 40]"
-                    :page-size="10"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="general_message_list.total">
-                  </el-pagination>
                 </template>
               </el-col>
               <el-col :span="7">
@@ -168,14 +258,6 @@
                       <p class="contact_person_name">{{item.nickname}}</p>
                       <span class="contact_person_time">{{item.time | dateFormat}}</span>
                     </li>
-                    <!-- <li>
-                      <div class="item_contact_person">
-                        <img src="../assets/username01.png" alt="" />
-                        <span>在线</span>
-                      </div>
-                      <p class="contact_person_name">林俊杰</p>
-                      <span class="contact_person_time">2分钟前在线</span>
-                    </li> -->
                   </ul>
                 </div>
               </el-col>
@@ -197,13 +279,20 @@ export default {
       come_news: {
         head_portrait: '/upload/admin/article/thumbnail/20200807/nv.png'
       },
-      // 消息列表
-      // general_message_list: {},
-      general_message_list: [],
-      // 当前消息类型
-      message_type: 0,
       // 最近联系人
-      recentContactsList: []
+      recentContactsList: [],
+      // 谁看过我
+      seen: [],
+      // 新增关注
+      newlyAdded: [],
+      // 关注我的
+      follow: [],
+      // 我看过的
+      iSeen: [],
+      // 好友
+      myFriend: [],
+      // 赞过我
+      star: []
     }
   },
   created() {
@@ -225,85 +314,35 @@ export default {
     })
     .catch((error) => {
       console.log(error);
-    });
-
-    // 未读消息
-    this.$axios.post('/wpapi/member/is_read_message', {
-      users_id: localStorage.getItem('users_id'),
-      page: 1
     })
-    .then((result) => {
-      console.log(result);
-      this.general_message_list = result.data;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
 
     // 最近联系人
     this.showRecentContactsList()
+
+    // 谁看过我
+    this.getSeen()
   },
   methods: {
-    // tab栏 未读消息 已读消息 系统消息 切换时触发
+    // tab栏 切换时触发
     handleClick(tab, event) {
-      // console.log(tab, event);
       if (tab.name == 'first') {
-        // 未读消息
-        this.message_type = 0;
-        this.$axios.post('/wpapi/member/is_read_message', {users_id:localStorage.getItem('users_id'),page:1})
-        .then((result) => {
-          console.log(result);
-          this.general_message_list = result.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        // 谁看过我
+        this.getSeen()
       } else if (tab.name == 'second') {
-        // 已读消息
-        this.message_type = 1;
-        this.$axios.post('/wpapi/member/had_read_message', {users_id:localStorage.getItem('users_id'),page:1})
-        .then((result) => {
-          console.log(result);
-          this.general_message_list = result.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        // 新增关注
+        this.getNewlyAdded()
       } else if (tab.name == 'third') {
-        // 系统消息
-        this.message_type = 2;
-        this.$axios.post('/wpapi/member/system_message', {users_id:localStorage.getItem('users_id'),page:1})
-        .then((result) => {
-          console.log(result);
-          this.general_message_list = result.data.message_info;
-          this.general_message_list.total = result.data.page_count;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      }
-    },
-    // 分页事件
-    handleSizeChange(val) {
-      console.log(`每页${val}条`);
-      // 判断当前是哪一种消息
-      if (this.message_type == 0) {
-        console.log('未读消息');
-      } else if (this.message_type == 1) {
-        console.log('已读消息');
-      } else if (this.message_type == 2) {
-        console.log('系统消息');
-      }
-    },
-    handleCurrentChange(val) {
-      console.log(`下一页${val}`);
-      // 判断当前是哪一种消息
-      if (this.message_type == 0) {
-        console.log('未读消息');
-      } else if (this.message_type == 1) {
-        console.log('已读消息');
-      } else if (this.message_type == 2) {
-        console.log('系统消息');
+        // 关注我的
+        this.getFollow()
+      } else if (tab.name == 'fourthly') {
+        // 我看过的
+        this.getISeen()
+      } else if (tab.name == 'fifth') {
+        // 好友
+        this.getMyFriend()
+      } else if (tab.name == 'sixth') {
+        // 赞过我
+        this.getStar()
       }
     },
     // 最近联系人
@@ -313,6 +352,54 @@ export default {
       })
       if (res.status !== '200') return this.$message.error(res.msg)
       this.recentContactsList = res.data
+    },
+    // 谁看过我
+    async getSeen () {
+      const res = await this.$axios.post('/wpapi/member/who_watch_list', {
+        users_id: localStorage.getItem('users_id')
+      })
+      if (res.status !== '200') return this.$message.error(res.msg)
+      this.seen = res.data
+    },
+    // 新增关注
+    async getNewlyAdded () {
+      const res = await this.$axios.post('/wpapi/member/add_follow_list', {
+        users_id: localStorage.getItem('users_id')
+      })
+      if (res.status !== '200') return this.$message.error(res.msg)
+      this.newlyAdded = res.data
+    },
+    // 关注我的
+    async getFollow () {
+      const res = await this.$axios.post('/wpapi/member/me_follow_list', {
+        users_id: localStorage.getItem('users_id')
+      })
+      if (res.status !== '200') return this.$message.error(res.msg)
+      this.follow = res.data
+    },
+    // 我看过的
+    async getISeen () {
+      const res = await this.$axios.post('/wpapi/member/me_watch_list', {
+        users_id: localStorage.getItem('users_id')
+      })
+      if (res.status !== '200') return this.$message.error(res.msg)
+      this.iSeen = res.data
+    },
+    // 好友
+    async getMyFriend () {
+      const res = await this.$axios.post('/wpapi/member/friend_list', {
+        users_id: localStorage.getItem('users_id')
+      })
+      if (res.status !== '200') return this.$message.error(res.msg)
+      this.myFriend = res.data
+    },
+    // 赞过我
+    async getStar () {
+      const res = await this.$axios.post('/wpapi/member/zan_list', {
+        users_id: localStorage.getItem('users_id')
+      })
+      if (res.status !== '200') return this.$message.error(res.msg)
+      this.star = res.data
     }
   }
 }
