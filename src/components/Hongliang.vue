@@ -28,7 +28,7 @@
     </div>
     <div class="x-wrap">
       <ul class="ul_list_goods">
-        <li v-for="item in baoming_taocan_list.data" :key="item.id">
+        <li v-for="item in baoming_taocan_list.data" :key="item.id" :style="item.status ? '' : 'filter: grayscale(1);'">
           <div class="list_item_left">
             <h3>{{item.price}}</h3>
             <div class="right_right">
@@ -38,7 +38,7 @@
           </div>
           <p class="list_item_center">{{item.describe}}</p>
           <div class="list_item_right">
-            <a href="javascript:;" @click="is_vip(item.id,type)">立即报名</a>
+            <a href="javascript:;" @click="is_vip(item.id,type, item.status)">立即报名</a>
           </div>
         </li>
         <!-- <li>
@@ -131,8 +131,9 @@ export default {
     });
   },
   methods: {
-    is_vip(id,type) {
+    is_vip(id,type, product_status) {
       if (!(localStorage.getItem('users_id') && localStorage.getItem('token'))) return this.$router.push('/login');
+      if (!product_status) return this.$message.info('下架了')
       this.$axios.post('/wpapi/member/is_vip', {users_id:localStorage.getItem('users_id')})
       .then((result) => {
         console.log(result);

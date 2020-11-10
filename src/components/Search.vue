@@ -108,7 +108,7 @@
                     </div>
                     <div class="item_left_img_small_img">
                       <router-link :to="'/other_user/'+item.id">
-                        <img v-for="(item01, index) in item.life_imgs ? JSON.parse(item.life_imgs) : []" :key="index" :src="'http://admin.qianlixunta.com'+item01" alt="" />
+                        <img v-for="(item01, index) in item.life_imgs ? JSON.parse(item.life_imgs).slice(0, 2) : []" :key="index" :src="'http://admin.qianlixunta.com'+item01" alt="" />
                       </router-link>
                     </div>
 
@@ -120,7 +120,7 @@
                       </router-link>
                     </h4>
                     <div class="person_info">
-                      <span>18岁</span>
+                      <span>{{new Date().getFullYear() - item.users_year}}岁</span>
                       <span>{{item.height}}cm</span>
                       <span>{{item.education}}</span>
                       <span>月薪{{item.monthly_salary}}</span>

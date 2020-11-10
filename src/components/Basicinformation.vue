@@ -190,8 +190,8 @@
                         <el-input v-model="mine_data_form.address" style="width: 220px;"></el-input>
                       </el-form-item> -->
                       
-                      <el-form-item label="所在地区">
-                        <el-cascader v-model="mine_data_form.address" :options="nav_adress"
+                      <el-form-item label="工作地">
+                        <el-cascader v-model="mine_data_form.workplace" :options="nav_adress"
                         :props="{ checkStrictly: true }"
                         clearable></el-cascader>
                       </el-form-item>
@@ -211,6 +211,14 @@
                           <el-option label="无" value="0"></el-option>
                         </el-select>
                       </el-form-item>
+
+                      <el-form-item label="购房情况">
+                        <el-select v-model="mine_data_form.house_type" placeholder="请选择">
+                          <el-option label="有" value="1"></el-option>
+                          <el-option label="无" value="0"></el-option>
+                        </el-select>
+                      </el-form-item>
+
                       <el-form-item>
                         <el-button type="primary" @click="save_info">保存</el-button>
                       </el-form-item>
@@ -1195,9 +1203,11 @@ export default {
     .then((result) => {
       console.log(result);
       this.mine_data_form = result.data;
-      this.mine_data_form.improve_sex = this.mine_data_form.improve_sex ? '男' : '女';
-      this.mine_data_form.is_children = this.mine_data_form.is_children ? '有' : '无';
-      this.mine_data_form.car_type = this.mine_data_form.car_type ? '有' : '无';
+      this.mine_data_form.improve_sex = this.mine_data_form.improve_sex ? '男' : '女'
+      this.mine_data_form.is_children = this.mine_data_form.is_children ? '有' : '无'
+      this.mine_data_form.car_type = this.mine_data_form.car_type ? '有' : '无'
+      this.mine_data_form.house_type = this.mine_data_form.house_type ? '1' : '0'
+      this.mine_data_form.workplace = this.mine_data_form.workplace.split('/')
     })
     .catch((error) => {
       console.log(error);
@@ -1372,15 +1382,15 @@ export default {
       if (this.mine_data_form.birth_day) {
         this.mine_data_form.birth_day = new Date(this.mine_data_form.birth_day).getFullYear() + '.' + (new Date(this.mine_data_form.birth_day).getMonth() + 1) + '.' + new Date(this.mine_data_form.birth_day).getDate();
       }
-      if (this.mine_data_form.address) {
+      if (this.mine_data_form.workplace.length) {
         let addressStr = ''
-        this.mine_data_form.address.forEach(item => {
+        this.mine_data_form.workplace.forEach(item => {
           addressStr += `${item}/`
         })
         addressStr = addressStr.slice(0, addressStr.length - 1)
-        this.mine_data_form.address = addressStr
+        this.mine_data_form.workplace = addressStr
       }
-      console.log(this.mine_data_form);
+      console.log(this.mine_data_form)
       this.mine_data_form.users_id = localStorage.getItem('users_id');
       this.mine_data_form.token = localStorage.getItem('token');
       this.$axios.post('/wpapi/me/improve_users', this.mine_data_form)
@@ -1388,6 +1398,9 @@ export default {
         console.log(result);
         if (result.status !== '200') return this.$message.error('保存失败！');
         this.$message.success('保存成功！');
+
+        this.mine_data_form.workplace = this.mine_data_form.workplace.split('/')
+
       })
       .catch((error) => {
         console.log(error);

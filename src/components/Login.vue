@@ -26,16 +26,16 @@
           </el-form>
           <div class="other_login">
             <span>其他登录方式</span>
-            <a href="javascript:;" @click='toLogin'>
+            <!-- <a href="javascript:;" @click='toLogin'>
               <img class="avatar size-S" src="http://admin.qianlixunta.com/static/qq.jpg" title="QQ登录">
-            </a>
+            </a> -->
             <!-- <img src="../assets/qq01.svg" alt="" /> -->
             <a href="http://admin.qianlixunta.com/wpapi/register/wx_login" target="_blank">
               <img src="../assets/weixin01.svg" alt="" />
             </a>
-            <a href="javascript:;" @click="weibo_login">
+            <!-- <a href="javascript:;" @click="weibo_login">
               <img src="../assets/weibo01.svg" alt="" />
-            </a>
+            </a> -->
           </div>
         </div>
       </el-main>
