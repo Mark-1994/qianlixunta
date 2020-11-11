@@ -622,7 +622,7 @@
                       :on-success="handleAvatarSuccess01"
                       :before-upload="beforeAvatarUpload"
                       :data="{token:token}">
-                      <img v-if="imageUrl01" :src="imageUrl01" class="id_card_avatar">
+                      <img v-if="real_name_form.identity_positive" :src="real_name_form.identity_positive ? `http://admin.qianlixunta.com${real_name_form.identity_positive}` : imageUrl01" class="id_card_avatar">
                       <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
                       <div v-else style="width:251px;color:#ccc;">（人像面照片）</div>
                     </el-upload>
@@ -633,13 +633,14 @@
                       :on-success="handleAvatarSuccess02"
                       :before-upload="beforeAvatarUpload"
                       :data="{token:token}">
-                      <img v-if="imageUrl02" :src="imageUrl02" class="id_card_avatar">
+                      <img v-if="real_name_form.identity_reverse" :src="real_name_form.identity_reverse ? `http://admin.qianlixunta.com${real_name_form.identity_reverse}` : imageUrl02" class="id_card_avatar">
                       <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
                       <div v-else style="width:251px;color:#ccc;">（国徽面照片）</div>
                     </el-upload>
                   </el-form-item>
                   <el-form-item>
                     <el-button type="primary" @click="post_real_name_form">提交上传</el-button>
+                    （{{real_name_form.is_to_examine ? real_name_form.is_to_examine == 1 ? '通过' : '拒绝' : '待审核'}}）
                   </el-form-item>
                 </el-form>
               </el-tab-pane>
@@ -1601,24 +1602,28 @@ export default {
     handleAvatarSuccess01(res, file) {
       console.log('身份证文件上传成功时的钩子');
       this.imageUrl01 = URL.createObjectURL(file.raw);
-      this.real_name_form.imageUrl01 = res.path;
+      // this.real_name_form.imageUrl01 = res.path;
+      this.real_name_form.identity_positive = res.path;
     },
     // 身份证文件上传成功时的钩子
     handleAvatarSuccess02(res, file) {
       console.log('身份证文件上传成功时的钩子');
       this.imageUrl02 = URL.createObjectURL(file.raw);
-      this.real_name_form.imageUrl02 = res.path;
+      // this.real_name_form.imageUrl02 = res.path;
+      this.real_name_form.identity_reverse = res.path;
     },
     // 提交实名认证表单
     post_real_name_form() {
       console.log('提交实名认证表单');
       this.real_name_form.token = localStorage.getItem('token');
       this.real_name_form.users_id = localStorage.getItem('users_id');
+      this.real_name_form.identity_positive = this.real_name_form.imageUrl01 ? this.real_name_form.imageUrl01 : this.real_name_form.identity_positive
+      this.real_name_form.identity_reverse = this.real_name_form.imageUrl02 ? this.real_name_form.imageUrl02 : this.real_name_form.identity_reverse
       this.$axios.post('/wpapi/me/real_name', this.real_name_form)
       .then((result) => {
-        console.log(result);
-        if (result.status !== '200') return this.$message.error(result.msg);
-        this.$message.warning(result.msg);
+        console.log(result)
+        if (result.status !== '200') return this.$message.error(result.msg)
+        this.$message.warning(result.msg)
       })
       .catch((error) => {
         console.log(error);

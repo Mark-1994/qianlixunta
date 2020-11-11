@@ -116,8 +116,8 @@
                             <div class="name_age_adress_time">
                               <h4>{{item.fromname}}</h4>
                               <div>
-                                <span>年龄</span>
-                                <span class="message_adress_item">地址</span>
+                                <span>{{`${new Date().getFullYear() - item.users_year}岁`}}</span>
+                                <span class="message_adress_item">{{item.workplace.split('/')[1]}}</span>
                               </div>
                               <div class="day_time_message_list">{{item.time}}</div>
                             </div>

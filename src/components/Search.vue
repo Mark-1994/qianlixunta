@@ -15,7 +15,7 @@
           <!-- 条件筛选 -->
           <div class="condition_screening_search">
             <el-row class="search_title_external_bottom">
-              <el-col :span="2">
+              <!-- <el-col :span="2">
                 <el-dropdown>
                   <span class="el-dropdown-link">
                     智能排序<i class="el-icon-arrow-down el-icon--right"></i>
@@ -26,7 +26,7 @@
                     <el-dropdown-item>时间</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
-              </el-col>
+              </el-col> -->
               <el-col :span="2">基本搜索</el-col>
             </el-row>
             <el-row>
@@ -80,6 +80,14 @@
                     <el-option label="无车" value="无车"></el-option>
                   </el-select>
                 </el-form-item>
+
+                <el-form-item>
+                  <el-select v-model="search_form.house_type" placeholder="购房情况" style="width: 110px;">
+                    <el-option label="有" value="1"></el-option>
+                    <el-option label="无" value="0"></el-option>
+                  </el-select>
+                </el-form-item>
+
                 <el-form-item label="">
                   <el-select v-model="search_form.monthly_salary" placeholder="月收入" style="width: 135px;">
                     <el-option label="3000-4000" value="3000-4000"></el-option>
@@ -200,7 +208,8 @@ export default {
         car_type: '',
         monthly_salary: '',
         height: '',
-        workplace: ''
+        workplace: '',
+        house_type: ''
       },
       // 基本搜索年龄参数
       age: '',
