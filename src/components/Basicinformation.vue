@@ -346,6 +346,19 @@
                       <img v-if="imageUrl" :src="imageUrl" class="avatar">
                       <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
+
+                    <!-- 头像列表 -->
+                    <div>
+                      <ul style="display: flex;">
+                        <li v-for="item in head_portrait_init" :key="item.id" @click="setHead(item.head_portrait_src)">
+                          <el-image
+                            style="width: 100px; height: 100px"
+                            :src="`http://admin.qianlixunta.com${item.head_portrait_src}`"
+                            fit="fit"></el-image>
+                        </li>
+                      </ul>
+                    </div>
+
                     <el-divider></el-divider>
                     <el-row>
                       <el-col :span="6" v-for="(item, index) in life_image_url" :key="index">
@@ -1172,7 +1185,9 @@ export default {
         ]
       },
       // 生活照回调之后提交之前的数据
-      life_imgs_after: []
+      life_imgs_after: [],
+      // 头像列表
+      head_portrait_init: []
     }
   },
   created: function() {
@@ -1265,6 +1280,7 @@ export default {
       }
       // 判断当前栏目是否是我的照片
       if (tab.name == 3) {
+        this.getHeadPortraitInit()
         this.$axios.post('/wpapi/register/picture_init', {
           users_id: localStorage.getItem('users_id')
         })
@@ -1628,6 +1644,18 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+    },
+    // 头像列表
+    async getHeadPortraitInit () {
+      const res = await this.$axios.get('/wpapi/member/head_portrait_init')
+      if (res.status !== '200') return this.$message.error(res.msg)
+      this.head_portrait_init = res.data
+    },
+    // 点击设置头像
+    setHead (headImg) {
+      console.log(headImg)
+      this.imageUrl = `http://admin.qianlixunta.com${headImg}`
+      this.come_news.head_portrait = headImg
     }
   }
 }
