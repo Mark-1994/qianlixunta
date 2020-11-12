@@ -380,6 +380,17 @@
                       ref="upload">
                       <el-button size="small" type="primary">上传生活照</el-button>
                     </el-upload>
+
+                    <el-row style="margin-top: 8px;">
+                      <el-col :span="24">
+                        <el-image
+                          v-for="item in life_imgs_init"
+                          :key="item.id"
+                          style="width: 100px; height: 100px"
+                          :src="`http://admin.qianlixunta.com${item.life_imgs_src}`" @click="setLift(item.life_imgs_src)"></el-image>
+                      </el-col>
+                    </el-row>
+
                     <el-row>
                       <el-button type="primary" @click="post_images_sure" style="margin-top:35px;">提交头像和生活照</el-button>
                     </el-row>
@@ -1187,7 +1198,9 @@ export default {
       // 生活照回调之后提交之前的数据
       life_imgs_after: [],
       // 头像列表
-      head_portrait_init: []
+      head_portrait_init: [],
+      // 生活照列表
+      life_imgs_init: []
     }
   },
   created: function() {
@@ -1281,6 +1294,7 @@ export default {
       // 判断当前栏目是否是我的照片
       if (tab.name == 3) {
         this.getHeadPortraitInit()
+        this.getLifeImgsInit()
         this.$axios.post('/wpapi/register/picture_init', {
           users_id: localStorage.getItem('users_id')
         })
@@ -1656,6 +1670,17 @@ export default {
       console.log(headImg)
       this.imageUrl = `http://admin.qianlixunta.com${headImg}`
       this.come_news.head_portrait = headImg
+    },
+    // 生活照列表
+    async getLifeImgsInit () {
+      const res = await this.$axios.get('/wpapi/member/life_imgs_init')
+      if (res.status !== '200') return this.$message.error(res.msg)
+      this.life_imgs_init = res.data
+    },
+    // 点击设置生活照
+    setLift (headImg) {
+      this.life_image_url.push(headImg)
+      this.life_imgs_after.push(headImg)
     }
   }
 }
