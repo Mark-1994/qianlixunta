@@ -4,9 +4,14 @@
       <el-main>
         <div class="x-wrap">
           <el-row class="distance_top">
-            <el-col :span="17">
+            <el-col :span="17" style="min-height: 780px;">
               <div class="activity_list_all">
-                <el-card class="activity_list_item" v-for="item in yuebazouqi_list.data" :key="item.id" :body-style="{ padding: '20px' }">
+
+                <el-card v-if="!yuebazouqi_list.data.length" class="activity_list_item">
+                  <p style="text-align: center;color: #aaa;">暂无最新活动，敬请期待</p>
+                </el-card>
+
+                <el-card v-else class="activity_list_item" v-for="item in yuebazouqi_list.data" :key="item.id" :body-style="{ padding: '20px' }">
                   <div class="activity_list_item_top">
                     <span>{{item.pay_price ? '最新' : '免费'}}</span>
                     <h4>{{item.title}}</h4>
@@ -133,7 +138,9 @@ export default {
   data() {
     return {
       // 约吧走起展示列表
-      yuebazouqi_list: {},
+      yuebazouqi_list: {
+        data: []
+      },
       // 倒计时
       d: '0',
       h: '0',

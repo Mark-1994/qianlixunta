@@ -32,25 +32,37 @@
               <el-col :span="9">
                 <div class="mine_info_middle">
                   <ul>
-                    <li>
-                      <span class="flag_num">{{come_news.no_read_message}}</span>
-                      <span class="flag_name">未读消息</span>
+                    <li :class="come_news.no_read_message ? 'shuikanguowo01' : ''">
+                      <router-link to="/message_list" :style="come_news.no_read_message ? 'color: rgba(230,73,128,1);' : 'color: rgb(234, 234, 234);'">
+                        <span class="flag_num">{{come_news.no_read_message}}</span>
+                      </router-link>
+                      <router-link to="/message_list" :style="come_news.no_read_message ? 'color: rgba(230,73,128,1);' : 'color: rgb(0, 0, 0);'">
+                        <span class="flag_name">未读消息</span>
+                      </router-link>
                     </li>
-                    <li class="shuikanguowo01">
+                    <li :class="come_news.who_seed ? 'shuikanguowo01' : ''">
                       <span class="flag_num">
-                        <router-link to="/user_list" style="color: rgba(230,73,128,1);">
-                          <el-badge is-dot>{{come_news.who_seed}}</el-badge>
+                        <router-link to="/user_list" :style="come_news.who_seed ? 'color: rgba(230,73,128,1);' : 'color: rgb(234, 234, 234);'">
+                          <el-badge :is-dot="Boolean(come_news.who_seed)">{{come_news.who_seed}}</el-badge>
                         </router-link>
                       </span>
-                      <span class="flag_name">谁看过我</span>
+                      <span class="flag_name">
+                        <router-link to="/user_list" :style="come_news.who_seed ? 'color: rgba(230,73,128,1);' : 'color: rgb(0, 0, 0);'">
+                        谁看过我
+                        </router-link>
+                      </span>
                     </li>
-                    <li>
+                    <li :class="come_news.add_bind ? 'shuikanguowo01' : ''">
                       <span class="flag_num">
-                        <router-link to="/user_list" style="color: rgba(234,234,234,1);">
+                        <router-link to="/user_list" :style="come_news.add_bind ? 'color: rgba(230,73,128,1);' : 'color: rgba(234,234,234,1);'">
                           {{come_news.add_bind}}
                         </router-link>
                       </span>
-                      <span class="flag_name">新增关注</span>
+                      <span class="flag_name">
+                        <router-link to="/user_list" :style="come_news.add_bind ? 'color: rgba(230,73,128,1);' : 'color: rgba(0,0,0,1);'">
+                        新增关注
+                        </router-link>
+                      </span>
                     </li>
                   </ul>
                 </div>
@@ -68,7 +80,11 @@
                             {{come_news.bind_num}}
                           </router-link>
                         </span>
-                        <span class="other_name">关注我的</span>
+                        <span class="other_name">
+                          <router-link to="/user_list">
+                          关注我的
+                          </router-link>
+                        </span>
                       </li>
                       <li>
                         <span class="other_num">
@@ -76,7 +92,11 @@
                             {{come_news.seed_num}}
                           </router-link>
                         </span>
-                        <span class="other_name">我看过的</span>
+                        <span class="other_name">
+                          <router-link to="/user_list">
+                          我看过的
+                          </router-link>
+                        </span>
                       </li>
                       <li>
                         <span class="other_num">
@@ -84,7 +104,11 @@
                             {{come_news.friend_num}}
                           </router-link>
                         </span>
-                        <span class="other_name">好友</span>
+                        <span class="other_name">
+                          <router-link to="/user_list">
+                          好友
+                          </router-link>
+                        </span>
                       </li>
                       <li>
                         <span class="other_num">
@@ -92,7 +116,11 @@
                             {{come_news.fabulous_num}}
                           </router-link>
                         </span>
-                        <span class="other_name">赞过我</span>
+                        <span class="other_name">
+                          <router-link to="/user_list">
+                          赞过我
+                          </router-link>
+                        </span>
                       </li>
                     </ul>
                   </div>
@@ -115,15 +143,18 @@
                             <div class="name_age_adress_time">
                               <h4>{{item.nickname}}</h4>
                               <div>
-                                <span>年龄</span>
-                                <span class="message_adress_item">地址</span>
+                                <span>{{new Date().getFullYear() - item.users_year}}岁</span>
+                                <span class="message_adress_item">{{item.workplace}}</span>
                               </div>
                               <div class="day_time_message_list">&nbsp;</div>
                             </div>
-                            <div class="message_info_item">&nbsp;</div>
+                            <!-- <div class="message_info_item">&nbsp;</div> -->
                           </div>
                           <div class="right_lijihuifu">
-                            <a href="javascript:;">关注</a>
+                            <a href="javascript:;" @click="getFocusBtn(item.users_id, 0)" :style="item.is_band_status ? 'background-color: #ddd;' : ''">
+                              <span v-if="item.is_band_status">已关注</span>
+                              <span v-else>关注</span>
+                            </a>
                           </div>
                         </li>
                       </ul>
@@ -138,15 +169,18 @@
                             <div class="name_age_adress_time">
                               <h4>{{item.nickname}}</h4>
                               <div>
-                                <span>年龄</span>
-                                <span class="message_adress_item">地址</span>
+                                <span>{{new Date().getFullYear() - item.users_year}}岁</span>
+                                <span class="message_adress_item">{{item.workplace}}</span>
                               </div>
                               <div class="day_time_message_list">&nbsp;</div>
                             </div>
-                            <div class="message_info_item">&nbsp;</div>
+                            <!-- <div class="message_info_item">&nbsp;</div> -->
                           </div>
                           <div class="right_lijihuifu">
-                            <a href="javascript:;">关注</a>
+                            <a href="javascript:;" @click="getFocusBtn(item.users_id, 1)" :style="item.is_band_status ? 'background-color: #ddd;' : ''">
+                              <span v-if="item.is_band_status">已关注</span>
+                              <span v-else>关注</span>
+                            </a>
                           </div>
                         </li>
                       </ul>
@@ -161,15 +195,18 @@
                             <div class="name_age_adress_time">
                               <h4>{{item.nickname}}</h4>
                               <div>
-                                <span>年龄</span>
-                                <span class="message_adress_item">地址</span>
+                                <span>{{new Date().getFullYear() - item.users_year}}岁</span>
+                                <span class="message_adress_item">{{item.workplace}}</span>
                               </div>
                               <div class="day_time_message_list">&nbsp;</div>
                             </div>
-                            <div class="message_info_item">&nbsp;</div>
+                            <!-- <div class="message_info_item">&nbsp;</div> -->
                           </div>
                           <div class="right_lijihuifu">
-                            <a href="javascript:;">关注</a>
+                            <a href="javascript:;" @click="getFocusBtn(item.users_id, 2)" :style="item.is_band_status ? 'background-color: #ddd;' : ''">
+                              <span v-if="item.is_band_status">已关注</span>
+                              <span v-else>关注</span>
+                            </a>
                           </div>
                         </li>
                       </ul>
@@ -184,15 +221,18 @@
                             <div class="name_age_adress_time">
                               <h4>{{item.nickname}}</h4>
                               <div>
-                                <span>年龄</span>
-                                <span class="message_adress_item">地址</span>
+                                <span>{{new Date().getFullYear() - item.users_year}}岁</span>
+                                <span class="message_adress_item">{{item.workplace}}</span>
                               </div>
                               <div class="day_time_message_list">&nbsp;</div>
                             </div>
-                            <div class="message_info_item">&nbsp;</div>
+                            <!-- <div class="message_info_item">&nbsp;</div> -->
                           </div>
                           <div class="right_lijihuifu">
-                            <a href="javascript:;">关注</a>
+                            <a href="javascript:;" @click="getFocusBtn(item.users_id, 3)" :style="item.is_band_status ? 'background-color: #ddd;' : ''">
+                              <span v-if="item.is_band_status">已关注</span>
+                              <span v-else>关注</span>
+                            </a>
                           </div>
                         </li>
                       </ul>
@@ -207,15 +247,18 @@
                             <div class="name_age_adress_time">
                               <h4>{{item.nickname}}</h4>
                               <div>
-                                <span>年龄</span>
-                                <span class="message_adress_item">地址</span>
+                                <span>{{new Date().getFullYear() - item.users_year}}岁</span>
+                                <span class="message_adress_item">{{item.workplace}}</span>
                               </div>
                               <div class="day_time_message_list">&nbsp;</div>
                             </div>
-                            <div class="message_info_item">&nbsp;</div>
+                            <!-- <div class="message_info_item">&nbsp;</div> -->
                           </div>
                           <div class="right_lijihuifu">
-                            <a href="javascript:;">关注</a>
+                            <a href="javascript:;" @click="getFocusBtn(item.users_id, 4)" :style="item.is_band_status ? 'background-color: #ddd;' : ''">
+                              <span v-if="item.is_band_status">已关注</span>
+                              <span v-else>关注</span>
+                            </a>
                           </div>
                         </li>
                       </ul>
@@ -230,15 +273,18 @@
                             <div class="name_age_adress_time">
                               <h4>{{item.nickname}}</h4>
                               <div>
-                                <span>年龄</span>
-                                <span class="message_adress_item">地址</span>
+                                <span>{{new Date().getFullYear() - item.users_year}}岁</span>
+                                <span class="message_adress_item">{{item.workplace}}</span>
                               </div>
                               <div class="day_time_message_list">&nbsp;</div>
                             </div>
-                            <div class="message_info_item">&nbsp;</div>
+                            <!-- <div class="message_info_item">&nbsp;</div> -->
                           </div>
                           <div class="right_lijihuifu">
-                            <a href="javascript:;">关注</a>
+                            <a href="javascript:;" @click="getFocusBtn(item.users_id, 5)" :style="item.is_band_status ? 'background-color: #ddd;' : ''">
+                              <span v-if="item.is_band_status">已关注</span>
+                              <span v-else>关注</span>
+                            </a>
                           </div>
                         </li>
                       </ul>
@@ -252,7 +298,9 @@
                   <ul class="new_recently_contact_person">
                     <li v-for="(item, index) in recentContactsList" :key="index">
                       <div class="item_contact_person">
-                        <img :src="`http://admin.qianlixunta.com${item.head_portrait}`" alt="" style="border-radius: 50%;margin: 8px 0;box-shadow: 1px 1px 10px 1px #999;" />
+                        <router-link :to="`other_user/${item.users_id}`">
+                          <img :src="`http://admin.qianlixunta.com${item.head_portrait ? item.head_portrait : '/upload/admin/article/thumbnail/20200807/nan.png'}`" alt="" style="border-radius: 50%;margin: 8px 0;box-shadow: rgba(153, 153, 153, .5) 1px 1px 10px 1px;" />
+                        </router-link>
                         <span>在线</span>
                       </div>
                       <p class="contact_person_name">{{item.nickname}}</p>
@@ -400,6 +448,36 @@ export default {
       })
       if (res.status !== '200') return this.$message.error(res.msg)
       this.star = res.data
+    },
+    // 关注按钮
+    async getFocusBtn (bei_users_id, type) {
+      const res = await this.$axios.post('/wpapi/me/btn_click', {
+        users_id: localStorage.getItem('users_id'),
+        token: localStorage.getItem('token'),
+        bei_users_id: bei_users_id
+      })
+      if (res.status !== '200') return this.$message.error(res.msg)
+      this.$message.success(res.data.msg)
+      // 判断当前点击的关注属于哪个列表，然后调用接口，更新列表数据
+      if (type === 0) {
+        // 谁看过我
+        this.getSeen()
+      } else if (type === 1) {
+        // 新增关注
+        this.getNewlyAdded()
+      } else if (type === 2) {
+        // 关注我的
+        this.getFollow()
+      } else if (type === 3) {
+        // 我看过的
+        this.getISeen()
+      } else if (type === 4) {
+        // 好友
+        this.getMyFriend()
+      } else if (type === 5) {
+        // 赞过我
+        this.getStar()
+      }
     }
   }
 }

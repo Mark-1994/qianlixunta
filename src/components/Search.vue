@@ -209,7 +209,8 @@ export default {
         monthly_salary: '',
         height: '',
         workplace: '',
-        house_type: ''
+        house_type: '',
+        users_id: localStorage.getItem('users_id') ? localStorage.getItem('users_id') : ''
       },
       // 基本搜索年龄参数
       age: '',
@@ -241,7 +242,7 @@ export default {
       console.log(error);
     });
     
-    this.$axios.post('/wpapi/member/find_friend', { page: 1 })
+    this.$axios.post('/wpapi/member/find_friend', { page: 1, users_id: localStorage.getItem('users_id') ? localStorage.getItem('users_id') : '' })
     .then((result) => {
       console.log(result);
       this.find_friend = result.data.data;
@@ -257,7 +258,8 @@ export default {
       this.search_flag = 2;
       this.$axios.post('/wpapi/member/btn_select_friend', {
         param: this.input3,
-        page: 1
+        page: 1,
+        users_id: localStorage.getItem('users_id') ? localStorage.getItem('users_id') : ''
       })
       .then((result) => {
         console.log(result);
@@ -271,7 +273,7 @@ export default {
     },
     handleCurrentChange(val) {
       if (!this.search_flag) {
-        this.$axios.post('/wpapi/member/find_friend', { page: val })
+        this.$axios.post('/wpapi/member/find_friend', { page: val, users_id: localStorage.getItem('users_id') ? localStorage.getItem('users_id') : '' })
         .then((result) => {
           this.find_friend = result.data.data;
         })
@@ -292,7 +294,8 @@ export default {
         this.search_form.page = val;
         this.$axios.post('/wpapi/member/btn_select_friend', {
         param: this.input3,
-        page: val
+        page: val,
+        users_id: localStorage.getItem('users_id') ? localStorage.getItem('users_id') : ''
       })
       .then((result) => {
         console.log(result);

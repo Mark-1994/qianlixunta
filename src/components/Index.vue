@@ -467,16 +467,22 @@
                     <div class="one_line"></div>
                     <ul>
                       <li>
-                        <img src="../assets/xunzhao01.png" alt="">
-                        <span>寻找TA</span>
+                        <router-link to="search">
+                          <img src="../assets/xunzhao01.png" alt="">
+                          <span>寻找TA</span>
+                        </router-link>
                       </li>
                       <li>
-                        <img src="../assets/yuehui01.png" alt="">
-                        <span>约吧</span>
+                        <router-link to="yueba">
+                          <img src="../assets/yuehui01.png" alt="">
+                          <span>约吧</span>
+                        </router-link>
                       </li>
                       <li>
-                        <img src="../assets/yiduiyi02.png" alt="">
-                        <span>红娘一对一</span>
+                        <router-link to="hongniang">
+                          <img src="../assets/yiduiyi02.png" alt="">
+                          <span>红娘一对一</span>
+                        </router-link>
                       </li>
                     </ul>
                     <router-link to="/join_member">
@@ -589,7 +595,8 @@ export default {
         age_low: '',
         age_height: '',
         sex: '',
-        workplace: ''
+        workplace: '',
+        users_id: localStorage.getItem('users_id') ? localStorage.getItem('users_id') : ''
       },
       // 情感交流列表1
       article_list_one: [],
@@ -688,23 +695,32 @@ export default {
     .then((result) => {
       console.log(result);
       this.qixi_festival = result.data;
-      this.qixi_festival_first = this.qixi_festival[0];
-      this.qixi_festival_second = this.qixi_festival[1];
-      this.qixi_festival_third = this.qixi_festival[2];
+      this.qixi_festival_first = this.qixi_festival[0] ? this.qixi_festival[0] : {img: '/upload/admin/let_go/20200730/795a496fd0d47413976d4a6cc69a9f89.png'};
+      this.qixi_festival_second = this.qixi_festival[1] ? this.qixi_festival[1] : {img: '/upload/admin/let_go/20200730/795a496fd0d47413976d4a6cc69a9f89.png'};
+      this.qixi_festival_third = this.qixi_festival[2] ? this.qixi_festival[2] : {img: '/upload/admin/let_go/20200730/795a496fd0d47413976d4a6cc69a9f89.png'};
     })
     .catch((error) => {
       console.log(error);
     });
 
     // 右侧边栏-最佳匹配
-    this.$axios.get('/wpapi/register/agreement_join_shuffle', {params:{}})
+    // get 请求 会匹配到自己
+    // this.$axios.get('/wpapi/register/agreement_join_shuffle', {params:{}})
+    // .then((result) => {
+    //   console.log(result);
+    //   this.agreement_join_shuffle = result.data;
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // })
+    // post 请求 不会匹配到自己
+    this.$axios.post('/wpapi/register/agreement_join_shuffle', {users_id: localStorage.getItem('users_id') ? localStorage.getItem('users_id') : ''})
     .then((result) => {
-      console.log(result);
-      this.agreement_join_shuffle = result.data;
+      this.agreement_join_shuffle = result.data
     })
     .catch((error) => {
-      console.log(error);
-    });
+      console.log(error)
+    })
   },
   mounted: function() {
     console.log(wx);
@@ -842,6 +858,13 @@ export default {
     width: 1180px;
     margin: 0 auto;
   }
+
+  @media (min-width: 1600px) {
+    .main_center_module {
+      width: 1500px;
+    }
+  }
+
   .home_banner {
     background: url(../assets/home_banner01.png);
     background-size: 100% 100%;

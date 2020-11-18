@@ -32,25 +32,37 @@
               <el-col :span="9">
                 <div class="mine_info_middle">
                   <ul>
-                    <li>
-                      <span class="flag_num">{{come_news.no_read_message}}</span>
-                      <span class="flag_name">未读消息</span>
+                    <li :class="come_news.no_read_message ? 'shuikanguowo01' : ''">
+                      <router-link to="/message_list" :style="come_news.no_read_message ? 'color: rgba(230,73,128,1);' : 'color: rgb(234, 234, 234);'">
+                        <span class="flag_num">{{come_news.no_read_message}}</span>
+                      </router-link>
+                      <router-link to="/message_list" :style="come_news.no_read_message ? 'color: rgba(230,73,128,1);' : 'color: rgb(0, 0, 0);'">
+                        <span class="flag_name">未读消息</span>
+                      </router-link>
                     </li>
-                    <li class="shuikanguowo01">
+                    <li :class="come_news.who_seed ? 'shuikanguowo01' : ''">
                       <span class="flag_num">
-                        <router-link to="/user_list" style="color: rgba(230,73,128,1);">
-                          <el-badge is-dot>{{come_news.who_seed}}</el-badge>
+                        <router-link to="/user_list" :style="come_news.who_seed ? 'color: rgba(230,73,128,1);' : 'color: rgb(234, 234, 234);'">
+                          <el-badge :is-dot="Boolean(come_news.who_seed)">{{come_news.who_seed}}</el-badge>
                         </router-link>
                       </span>
-                      <span class="flag_name">谁看过我</span>
+                      <span class="flag_name">
+                        <router-link to="/user_list" :style="come_news.who_seed ? 'color: rgba(230,73,128,1);' : 'color: rgb(0, 0, 0);'">
+                        谁看过我
+                        </router-link>
+                      </span>
                     </li>
-                    <li>
+                    <li :class="come_news.add_bind ? 'shuikanguowo01' : ''">
                       <span class="flag_num">
-                        <router-link to="/user_list" style="color: rgba(234,234,234,1);">
+                        <router-link to="/user_list" :style="come_news.add_bind ? 'color: rgba(230,73,128,1);' : 'color: rgba(234,234,234,1);'">
                           {{come_news.add_bind}}
                         </router-link>
                       </span>
-                      <span class="flag_name">新增关注</span>
+                      <span class="flag_name">
+                        <router-link to="/user_list" :style="come_news.add_bind ? 'color: rgba(230,73,128,1);' : 'color: rgba(0,0,0,1);'">
+                        新增关注
+                        </router-link>
+                      </span>
                     </li>
                   </ul>
                 </div>
@@ -68,7 +80,11 @@
                             {{come_news.bind_num}}
                           </router-link>
                         </span>
-                        <span class="other_name">关注我的</span>
+                        <span class="other_name">
+                          <router-link to="/user_list">
+                          关注我的
+                          </router-link>
+                        </span>
                       </li>
                       <li>
                         <span class="other_num">
@@ -76,7 +92,11 @@
                             {{come_news.seed_num}}
                           </router-link>
                         </span>
-                        <span class="other_name">我看过的</span>
+                        <span class="other_name">
+                          <router-link to="/user_list">
+                          我看过的
+                          </router-link>
+                        </span>
                       </li>
                       <li>
                         <span class="other_num">
@@ -84,7 +104,11 @@
                             {{come_news.friend_num}}
                           </router-link>
                         </span>
-                        <span class="other_name">好友</span>
+                        <span class="other_name">
+                          <router-link to="/user_list">
+                          好友
+                          </router-link>
+                        </span>
                       </li>
                       <li>
                         <span class="other_num">
@@ -92,7 +116,11 @@
                             {{come_news.fabulous_num}}
                           </router-link>
                         </span>
-                        <span class="other_name">赞过我</span>
+                        <span class="other_name">
+                          <router-link to="/user_list">
+                          赞过我
+                          </router-link>
+                        </span>
                       </li>
                     </ul>
                   </div>
@@ -111,13 +139,13 @@
                           <div class="left_img_name_des">
                             <div class="user_img">
                               <!-- <img src="../assets/username01.png" alt=""> -->
-                              <img :src="'http://admin.qianlixunta.com'+item.head_portrait" alt="">
+                              <img :src="item.head_portrait ? 'http://admin.qianlixunta.com'+item.head_portrait : 'http://admin.qianlixunta.com/upload/admin/article/thumbnail/20200807/nan.png'" alt="">
                             </div>
                             <div class="name_age_adress_time">
                               <h4>{{item.fromname}}</h4>
                               <div>
-                                <span>{{`${new Date().getFullYear() - item.users_year}岁`}}</span>
-                                <span class="message_adress_item">{{item.workplace.split('/')[1]}}</span>
+                                <span>{{`${item.users_year ? new Date().getFullYear() - item.users_year : ''}岁`}}</span>
+                                <span class="message_adress_item">{{item.workplace}}</span>
                               </div>
                               <div class="day_time_message_list">{{item.time}}</div>
                             </div>
@@ -131,7 +159,7 @@
                     </el-tab-pane>
                     <el-tab-pane label="已读消息" name="second">
                       <ul>
-                        <li v-for="item in general_message_list.data" :key="item.id">已读消息{{item.title}}</li>
+                        <li v-for="item in general_message_list.data" :key="item.id" style="margin-bottom: 10px;">已读消息：<span style="display: inline-block;width: 60%;">{{item.content}}</span> --发信人：{{item.toname}}</li>
                       </ul>
                     </el-tab-pane>
                     <el-tab-pane label="系统消息" name="third">
@@ -162,7 +190,9 @@
                   <ul class="new_recently_contact_person">
                     <li v-for="(item, index) in recentContactsList" :key="index">
                       <div class="item_contact_person">
-                        <img :src="`http://admin.qianlixunta.com${item.head_portrait}`" alt="" style="border-radius: 50%;margin: 8px 0;box-shadow: 1px 1px 10px 1px #999;" />
+                        <router-link :to="`other_user/${item.users_id}`">
+                          <img :src="`http://admin.qianlixunta.com${item.head_portrait ? item.head_portrait : '/upload/admin/article/thumbnail/20200807/nv.png'}`" alt="" style="border-radius: 50%;margin: 8px 0;box-shadow: rgba(153, 153, 153, .5) 1px 1px 10px 1px;" />
+                        </router-link>
                         <span>在线</span>
                       </div>
                       <p class="contact_person_name">{{item.nickname}}</p>
@@ -233,12 +263,11 @@ export default {
       page: 1
     })
     .then((result) => {
-      console.log(result);
       this.general_message_list = result.data;
     })
     .catch((error) => {
-      console.log(error);
-    });
+      console.log(error)
+    })
 
     // 最近联系人
     this.showRecentContactsList()
@@ -482,7 +511,7 @@ export default {
     font-weight: 400;
     letter-spacing: 1px;
     font-size: 20px;
-    width: 370px;
+    width: 352px;
     margin-right: 10px;
   }
   .right_lijihuifu a {
@@ -498,6 +527,9 @@ export default {
   }
   .message_adress_item {
     margin-left: 19px;
+    width: 60px;
+    display: inline-block;
+    line-height: normal;
   }
   .mine_message_list {
     margin-top: 26px;

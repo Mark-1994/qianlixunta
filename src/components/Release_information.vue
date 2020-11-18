@@ -32,17 +32,37 @@
               <el-col :span="9">
                 <div class="mine_info_middle">
                   <ul>
-                    <li>
-                      <span class="flag_num">{{come_news.no_read_message}}</span>
-                      <span class="flag_name">未读消息</span>
+                    <li :class="come_news.no_read_message ? 'shuikanguowo01' : ''">
+                      <router-link to="/message_list" :style="come_news.no_read_message ? 'color: rgba(230,73,128,1);' : 'color: rgb(234, 234, 234);'">
+                        <span class="flag_num">{{come_news.no_read_message}}</span>
+                      </router-link>
+                      <router-link to="/message_list" :style="come_news.no_read_message ? 'color: rgba(230,73,128,1);' : 'color: rgb(0, 0, 0);'">
+                        <span class="flag_name">未读消息</span>
+                      </router-link>
                     </li>
-                    <li class="shuikanguowo01">
-                      <span class="flag_num"><el-badge is-dot>{{come_news.who_seed}}</el-badge></span>
-                      <span class="flag_name">谁看过我</span>
+                    <li :class="come_news.who_seed ? 'shuikanguowo01' : ''">
+                      <span class="flag_num">
+                        <router-link to="/user_list" :style="come_news.who_seed ? 'color: rgba(230,73,128,1);' : 'color: rgb(234, 234, 234);'">
+                          <el-badge :is-dot="Boolean(come_news.who_seed)">{{come_news.who_seed}}</el-badge>
+                        </router-link>
+                      </span>
+                      <span class="flag_name">
+                        <router-link to="/user_list" :style="come_news.who_seed ? 'color: rgba(230,73,128,1);' : 'color: rgb(0, 0, 0);'">
+                        谁看过我
+                        </router-link>
+                      </span>
                     </li>
-                    <li>
-                      <span class="flag_num">{{come_news.add_bind}}</span>
-                      <span class="flag_name">新增关注</span>
+                    <li :class="come_news.add_bind ? 'shuikanguowo01' : ''">
+                      <span class="flag_num">
+                        <router-link to="/user_list" :style="come_news.add_bind ? 'color: rgba(230,73,128,1);' : 'color: rgba(234,234,234,1);'">
+                          {{come_news.add_bind}}
+                        </router-link>
+                      </span>
+                      <span class="flag_name">
+                        <router-link to="/user_list" :style="come_news.add_bind ? 'color: rgba(230,73,128,1);' : 'color: rgba(0,0,0,1);'">
+                        新增关注
+                        </router-link>
+                      </span>
                     </li>
                   </ul>
                 </div>
@@ -55,20 +75,52 @@
                   <div class="min_info_right_bottom">
                     <ul>
                       <li>
-                        <span class="other_num">{{come_news.bind_num}}</span>
-                        <span class="other_name">关注我的</span>
+                        <span class="other_num">
+                          <router-link to="/user_list">
+                            {{come_news.bind_num}}
+                          </router-link>
+                        </span>
+                        <span class="other_name">
+                          <router-link to="/user_list">
+                          关注我的
+                          </router-link>
+                        </span>
                       </li>
                       <li>
-                        <span class="other_num">{{come_news.seed_num}}</span>
-                        <span class="other_name">我看过的</span>
+                        <span class="other_num">
+                          <router-link to="/user_list">
+                            {{come_news.seed_num}}
+                          </router-link>
+                        </span>
+                        <span class="other_name">
+                          <router-link to="/user_list">
+                          我看过的
+                          </router-link>
+                        </span>
                       </li>
                       <li>
-                        <span class="other_num">{{come_news.friend_num}}</span>
-                        <span class="other_name">好友</span>
+                        <span class="other_num">
+                          <router-link to="/user_list">
+                            {{come_news.friend_num}}
+                          </router-link>
+                        </span>
+                        <span class="other_name">
+                          <router-link to="/user_list">
+                          好友
+                          </router-link>
+                        </span>
                       </li>
                       <li>
-                        <span class="other_num">{{come_news.fabulous_num}}</span>
-                        <span class="other_name">赞过的</span>
+                        <span class="other_num">
+                          <router-link to="/user_list">
+                            {{come_news.fabulous_num}}
+                          </router-link>
+                        </span>
+                        <span class="other_name">
+                          <router-link to="/user_list">
+                          赞过我
+                          </router-link>
+                        </span>
                       </li>
                     </ul>
                   </div>

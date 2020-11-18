@@ -84,20 +84,26 @@
                   <el-row class="xuntazhuanxian01_box">
                     <el-col :span="8">
                       <div class="xuntazhuanxian01_item_box">
-                        <img src="../assets/xunzhao01.png" alt="">
-                        <span>寻找TA</span>
+                        <router-link to="/search">
+                          <img src="../assets/xunzhao01.png" alt="">
+                          <span>寻找TA</span>
+                        </router-link>
                       </div>
                     </el-col>
                     <el-col :span="8">
                       <div class="xuntazhuanxian01_item_box">
-                        <img src="../assets/yuehui01.png" alt="">
-                        <span>约吧</span>
+                        <router-link to="/yueba">
+                          <img src="../assets/yuehui01.png" alt="">
+                          <span>约吧</span>
+                        </router-link>
                       </div>
                     </el-col>
                     <el-col :span="8">
                       <div class="xuntazhuanxian01_item_box">
-                        <img src="../assets/yiduiyi02.png" alt="">
-                        <span>红娘一对一</span>
+                        <router-link to="/hongniang">
+                          <img src="../assets/yiduiyi02.png" alt="">
+                          <span>红娘一对一</span>
+                        </router-link>
                       </div>
                     </el-col>
                   </el-row>
@@ -171,17 +177,28 @@ export default {
     this.$emit('header', true);
 
     // 右侧最佳匹配
-    this.$axios.get('/wpapi/register/agreement_join_shuffle', {
-      params: {}
+    // get 请求 匹配到了自己
+    // this.$axios.get('/wpapi/register/agreement_join_shuffle', {
+    //   params: {}
+    // })
+    // .then((result) => {
+    //   console.log(result);
+    //   this.agreement_join_shuffle = result.data;
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
+    // post 请求 匹配不到自己
+    this.$axios.post('/wpapi/register/agreement_join_shuffle', {
+      users_id: localStorage.getItem('users_id') ? localStorage.getItem('users_id') : ''
     })
     .then((result) => {
-      console.log(result);
-      this.agreement_join_shuffle = result.data;
+      this.agreement_join_shuffle = result.data
     })
     .catch((error) => {
-      console.log(error);
-    });
-    
+      console.log(error)
+    })
+
     // 默认文章列表
     this.$axios.get('/wpapi/article/category_list_page', {params: {cate_id:1,page:1}})
     .then((result) => {
