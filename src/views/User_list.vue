@@ -134,7 +134,8 @@
                 <template>
                   <el-tabs v-model="activeName" style="background-color: #fff;border-radius: 30px;padding: 20px;" @tab-click="handleClick">
                     <el-tab-pane label="谁看过我" name="first">
-                      <ul class="unread_message_list">
+                      <p style="text-align: center;color: #ccc;font-size: 14px;" v-if="!seen.length">什么都还没有呢(￣▽￣)</p>
+                      <ul class="unread_message_list" v-else>
                         <li v-for="(item, index) in seen" :key="index">
                           <div class="left_img_name_des">
                             <div class="user_img">
@@ -160,7 +161,8 @@
                       </ul>
                     </el-tab-pane>
                     <el-tab-pane label="新增关注" name="second">
-                      <ul class="unread_message_list">
+                      <p style="text-align: center;color: #ccc;font-size: 14px;" v-if="!newlyAdded.length">什么都还没有呢(￣▽￣)</p>
+                      <ul class="unread_message_list" v-else>
                         <li v-for="(item, index) in newlyAdded" :key="index">
                           <div class="left_img_name_des">
                             <div class="user_img">
@@ -186,7 +188,8 @@
                       </ul>
                     </el-tab-pane>
                     <el-tab-pane label="关注我的" name="third">
-                      <ul class="unread_message_list">
+                      <p style="text-align: center;color: #ccc;font-size: 14px;" v-if="!follow.length">什么都还没有呢(￣▽￣)</p>
+                      <ul class="unread_message_list" v-else>
                         <li v-for="(item, index) in follow" :key="index">
                           <div class="left_img_name_des">
                             <div class="user_img">
@@ -212,7 +215,8 @@
                       </ul>
                     </el-tab-pane>
                     <el-tab-pane label="我看过的" name="fourthly">
-                      <ul class="unread_message_list">
+                      <p style="text-align: center;color: #ccc;font-size: 14px;" v-if="!iSeen.length">什么都还没有呢(￣▽￣)</p>
+                      <ul class="unread_message_list" v-else>
                         <li v-for="(item, index) in iSeen" :key="index">
                           <div class="left_img_name_des">
                             <div class="user_img">
@@ -238,7 +242,8 @@
                       </ul>
                     </el-tab-pane>
                     <el-tab-pane label="好友" name="fifth">
-                      <ul class="unread_message_list">
+                      <p style="text-align: center;color: #ccc;font-size: 14px;" v-if="!myFriend.length">什么都还没有呢(￣▽￣)</p>
+                      <ul class="unread_message_list" v-else>
                         <li v-for="(item, index) in myFriend" :key="index">
                           <div class="left_img_name_des">
                             <div class="user_img">
@@ -264,7 +269,8 @@
                       </ul>
                     </el-tab-pane>
                     <el-tab-pane label="赞过我" name="sixth">
-                      <ul class="unread_message_list">
+                      <p style="text-align: center;color: #ccc;font-size: 14px;" v-if="!star.length">什么都还没有呢(￣▽￣)</p>
+                      <ul class="unread_message_list" v-else>
                         <li v-for="(item, index) in star" :key="index">
                           <div class="left_img_name_des">
                             <div class="user_img">
@@ -295,7 +301,8 @@
               <el-col :span="7">
                 <div class="right_recently_contact_person">
                   <h4>最近联系人</h4>
-                  <ul class="new_recently_contact_person">
+                  <p style="text-align: center;color: #ccc;font-size: 14px;" v-if="!recentContactsList.length">什么都还没有呢(￣▽￣)</p>
+                  <ul class="new_recently_contact_person" v-else>
                     <li v-for="(item, index) in recentContactsList" :key="index">
                       <div class="item_contact_person">
                         <router-link :to="`other_user/${item.users_id}`">

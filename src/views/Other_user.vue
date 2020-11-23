@@ -330,7 +330,7 @@
               <li>健身</li>
               <li>游戏</li>
             </ul>
-            <el-button style="background: linear-gradient(360deg,#fc2c89 11%, #ff97c6 99%);color: #fff;outline: none;border: 0;display:block;margin: 0 auto;" size="mini">关注TA</el-button>
+            <el-button style="background: linear-gradient(360deg,#fc2c89 11%, #ff97c6 99%);color: #fff;outline: none;border: 0;display:block;margin: 0 auto;" size="mini" @click="getFollow">关注TA</el-button>
           </div>
           </el-col>
           <el-col :span="17">
@@ -427,9 +427,8 @@ export default {
       bei_users_id: this.$route.params.bei_users_id
     })
     .then((result) => {
-      console.log(result);
-      this.select_users_info = result.data;
-      this.select_users_info.life_imgs = JSON.parse(this.select_users_info.life_imgs);
+      this.select_users_info = result.data
+      this.select_users_info.life_imgs = this.select_users_info.life_imgs ? JSON.parse(this.select_users_info.life_imgs) : this.select_users_info.life_imgs
       this.select_users_info.tag_arr = result.tag_arr
     })
     .catch((error) => {
@@ -517,6 +516,16 @@ export default {
     // 图片右移
     img_right_move() {
       console.log('图片右移');
+    },
+    // 点击关注
+    async getFollow () {
+      const res = await this.$axios.post('/wpapi/me/btn_click', {
+        users_id: localStorage.getItem('users_id'),
+        token: localStorage.getItem('token'),
+        bei_users_id: this.$route.params.bei_users_id
+      })
+      if (res.status !== '200') return this.$message.error(res.msg)
+      this.$message.success(res.data.msg)
     }
   }
 }
